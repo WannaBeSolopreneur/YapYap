@@ -1,95 +1,241 @@
+<div align="center">
+
+<img src="docs/icon.png" alt="YapYap" width="96" height="96">
+
 # YapYap
 
-Mac app (Dock icon, main window, and menu-bar icon) that reads any window aloud and highlights each word on the original app, and types what you
-dictate into any app. All on-device.
-Built from `build-plan.html` (Phase 0 + most of Phase 1). Requires macOS 15+ and Xcode 16+ (built with Xcode 27).
+**You talk. It types. It talks. You listen.**
 
-## Build & run
+A free Mac app that reads any text on your screen aloud, highlighting each word as it's spoken,
+and types what you say into any app. Everything runs on your Mac.
 
-    scripts/make-signing-cert.sh    # once: stable signature, so permissions survive rebuilds
-    scripts/build-app.sh            # → build/YapYap.app
-    scripts/build-app.sh --install  # copy to /Applications and launch
-    TELEMETRYDECK_APP_ID=… scripts/build-app.sh  # send anonymous usage stats to your TelemetryDeck app (or put it in scripts/local.env)
-    scripts/release.sh 1.0.0 [build]            # → build/YapYap-1.0.0.dmg, signed; add --notarize to send it to Apple
+**[yapyap.cc](https://yapyap.cc)** · download coming soon · [build it yourself](#build-from-source)
 
-Builds use the hardened runtime (entitlements in `scripts/YapYap.entitlements`). With a "Developer ID Application"
-certificate installed they're signed with it automatically; otherwise with the local certificate. Notarizing needs
-credentials saved once: `xcrun notarytool store-credentials yapyap-notary --apple-id <id> --team-id <team>`.
-    xcodebuild test -scheme YapYap -destination 'platform=macOS,arch=arm64' -derivedDataPath .build/xcode
-    build/YapYap.app/Contents/MacOS/YapYap --ocr screenshot.png   # print OCR text in reading order
-    build/YapYap.app/Contents/MacOS/YapYap --kokoro "Some text." # speak with Kokoro, print word timings
-    build/YapYap.app/Contents/MacOS/YapYap --transcribe talk.wav  # stream a file through dictation, print text (macOS 26+)
-    build/YapYap.app/Contents/MacOS/YapYap --polish "um, so, uh, hi"  # dictation cleanup: filler filter + Apple Intelligence
-    open --stdout /dev/stdout -a /Applications/YapYap.app --args --permissions  # what the installed app is allowed
-    build/YapYap.app/Contents/MacOS/YapYap --snapshots shots/     # render every UI surface, light + dark
+[![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-2f6fd8)](LICENSE)
+![macOS 15+](https://img.shields.io/badge/macOS-15%2B-121118)
+![Apple silicon](https://img.shields.io/badge/Apple%20silicon-M1%20or%20newer-121118)
+![Runs on device](https://img.shields.io/badge/your%20words-stay%20on%20your%20Mac-19c3a5)
 
-Use `xcodebuild`, not `swift build`/`swift test`: MLX needs its Metal shaders compiled, and SwiftPM's CLI
-refuses KokoroSwift's dynamic-library setup.
+<img src="docs/demo.webp" alt="YapYap reads a spreadsheet and a chat aloud with each word highlighted, then the user holds Option-S and dictates a reply that gets typed into the chat" width="820">
 
-On first launch grant **Screen Recording** (System Settings → Privacy & Security), then relaunch.
+<sub>Watch it with sound on <a href="https://yapyap.cc">yapyap.cc</a>.</sub>
 
-## Keys
+</div>
 
-| Key | Action |
+---
+
+## Why
+
+Reading a long email, a PDF or a chat thread is easier when you can listen while your eyes follow along.
+Writing a reply is faster when you can just say it. Most tools that do this are subscriptions that send your
+screen or your voice to a server.
+
+YapYap does both, for free, on your Mac:
+
+- **Press ⌥A, drag over any text, and listen.** A highlight follows each word on the original page, in any app:
+  web pages, PDFs, chats, screenshots, even text inside photos.
+- **Hold ⌥S and talk.** Your words appear live as you speak. Let go and they're typed wherever your cursor is.
+
+## Features
+
+**Reading aloud**
+
+- **Any app, any text:** YapYap reads what's on screen, not what an app exposes, so it works in browsers, PDFs,
+  chat apps, terminals and images.
+- **Word-by-word highlight on the original page,** not in a separate window. It follows the window when you move
+  it, and finds its place again after you scroll or resize.
+- **Real reading order:** columns, sidebars and headings are read in the right order. Web and email addresses are
+  skipped (optional).
+- **Natural voices:** 28 Kokoro voices (US and UK English) that run on your Mac, or the voices built into macOS.
+- **Control it from the keyboard:** pause, skip sentences, change speed (0.5× to 2.5×), or ⌥-click any word to jump to it.
+
+**Dictation**
+
+- **Hold to talk, let go to type,** in any app with a text field: Messages, Mail, Notes, Slack, your code editor,
+  even Terminal.
+- **Clean text:** "um", "uh" and friends are removed. On macOS 26 with Apple Intelligence, an on-device model also
+  drops filler "like"s, stutters and self-corrections ("Tuesday, no, Wednesday" becomes "Wednesday").
+- **Never makes things up:** if the tidy-up adds a word you didn't say, YapYap types your plain words instead.
+- **Your clipboard is put back** after typing.
+
+**And**
+
+- A **Home page** with your recent reads and dictations (stored only on your Mac, and you can turn it off).
+- A **menu bar icon**, a floating reading bar and a small dictation capsule that only appear while in use.
+- **Light and dark mode**, with Liquid Glass on macOS 26.
+
+## Screenshots
+
+| Home | Reading settings |
 |---|---|
+| ![Home: "Press ⌥A. Listen." and "Hold ⌥S. Talk." panels, recent reads and dictations, and word totals](docs/screenshots/home-light.webp) | ![Reading: voice, speed, natural voices and highlight colour](docs/screenshots/reading-dark.webp) |
+| **Dictation settings** | **General settings** |
+| ![Dictation: hold-to-talk shortcut, filler-word removal and Apple Intelligence tidy-up](docs/screenshots/settings-dictation-light.webp) | ![General: shortcuts, permissions, history and the anonymous stats switch](docs/screenshots/settings-general-light.webp) |
+
+<details>
+<summary>Dark and light versions</summary>
+
+![Home in dark mode](docs/screenshots/home-dark.webp)
+![Reading settings in light mode](docs/screenshots/reading-light.webp)
+
+</details>
+
+The names and text in the screenshots are made up (`YapYap --snapshots <dir> --sample`).
+
+## Keyboard shortcuts
+
+| Keys | Action |
+|---|---|
+| ⌥A | Drag over any part of the screen to read it |
 | ⌥⌘R | Read the front window |
-| ⌥A | Drag a region to read (changeable in Settings) |
-| ⌥⌘P | Pause / resume |
-| ⌥⌘= / ⌥⌘- | Faster / slower (0.5–2.5×) |
-| Esc | Stop (only grabbed while reading) |
+| Hold ⌥S | Dictate: talk, then let go to type |
+| ⌥⌘P | Pause or resume |
+| ⌥⌘= / ⌥⌘- | Faster / slower |
 | ⌥ + click | Read from that word |
-| Hold ⌥S | Dictate: speak, let go, and the text is typed into the front app (changeable in Settings) |
+| Esc | Stop reading |
 
-## UI (SwiftUI, Liquid Glass on macOS 26+, materials on 15; look shared with `site/` via `Theme`)
+⌥A and ⌥S can be changed in Settings → General. All shortcuts work in any app.
 
-- **Main window** (`AppShell` in `MainWindow`): sidebar with the wordmark; **Home** (`HomePage`: greeting, "Press ⌥A. Listen." and "Hold ⌥S. Talk." panels like the website's
-  totals, shortcuts, recent reads and dictations from `History`), **Reading**,
-  **Dictation** and **Settings** pages (the forms in `SettingsView.swift`; ⌘, opens Settings), **Help** (Welcome).
-- **History** (`History`): recent reads/dictations and totals in `~/Library/Application Support/YapYap/history.json`,
-  this Mac only; "Keep history" off keeps totals only.
-- **Menu-bar menu** (`StatusMenu`): native menu; reading controls while reading, Read Aloud, Open, Settings, Quit.
-- **Reading bar** (`PlayerBar`) and **dictation capsule** (`DictationBar`): while in use.
-- **Welcome** (`WelcomeView`, `--welcome` to reopen): demo loop (`Resources/welcome-demo.mp4`, 6 s from the
-  site's demo) → three permissions → Try it (read the sample with ⌥A, dictate into the box with ⌥S).
+## Privacy, and how to check it
 
-`AppModel` is the observable state every view reads; `Controller` does capture → OCR → speech.
+What you read and say never leaves your Mac.
+
+- **Screen:** each read takes one still image of the window or box you chose. Apple's Vision framework turns it into
+  text on your Mac, then the image is thrown away. Nothing is recorded or saved.
+- **Voice:** dictation uses Apple's on-device speech recognition. The microphone is on only while you hold the
+  shortcut, and audio is never saved. The optional tidy-up uses Apple Intelligence on your Mac, never Private
+  Cloud Compute.
+- **Speech:** the Kokoro voices run locally with [MLX](https://github.com/ml-explore/mlx-swift).
+- **Two one-time downloads:** the optional Kokoro voices (about 340 MB, from GitHub), and on macOS 26 Apple's speech
+  model, which macOS fetches itself.
+- **Anonymous stats:** official builds send anonymous counts through [TelemetryDeck](https://telemetrydeck.com),
+  like how many words were read and how quickly the voice started. Never text, audio, window titles or app names.
+  Turn it off in Settings → Privacy. Builds from this repo send nothing unless you add your own TelemetryDeck App ID.
+  Every signal is listed in [`Telemetry.swift`](Sources/YapYap/Telemetry.swift).
+
+Check it yourself:
+
+```console
+$ grep -rnE 'URLSession\(|https://' Sources
+Sources/YapYap/Kokoro.swift:253:   …/kokoro-v1_0.safetensors
+Sources/YapYap/Kokoro.swift:254:   …/voices.npz
+Sources/YapYap/AppModel.swift:350: session = URLSession(configuration: …)
+```
+
+That's all of YapYap's own network code: the voice download. The only other connection is TelemetryDeck's
+anonymous stats. Turn off Wi-Fi once the voices are installed and reading and dictation work the same, or watch
+with a network monitor such as [LuLu](https://objective-see.org/products/lulu.html).
+
+> [!NOTE]
+> YapYap asks for **Screen Recording** (to see the text you ask it to read), **Microphone** (to hear you while you
+> hold ⌥S) and **Accessibility** (to type your words by sending ⌘V). Without Accessibility, dictated text is left on
+> your clipboard to paste yourself.
+
+## Install
+
+A signed, notarized download is coming soon at [yapyap.cc](https://yapyap.cc). Until then, build it from source.
+
+### Build from source
+
+Requirements: a Mac with Apple silicon, macOS 15 or later, and Xcode 16 or later.
+
+```bash
+git clone https://github.com/WannaBeSolopreneur/YapYap.git
+cd YapYap
+scripts/make-signing-cert.sh       # once: a local certificate, so macOS keeps your permissions across rebuilds
+scripts/build-app.sh --install     # build, copy to /Applications and launch
+```
+
+The first launch walks you through the three permissions and a quick try-out. Use `xcodebuild` (the scripts do),
+not `swift build`: MLX needs its Metal shaders compiled, and SwiftPM's command line can't handle KokoroSwift's
+dynamic library.
 
 ## How it works
 
-`Capture` (SCScreenshotManager, one-shot) → `OCR` (Vision, word boxes) → `Layout` (XY-cut reading order,
-paragraphs) → `Doc` (text + word rects + UTF-16 ranges) → `VoiceRouter` → `Speaker` (AVSpeechSynthesizer word callbacks) or `KokoroSpeaker`
-(Kokoro-82M via [kokoro-ios](https://github.com/mlalma/kokoro-ios)/MLX, sentence chunks, per-token timestamps) →
-`OverlayPanel` (click-through, `sharingType = .none`). Window moves follow the overlay; resize or scroll hides
-the highlight, re-captures, and re-finds the current word (`Align`).
+```
+Reading   ⌥A / ⌥⌘R ─► Capture ─► OCR ─► Layout ─► Doc ─► Kokoro or system voice ─► word timings
+          (one still)  (Vision)  (reading order)  (words + boxes)                       │
+                                                                     Overlay ◄──────────┘  highlight on the page
 
-## Dictation
+Dictation hold ⌥S ─► Transcriber ─► Fillers ─► Apple Intelligence tidy-up ─► Paster
+                     (on-device)    (um, uh)   (checked: no new words)       (clipboard + ⌘V, restored)
+```
 
-`Dictation` (hold-to-talk state machine) → `Transcriber`: `AnalyzerTranscriber` on macOS 26+ (SpeechAnalyzer with
-SpeechTranscriber, or DictationTranscriber where that isn't supported; the model is a shared system asset that
-macOS downloads once) or `RecognizerTranscriber` on 15 (SFSpeechRecognizer, on-device when available) → `Paster`
-(clipboard, synthetic ⌘V, old clipboard restored). `DictationPanel` shows the mic level and live text. Reading
-pauses while you dictate so the mic doesn't hear it.
+1. **Capture.** ScreenCaptureKit takes one image of the chosen window or region. Our own panels are left out.
+2. **Recognise.** Vision finds every word and its box. `Layout` puts lines and blocks in reading order with an
+   XY-cut, so columns and sidebars come out right, and builds a `Doc`: the text plus each word's position.
+3. **Speak.** `VoiceRouter` picks Kokoro (Kokoro-82M on MLX, spoken in sentence chunks with per-word timestamps) or
+   `AVSpeechSynthesizer`. As each word is spoken, `OverlayPanel` (click-through, hidden from screen capture)
+   highlights it on the original app. If you scroll or resize, YapYap captures again and `Align` finds the current
+   word in the new layout.
+4. **Dictate.** While ⌥S is held, `Transcriber` streams the microphone through `SpeechAnalyzer` on macOS 26 (or
+   `SFSpeechRecognizer` on macOS 15). On release, `Fillers` strips filler words, `Polisher` optionally tidies the
+   text with the on-device `SystemLanguageModel`, `Fillers.isFaithful` rejects anything that adds words you didn't
+   say, and `Paster` types it with ⌘V before restoring your clipboard.
 
-Before typing, `Fillers.strip` removes um/uh/er/hmm, then (macOS 26+, Apple Intelligence on) `Polisher` tidies the
-text with the on-device `SystemLanguageModel` (never Private Cloud Compute): filler "like"/"you know", stutters,
-self-corrections. The model is prewarmed when the shortcut goes down; `Fillers.isFaithful` rejects any result with
-words that weren't said (e.g. an answer to a dictated question), and after a 3 s budget the filtered text is typed.
+## Project tour
 
-Permissions, asked on first use: **Microphone** (and **Speech Recognition** on macOS 15), plus **Accessibility**
-to send ⌘V. Without Accessibility the text is left on the clipboard. Like Screen Recording, these grants are
-tied to the ad-hoc signature and may need re-granting after a rebuild.
+| Path | What's there |
+|---|---|
+| `Sources/YapYapCore/` | Pure, unit-tested logic: OCR to `Doc`, reading order (`Layout`), re-alignment after scroll (`Align`), filler words, transcripts |
+| `Sources/YapYap/Controller.swift` | The reading pipeline: capture → OCR → speech → highlight |
+| `Sources/YapYap/Kokoro.swift`, `Speaker.swift` | The Kokoro voice (download, MLX synthesis, word timings) and the macOS system voice |
+| `Sources/YapYap/Dictation.swift`, `Polish.swift` | Hold-to-talk dictation, speech recognition, Apple Intelligence tidy-up, typing |
+| `Sources/YapYap/AppModel.swift` | The observable state every window reads |
+| `Sources/YapYap/AppShell.swift`, `HomeView.swift`, `SettingsView.swift`, `WelcomeView.swift` | The SwiftUI windows |
+| `Sources/YapYap/Overlay.swift`, `PlayerBar.swift`, `DictationBar.swift`, `RegionSelector.swift` | The floating highlight, reading bar, dictation capsule and region picker |
+| `Sources/YapYap/Telemetry.swift` | Every anonymous stat YapYap can send, in one file |
+| `Tests/` | Unit tests for the core and the app model |
+| `scripts/` | Build, signing, notarized release |
+| `site/`, `web/` | The [yapyap.cc](https://yapyap.cc) website and its Cloudflare Worker |
 
-## Differences from the plan
+## Testing
 
-- RecognizeDocumentsRequest (26+) not used yet; reading order comes from XY-cut.
-- Kokoro model + voices (~340 MB) download on demand from Voice → Download Kokoro Natural Voices into
-  `~/Library/Application Support/YapYap/Kokoro/`. English (US/UK) voices only.
-- Not yet: Accessibility-text hybrid (phase 3), auto-continue past the screen, notarization/Sparkle (phase 5).
+```bash
+xcodebuild test -scheme YapYap -destination 'platform=macOS,arch=arm64' -derivedDataPath .build/xcode
+```
+
+The app also has command-line modes for checking each stage on its own:
+
+```bash
+APP=build/YapYap.app/Contents/MacOS/YapYap
+$APP --ocr screenshot.png              # text in reading order
+$APP --boxes in.png out.png            # draw the word boxes the highlight uses
+$APP --kokoro "Some text."             # speak with Kokoro and print word timings
+$APP --transcribe talk.wav             # run a recording through dictation (macOS 26+)
+$APP --polish "um, so, uh, hi"         # filler removal and Apple Intelligence tidy-up
+$APP --snapshots shots/ --sample       # render every screen, light and dark, with made-up data
+open --stdout /dev/stdout -a /Applications/YapYap.app --args --permissions   # what the installed app is allowed
+```
+
+## Releasing
+
+```bash
+scripts/release.sh 1.0.0              # build/YapYap-1.0.0.dmg, signed, nothing sent anywhere
+scripts/release.sh 1.0.0 --notarize   # also notarize with Apple and staple the ticket
+```
+
+Builds use the hardened runtime (`scripts/YapYap.entitlements`). With a "Developer ID Application" certificate in
+your keychain, `build-app.sh` signs with it; otherwise it uses the local certificate. Notarizing needs credentials
+saved once with `xcrun notarytool store-credentials yapyap-notary --apple-id <id> --team-id <team>`. Private
+settings, like a TelemetryDeck App ID, go in `scripts/local.env` (see `scripts/local.env.example`), which git ignores.
+
+## Roadmap
+
+- Signed download and automatic updates
+- Read straight from apps' accessibility text where it's available, and keep reading past the bottom of the screen
+- More languages
+
+## Contributing
+
+Issues and pull requests are welcome. Please keep the core promise intact: nothing a person reads or says leaves
+their Mac, and every anonymous stat stays a number or a value from a fixed list. Never put real personal data in
+tests or screenshots; `--snapshots --sample` renders the app with made-up data.
 
 ## License
 
-YapYap is free software: you can redistribute it and/or modify it under the terms of the
-[GNU Affero General Public License v3.0](LICENSE). Anyone who ships a modified version, including
-as a paid app or a service, must publish its full source under the same license.
+YapYap is free software under the [GNU Affero General Public License v3.0](LICENSE). You can use, study, change
+and share it. If you ship a modified version, including as a paid app or a service, you must publish its full source
+under the same license. Bundled libraries and the Kokoro voices keep their own licences; see [NOTICE](NOTICE).
 
 Copyright © 2026 Asad Moulvi
