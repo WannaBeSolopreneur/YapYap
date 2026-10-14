@@ -3,10 +3,10 @@ import SwiftUI
 
 /// `YapYap --snapshots <dir>` renders every surface, light and dark, to PNGs for design review.
 enum Snapshots {
-    static func run(into dir: URL) {
+    static func run(into dir: URL, sample: Bool = false) {
         _ = NSApplication.shared
         NSApp.setActivationPolicy(.accessory)
-        let model = AppModel.shared
+        let model = sample ? sampleModel() : AppModel.shared
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
 
         let surfaces: [(String, AnyView)] = [
@@ -42,6 +42,19 @@ enum Snapshots {
                 render(view.environment(model), appearance: appearance, to: dir.appendingPathComponent("\(name)-\(suffix).png"))
             }
         }
+    }
+
+    /// Made-up history and name, so screenshots never show what you really read or said.
+    private static func sampleModel() -> AppModel {
+        let history = History(file: nil)
+        history.addRead("The quiet return of the public library. Visits are up for the third year in a row.", words: 1840, seconds: 610, keep: true)
+        history.addDictation("Sounds good. I'll bring my laptop and the numbers. See you on the fourth floor at nine.", keep: true)
+        history.addRead("Sleep and Recall in Adult Learners. Adults who slept within three hours of a study session recalled more.", words: 960, seconds: 330, keep: true)
+        history.addDictation("Hi Brenda, yeah, I can do the numbers. The venue's booked for Wednesday and I'll present the roadmap.", keep: true)
+        history.addDictation("Pick up dry cleaning and renew passport.", keep: true)
+        let model = AppModel(history: history)
+        model.fullUserName = "Sam Rivera"
+        return model
     }
 
     private static func render(_ view: some View, appearance: NSAppearance.Name, to url: URL) {

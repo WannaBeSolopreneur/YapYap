@@ -41,6 +41,8 @@ final class AppModel {
     var isReading: Bool { phase != .idle }
 
     @ObservationIgnored let history: History
+    /// Greets you on Home. Replaced in sample snapshots.
+    @ObservationIgnored var fullUserName = NSFullUserName()
     @ObservationIgnored let telemetry: Telemetry
 
     init(controller: Controller = Controller(), dictation: Dictation = Dictation(), history: History = .shared,

@@ -180,8 +180,9 @@ if args.count == 4, args[1] == "--demo" {
     MainActor.assumeIsolated { Demo.run(out: URL(fileURLWithPath: args[2]), speech: URL(fileURLWithPath: args[3])) }
 }
 
-if args.count == 3, args[1] == "--snapshots" {
-    Snapshots.run(into: URL(fileURLWithPath: args[2]))
+// `YapYap --snapshots dir --sample` uses made-up history and name instead of yours (for the README).
+if args.count >= 3, args[1] == "--snapshots" {
+    Snapshots.run(into: URL(fileURLWithPath: args[2]), sample: args.contains("--sample"))
     exit(0)
 }
 

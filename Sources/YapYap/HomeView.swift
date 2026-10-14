@@ -36,7 +36,7 @@ struct HomePage: View {
     }
 
     private var greeting: String {
-        let first = NSFullUserName().split(separator: " ").first.map(String.init) ?? ""
+        let first = model.fullUserName.split(separator: " ").first.map(String.init) ?? ""
         let welcome = model.settings.hasOnboarded ? "Welcome back" : "Welcome"
         return first.isEmpty ? welcome : "\(welcome), \(first)"
     }

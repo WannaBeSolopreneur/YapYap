@@ -1,0 +1,24 @@
+YapYap
+Copyright © 2026 Asad Moulvi
+Licensed under the GNU Affero General Public License v3.0 (see LICENSE).
+
+YapYap builds on the following open-source software. Each keeps its own licence.
+
+Swift packages (compiled into the app)
+  kokoro-ios 1.0.11        MIT          https://github.com/mlalma/kokoro-ios
+  MisakiSwift 1.0.6        Apache-2.0   https://github.com/mlalma/MisakiSwift
+  MLXUtilsLibrary 0.0.6    Apache-2.0   https://github.com/mlalma/MLXUtilsLibrary
+  mlx-swift 0.30.2         MIT          https://github.com/ml-explore/mlx-swift
+  swift-numerics 1.1.1     Apache-2.0   https://github.com/apple/swift-numerics
+  TelemetryDeck SwiftSDK   MIT          https://github.com/TelemetryDeck/SwiftSDK
+    2.14.2
+  ZIPFoundation 0.9.20     MIT          https://github.com/weichsel/ZIPFoundation
+
+Downloaded on request (not bundled)
+  Kokoro-82M model and voices, by hexgrad, Apache-2.0
+    https://huggingface.co/hexgrad/Kokoro-82M
+    fetched from https://github.com/mlalma/KokoroTestApp when you choose to download
+    the natural voices in Settings → Reading.
+
+Apple frameworks used through the macOS SDK (Vision, Speech, ScreenCaptureKit, AVFoundation,
+FoundationModels) are part of macOS and are not redistributed.
