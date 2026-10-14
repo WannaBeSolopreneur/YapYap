@@ -2,7 +2,7 @@
 
 > YapYap is a free, open-source Mac app for text to speech and dictation. It reads any text on screen aloud with word-by-word highlighting, and it types what you say into any app. Text recognition, voices and speech recognition all run on the Mac. No account; what you read and say never leaves the Mac.
 
-Status: in final testing, not yet available to download. At launch it will be free from https://yapyap.cc with the source code on GitHub.
+Status: the signed download is in final testing and will be free from https://yapyap.cc. The source code is public at https://github.com/WannaBeSolopreneur/YapYap (AGPL-3.0), and you can build it yourself today.
 
 ## What it does
 
