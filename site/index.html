@@ -844,8 +844,8 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
 // Launch: set LAUNCHED = true and the two URLs. Until then the page ships its pre-launch state
 // ("Coming soon" buttons, no GitHub links), which is also what crawlers see.
 const LAUNCHED = false;
-const GITHUB_URL = "https://github.com/YOUR-NAME/yapyap";
-const DOWNLOAD_URL = "https://github.com/YOUR-NAME/yapyap/releases/latest/download/YapYap.dmg";
+const GITHUB_URL = "https://github.com/WannaBeSolopreneur/YapYap";
+const DOWNLOAD_URL = "https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg";
 if (LAUNCHED) {
   document.querySelectorAll("[data-download]").forEach(a => { a.href = DOWNLOAD_URL; a.textContent = a.dataset.launchText; });
   document.querySelectorAll("[data-launch]").forEach(e => e.hidden = false);
