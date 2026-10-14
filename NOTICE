@@ -9,6 +9,7 @@ Swift packages (compiled into the app)
   MisakiSwift 1.0.6        Apache-2.0   https://github.com/mlalma/MisakiSwift
   MLXUtilsLibrary 0.0.6    Apache-2.0   https://github.com/mlalma/MLXUtilsLibrary
   mlx-swift 0.30.2         MIT          https://github.com/ml-explore/mlx-swift
+  Sparkle 2.10.0           MIT          https://github.com/sparkle-project/Sparkle
   swift-numerics 1.1.1     Apache-2.0   https://github.com/apple/swift-numerics
   TelemetryDeck SwiftSDK   MIT          https://github.com/TelemetryDeck/SwiftSDK
     2.14.2

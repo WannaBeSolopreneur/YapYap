@@ -9,7 +9,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 [[ -f scripts/local.env ]] && source scripts/local.env
 
-BUNDLE_ID=com.yapyap.app
+BUNDLE_ID=cc.yapyap.app
 VERSION="${VERSION:-0.1.0}"
 BUILD="${BUILD:-1}"
 
@@ -23,6 +23,7 @@ rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Frameworks" "$APP/Contents/Resources"
 cp "$PRODUCTS/YapYap" "$APP/Contents/MacOS/YapYap"
 cp -R "$PRODUCTS"/PackageFrameworks/*.framework "$APP/Contents/Frameworks/"
+ditto "$PRODUCTS/Sparkle.framework" "$APP/Contents/Frameworks/Sparkle.framework"
 cp -R "$PRODUCTS"/*.bundle "$APP/Contents/Resources/"
 cp Resources/AppIcon.icns "$APP/Contents/Resources/"
 cp Resources/welcome-demo.mp4 "$APP/Contents/Resources/"
@@ -50,6 +51,9 @@ cat > "$APP/Contents/Info.plist" <<PLIST
     <string>YapYap listens while you hold the dictation shortcut and types what you say. Speech is recognized on your Mac.</string>
     <key>NSSpeechRecognitionUsageDescription</key>
     <string>YapYap turns what you say into text while you hold the dictation shortcut.</string>
+    <key>SUFeedURL</key><string>https://yapyap.cc/appcast.xml</string>
+    <key>SUPublicEDKey</key><string>dO3+zMLp0xNh7JIBb0nV8XfRIdA2FY3JkwjiYRY95aw=</string>
+    <key>SUEnableAutomaticChecks</key><true/>
 </dict>
 </plist>
 PLIST
@@ -87,7 +91,12 @@ else
     SIGN=(codesign --force --options runtime --sign "$SIGN_IDENTITY")
 fi
 
-# Inside out: frameworks and resource bundles first, then the app with its entitlements.
+# Inside out: Sparkle's helpers, then frameworks and resource bundles, then the app with its entitlements.
+SPARKLE="$APP/Contents/Frameworks/Sparkle.framework/Versions/B"
+"${SIGN[@]}" "$SPARKLE/XPCServices/Installer.xpc"
+"${SIGN[@]}" --preserve-metadata=entitlements "$SPARKLE/XPCServices/Downloader.xpc"
+"${SIGN[@]}" "$SPARKLE/Autoupdate"
+"${SIGN[@]}" "$SPARKLE/Updater.app"
 for item in "$APP"/Contents/Frameworks/*.framework "$APP"/Contents/Resources/*.bundle; do
     "${SIGN[@]}" "$item"
 done

@@ -34,6 +34,9 @@ struct StatusMenu: View {
         Button("Open YapYap") { MainWindow.show() }
         Button("Settings…") { MainWindow.show(.settings) }
             .keyboardShortcut(",", modifiers: .command)
+        if Updates.shared.isAvailable {
+            Button("Check for Updates…") { Updates.shared.checkNow() }
+        }
 
         Divider()
 

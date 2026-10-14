@@ -13,6 +13,8 @@ let package = Package(
         .package(url: "https://github.com/weichsel/ZIPFoundation.git", exact: "0.9.20"),
         // Anonymous usage stats, only when the user opts in. See Telemetry.swift.
         .package(url: "https://github.com/TelemetryDeck/SwiftSDK.git", exact: "2.14.2"),
+        // Automatic updates, from https://yapyap.cc/appcast.xml. See Updates.swift.
+        .package(url: "https://github.com/sparkle-project/Sparkle", exact: "2.10.0"),
     ],
     targets: [
         .target(name: "YapYapCore"),
@@ -23,6 +25,7 @@ let package = Package(
             .product(name: "MLXUtilsLibrary", package: "MLXUtilsLibrary"),
             .product(name: "ZIPFoundation", package: "ZIPFoundation"),
             .product(name: "TelemetryDeck", package: "SwiftSDK"),
+            .product(name: "Sparkle", package: "Sparkle"),
         ]),
         .testTarget(name: "YapYapCoreTests", dependencies: ["YapYapCore"]),
         .testTarget(name: "YapYapTests", dependencies: ["YapYap", "YapYapCore"]),
