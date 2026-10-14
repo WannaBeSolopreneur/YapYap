@@ -211,18 +211,24 @@ open --stdout /dev/stdout -a /Applications/YapYap.app --args --permissions   # w
 ## Releasing
 
 ```bash
-scripts/release.sh 1.0.0              # build/YapYap-1.0.0.dmg, signed, nothing sent anywhere
-scripts/release.sh 1.0.0 --notarize   # also notarize with Apple and staple the ticket
+scripts/release.sh 1.0.0              # build/release-1.0.0/YapYap.dmg, signed, nothing sent anywhere
+scripts/release.sh 1.0.0 --notarize   # also notarize with Apple, staple, and add it to site/appcast.xml
 ```
+
+Then publish a GitHub release `v1.0.0` with that `YapYap.dmg`, and deploy the site so the update feed
+(`https://yapyap.cc/appcast.xml`) lists it. The build number counts up on its own.
 
 Builds use the hardened runtime (`scripts/YapYap.entitlements`). With a "Developer ID Application" certificate in
 your keychain, `build-app.sh` signs with it; otherwise it uses the local certificate. Notarizing needs credentials
 saved once with `xcrun notarytool store-credentials yapyap-notary --apple-id <id> --team-id <team>`. Private
 settings, like a TelemetryDeck App ID, go in `scripts/local.env` (see `scripts/local.env.example`), which git ignores.
 
+**Updates** use [Sparkle](https://sparkle-project.org) (`Updates.swift`). Each release is signed with an EdDSA key
+kept in the release machine's keychain; the app only installs updates signed with it (`SUPublicEDKey` in
+`build-app.sh`). Forks should generate their own key and feed, or remove the two `SU…` keys to turn updates off.
+
 ## Roadmap
 
-- Signed download and automatic updates
 - Read straight from apps' accessibility text where it's available, and keep reading past the bottom of the screen
 - More languages
 

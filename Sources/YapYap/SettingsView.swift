@@ -375,7 +375,15 @@ struct GeneralSettings: View {
                 LabeledContent("Welcome guide") {
                     Button("Show…") { WelcomeWindow.show() }
                 }
-                LabeledContent("Version", value: Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "—")
+                LabeledContent("Version") {
+                    HStack(spacing: 10) {
+                        Text(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "—")
+                            .foregroundStyle(.secondary)
+                        if Updates.shared.isAvailable {
+                            Button("Check for Updates…") { Updates.shared.checkNow() }
+                        }
+                    }
+                }
             }
         }
         .formStyle(.grouped)
