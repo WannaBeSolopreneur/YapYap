@@ -1,0 +1,398 @@
+import AppKit
+import Observation
+import ServiceManagement
+
+/// What every window shows: the reading state, progress, and inline messages.
+/// Wraps the Controller, which does the actual capture → OCR → speech work.
+@Observable
+final class AppModel {
+    static let shared = AppModel()
+
+    private(set) var phase = Controller.Phase.idle
+    private(set) var progress = 0.0
+    /// A short inline message ("No text found"); clears itself after a few seconds.
+    private(set) var message: String?
+    private(set) var hasPermission = Capture.hasPermission
+    private(set) var micAllowed = DictationAccess.microphone
+    private(set) var accessibilityAllowed = DictationAccess.accessibility
+    private(set) var speechAllowed = DictationAccess.speech
+    var dictationAllowed: Bool { micAllowed && accessibilityAllowed && speechAllowed }
+    /// Screen Recording is switched on but only takes effect after a restart.
+    private(set) var screenRecordingNeedsRestart = false
+    var allPermissionsGranted: Bool { hasPermission && dictationAllowed }
+    private(set) var kokoroInstalled = KokoroSpeaker.isInstalled
+    let download = KokoroDownload()
+    private(set) var dictationPhase = Dictation.Phase.idle
+    /// What dictation has heard so far.
+    private(set) var dictationText = ""
+    private(set) var micLevel: Float = 0
+
+    /// Set by the SwiftUI scene so non-view code can open the Welcome window.
+    @ObservationIgnored var openWelcome: () -> Void = {}
+
+    @ObservationIgnored let controller: Controller
+    @ObservationIgnored let dictation: Dictation
+    @ObservationIgnored private let bar = PlayerBarPanel()
+    @ObservationIgnored private let dictationBar = DictationPanel()
+    @ObservationIgnored private var messageWork: DispatchWorkItem?
+    @ObservationIgnored private var hideBarWork: DispatchWorkItem?
+
+    var settings: Settings { .shared }
+    var isReading: Bool { phase != .idle }
+
+    @ObservationIgnored let history: History
+    @ObservationIgnored let telemetry: Telemetry
+
+    init(controller: Controller = Controller(), dictation: Dictation = Dictation(), history: History = .shared,
+         telemetry: Telemetry = .shared) {
+        self.controller = controller
+        self.dictation = dictation
+        self.history = history
+        self.telemetry = telemetry
+        dictation.onStateChange = { [weak self] in self?.syncDictation() }
+        dictation.onMessage = { [weak self] in self?.show($0) }
+        dictation.onTyped = { text in
+            history.addDictation(text)
+            telemetry.dictated(words: text.split(whereSeparator: \.isWhitespace).count)
+        }
+        controller.onReadFinished = { text, words, seconds in
+            history.addRead(text, words: words, seconds: seconds)
+            telemetry.readFinished(words: words, seconds: seconds)
+        }
+        controller.onReadStarted = { target, wait in
+            if case .window = target { telemetry.readStarted(source: .window, wait: wait) }
+            else { telemetry.readStarted(source: .region, wait: wait) }
+        }
+        controller.onReadFailed = { telemetry.readFailed($0) }
+        controller.onStateChange = { [weak self] in self?.sync() }
+        controller.onMessage = { [weak self] in self?.show($0) }
+        controller.onNeedsPermission = { [weak self] in
+            self?.refreshPermission()
+            self?.openWelcome()
+        }
+        controller.excludedWindows = { [weak self] in
+            guard let self else { return [] }
+            return [self.bar, self.dictationBar].filter(\.isVisible).map { CGWindowID($0.windowNumber) }
+        }
+        download.onFinish = { [weak self] ok in
+            self?.kokoroInstalled = KokoroSpeaker.isInstalled
+            if ok, let first = KokoroSpeaker.voiceNames().first, Settings.shared.voiceID.flatMap(KokoroSpeaker.voiceName) == nil {
+                Settings.shared.voiceID = KokoroSpeaker.id(for: first)
+            }
+        }
+    }
+
+    // MARK: Actions
+
+    func readWindow() { controller.readWindow() }
+    func readRegion() { controller.readRegion() }
+    func togglePause() { controller.togglePause() }
+    func stop() { controller.stop() }
+    func skip(by direction: Int) { controller.skip(by: direction) }
+
+    /// Dictation shortcut went down: pause any reading so the mic doesn't hear it, then listen.
+    func startDictation() {
+        guard dictation.phase == .idle else { return }
+        refreshPermission()
+        guard dictationAllowed else {
+            show("Finish allowing dictation first")
+            WelcomeWindow.show(at: WelcomeWindow.permissionsStep)
+            return
+        }
+        if controller.phase == .reading { controller.togglePause() }
+        let typingHere = (NSApp.keyWindow?.firstResponder as? NSTextView)?.isEditable == true
+        dictation.begin(target: Self.dictationTarget(front: NSWorkspace.shared.frontmostApplication,
+                                                     last: controller.lastApp, typingInYapYap: typingHere))
+    }
+
+    /// Where dictated text goes: the app in front. When that's YapYap itself, its own text box
+    /// if one has focus (Welcome's "Try it"), otherwise the app you were in before.
+    static func dictationTarget(front: NSRunningApplication?, last: NSRunningApplication?, typingInYapYap: Bool,
+                                me: pid_t = getpid()) -> NSRunningApplication? {
+        guard front?.processIdentifier == me else { return front }
+        return typingInYapYap ? front : last
+    }
+
+    func stopDictation() { dictation.end() }
+
+    func read(_ window: NSWindow) {
+        guard let frame = Capture.frame(of: CGWindowID(window.windowNumber)) else { return }
+        controller.read(TargetWindow(id: CGWindowID(window.windowNumber), frame: frame))
+    }
+
+    func setSpeed(_ speed: Double) {
+        guard abs(speed - settings.speed) > 0.001 else { return }
+        controller.setSpeed((speed * 4).rounded() / 4)
+    }
+
+    func changeSpeed(by delta: Double) {
+        controller.changeSpeed(by: delta)
+        if !bar.isVisible { Toast.show(String(format: "Speed %g×", settings.speed)) }
+    }
+
+    func setVoice(_ id: String) {
+        settings.voiceID = id
+        controller.restartIfReading()
+    }
+
+    func previewVoice() {
+        controller.preview("Hi, I'm \(voiceName). I'll read along with you and highlight each word as I go.")
+    }
+
+    var voiceName: String {
+        if let id = settings.voiceID, let name = KokoroSpeaker.voiceName(from: id), kokoroInstalled {
+            return KokoroSpeaker.shortName(for: name)
+        }
+        return Speaker.voice()?.name ?? "System Voice"
+    }
+
+    var currentVoiceID: String? {
+        if let id = settings.voiceID, KokoroSpeaker.voiceName(from: id) != nil, kokoroInstalled { return id }
+        return Speaker.voice()?.identifier
+    }
+
+    func removeKokoro() {
+        let alert = NSAlert()
+        alert.messageText = "Remove natural voices?"
+        alert.informativeText = "This frees about 340 MB. You can download them again at any time."
+        alert.addButton(withTitle: "Remove")
+        alert.addButton(withTitle: "Cancel")
+        alert.buttons.first?.hasDestructiveAction = true
+        guard alert.runModal() == .alertFirstButtonReturn else { return }
+        if KokoroSpeaker.isSelected { controller.stop() }
+        KokoroSpeaker.uninstall()
+        if settings.voiceID.flatMap(KokoroSpeaker.voiceName) != nil { settings.voiceID = nil }
+        kokoroInstalled = false
+    }
+
+    // MARK: Shortcuts
+
+    @ObservationIgnored private var hotKeys: [HotKey] = []
+    @ObservationIgnored private var regionHotKey: HotKey?
+    @ObservationIgnored private var dictationHotKey: HotKey?
+
+    /// The fixed shortcuts; Read Region's is chosen in Settings.
+    private var fixedBindings: [(combo: KeyCombo, action: () -> Void)] {
+        [
+            (KeyCombo(keyCode: Keys.r, modifiers: Keys.optCmd, keyName: "R"), { [weak self] in self?.readWindow() }),
+            (KeyCombo(keyCode: Keys.p, modifiers: Keys.optCmd, keyName: "P"), { [weak self] in self?.togglePause() }),
+            (KeyCombo(keyCode: Keys.equal, modifiers: Keys.optCmd, keyName: "="), { [weak self] in self?.changeSpeed(by: 0.25) }),
+            (KeyCombo(keyCode: Keys.minus, modifiers: Keys.optCmd, keyName: "−"), { [weak self] in self?.changeSpeed(by: -0.25) }),
+        ]
+    }
+
+    func registerHotKeys() {
+        hotKeys = fixedBindings.compactMap { b in HotKey(keyCode: b.combo.keyCode, modifiers: b.combo.modifiers, handler: b.action) }
+        regionHotKey = makeRegionHotKey(settings.regionShortcut)
+        dictationHotKey = makeDictationHotKey(settings.dictationShortcut)
+    }
+
+    /// Turned off while recording a new shortcut, so pressing one doesn't trigger it.
+    func suspendHotKeys(_ suspended: Bool) {
+        if suspended {
+            hotKeys = []
+            regionHotKey = nil
+            dictationHotKey = nil
+        } else {
+            registerHotKeys()
+        }
+    }
+
+    /// Returns an error to show, or nil when the new shortcut is active.
+    func setRegionShortcut(_ combo: KeyCombo) -> String? {
+        if isTaken(combo, except: settings.regionShortcut) {
+            return "\(combo.displayKeys.joined()) is already a YapYap shortcut"
+        }
+        regionHotKey = nil
+        guard let hotKey = makeRegionHotKey(combo) else {
+            regionHotKey = makeRegionHotKey(settings.regionShortcut)
+            return "\(combo.displayKeys.joined()) is taken by another app"
+        }
+        regionHotKey = hotKey
+        settings.regionShortcut = combo
+        return nil
+    }
+
+    private func makeRegionHotKey(_ combo: KeyCombo) -> HotKey? {
+        HotKey(keyCode: combo.keyCode, modifiers: combo.modifiers) { [weak self] in self?.readRegion() }
+    }
+
+    func setDictationShortcut(_ combo: KeyCombo) -> String? {
+        if isTaken(combo, except: settings.dictationShortcut) {
+            return "\(combo.displayKeys.joined()) is already a YapYap shortcut"
+        }
+        dictationHotKey = nil
+        guard let hotKey = makeDictationHotKey(combo) else {
+            dictationHotKey = makeDictationHotKey(settings.dictationShortcut)
+            return "\(combo.displayKeys.joined()) is taken by another app"
+        }
+        dictationHotKey = hotKey
+        settings.dictationShortcut = combo
+        return nil
+    }
+
+    private func makeDictationHotKey(_ combo: KeyCombo) -> HotKey? {
+        HotKey(keyCode: combo.keyCode, modifiers: combo.modifiers, onRelease: { [weak self] in self?.stopDictation() }) { [weak self] in
+            self?.startDictation()
+        }
+    }
+
+    /// Whether another YapYap shortcut already uses `combo`.
+    private func isTaken(_ combo: KeyCombo, except own: KeyCombo) -> Bool {
+        let all = fixedBindings.map(\.combo) + [settings.regionShortcut, settings.dictationShortcut]
+        return all.contains { $0 != own && $0.keyCode == combo.keyCode && $0.modifiers == combo.modifiers }
+    }
+
+    // MARK: Permission and login
+
+    func refreshPermission() {
+        hasPermission = Capture.hasPermission
+        micAllowed = DictationAccess.microphone
+        accessibilityAllowed = DictationAccess.accessibility
+        speechAllowed = DictationAccess.speech
+        screenRecordingNeedsRestart = Capture.needsRestart
+        kokoroInstalled = KokoroSpeaker.isInstalled
+    }
+
+    private(set) var launchesAtLogin = SMAppService.mainApp.status == .enabled
+
+    func setShareUsageStats(_ on: Bool) {
+        settings.shareUsageStats = on
+        telemetry.update()
+    }
+
+    func setLaunchesAtLogin(_ on: Bool) {
+        do {
+            if on { try SMAppService.mainApp.register() } else { try SMAppService.mainApp.unregister() }
+        } catch {
+            show("Couldn't change Open at Login: \(error.localizedDescription)")
+        }
+        launchesAtLogin = SMAppService.mainApp.status == .enabled
+    }
+
+    // MARK: State
+
+    private func sync() {
+        phase = controller.phase
+        let (current, total) = controller.progress
+        progress = total > 1 ? Double(current) / Double(total - 1) : 0
+        updateBar()
+    }
+
+    private func syncDictation() {
+        // Assigning an @Observable property redraws its readers even when the value is the same.
+        if dictationPhase != dictation.phase { dictationPhase = dictation.phase }
+        if dictationText != dictation.text { dictationText = dictation.text }
+        if micLevel != dictation.level { micLevel = dictation.level }
+        if dictation.phase == .idle {
+            dictationBar.fadeOut()
+        } else if !dictationBar.isVisible {
+            dictationBar.show()
+        }
+    }
+
+    private func updateBar() {
+        if isReading {
+            hideBarWork?.cancel()
+            bar.show(near: controller.frame)
+        } else {
+            // A new read stops the old one first; don't flicker the bar in between.
+            hideBarWork?.cancel()
+            let work = DispatchWorkItem { [weak self] in
+                guard let self, !self.isReading else { return }
+                self.bar.fadeOut()
+            }
+            hideBarWork = work
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4, execute: work)
+        }
+    }
+
+    func show(_ text: String) {
+        message = text
+        // When nothing of ours is on screen, a toast is the only way to be seen.
+        if !bar.isVisible { Toast.show(text, for: 2.5) }
+        messageWork?.cancel()
+        let work = DispatchWorkItem { [weak self] in self?.message = nil }
+        messageWork = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4, execute: work)
+    }
+}
+
+/// Downloads Kokoro's model and voices with progress, cancel and retry.
+@Observable
+final class KokoroDownload: NSObject, URLSessionDownloadDelegate {
+    enum State: Equatable {
+        case idle
+        case downloading
+        case failed(String)
+    }
+
+    private(set) var state = State.idle
+    /// 0…1 across all files.
+    private(set) var fraction = 0.0
+    @ObservationIgnored var onFinish: ((Bool) -> Void)?
+
+    @ObservationIgnored private var session: URLSession?
+    @ObservationIgnored private var queue: [(file: String, url: URL)] = []
+    @ObservationIgnored private var done: Int64 = 0
+    @ObservationIgnored private var fileFinished = false
+
+    func start() {
+        guard state != .downloading else { return }
+        queue = KokoroSpeaker.missingDownloads
+        guard !queue.isEmpty else { return finish(ok: true) }
+        state = .downloading
+        fraction = 0
+        done = 0
+        try? FileManager.default.createDirectory(at: KokoroSpeaker.folder, withIntermediateDirectories: true)
+        session = URLSession(configuration: .default, delegate: self, delegateQueue: .main)
+        next()
+    }
+
+    func cancel() {
+        session?.invalidateAndCancel()
+        session = nil
+        state = .idle
+        fraction = 0
+    }
+
+    private func next() {
+        guard let item = queue.first else {
+            session?.finishTasksAndInvalidate()
+            session = nil
+            return finish(ok: true)
+        }
+        fileFinished = false
+        session?.downloadTask(with: item.url).resume()
+    }
+
+    private func finish(ok: Bool, error: String? = nil) {
+        state = ok ? .idle : .failed(error ?? "Download failed")
+        onFinish?(ok)
+    }
+
+    func urlSession(_ s: URLSession, downloadTask: URLSessionDownloadTask, didWriteData _: Int64, totalBytesWritten written: Int64, totalBytesExpectedToWrite _: Int64) {
+        fraction = min(Double(done + written) / Double(KokoroSpeaker.downloadSize), 1)
+    }
+
+    func urlSession(_ s: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
+        guard let item = queue.first, (downloadTask.response as? HTTPURLResponse)?.statusCode == 200 else { return }
+        let dest = KokoroSpeaker.folder.appendingPathComponent(item.file)
+        try? FileManager.default.removeItem(at: dest)
+        guard (try? FileManager.default.moveItem(at: location, to: dest)) != nil else { return }
+        done += downloadTask.countOfBytesReceived
+        queue.removeFirst()
+        fileFinished = true
+    }
+
+    func urlSession(_ s: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        guard s === session else { return }
+        guard error == nil, fileFinished else {
+            session?.invalidateAndCancel()
+            session = nil
+            let status = (task.response as? HTTPURLResponse)?.statusCode
+            return finish(ok: false, error: error?.localizedDescription ?? "Server returned \(status ?? 0)")
+        }
+        next()
+    }
+}

@@ -1,0 +1,38 @@
+# YapYap
+
+> YapYap is a free, open-source Mac app for text to speech and dictation. It reads any text on screen aloud with word-by-word highlighting, and it types what you say into any app. Text recognition, voices and speech recognition all run on the Mac. No account; what you read and say never leaves the Mac.
+
+Status: in final testing, not yet available to download. At launch it will be free from https://yapyap.cc with the source code on GitHub.
+
+## What it does
+
+- Read aloud: press Option-A, drag a box around any text on screen, and YapYap reads it aloud while a highlight follows each word on the original app. Works on text inside images, screenshots, PDFs and web pages. Optional reading ruler dims everything except the current line.
+- Dictation: hold Option-S and talk. Words appear live in a small panel; let go and the text is typed where your cursor is, in any app (Mail, Messages, Slack, Notes, browsers, Terminal). Filler words can be removed and text tidied with Apple Intelligence on the Mac. Reading pauses while you talk.
+- Voices: natural Kokoro-82M voices (US and UK English) running locally on Apple silicon, or the voices built into macOS.
+- Speed: 0.5x to 2.5x. Option-click a word to start reading from there.
+
+## Privacy
+
+- On-screen text is recognised with Apple's Vision framework, on the Mac. Screenshots are kept in memory only and never saved.
+- Dictation uses Apple's on-device speech recognition (SpeechAnalyzer on macOS 26+, on-device SFSpeechRecognizer on macOS 15). Audio is never saved or uploaded. The microphone is on only while the shortcut is held.
+- The app's own network code downloads the optional Kokoro voice (about 340 MB) from GitHub. On macOS 26+ macOS itself downloads Apple's speech model once.
+- Optional dictation tidy-up (filler removal and polishing) uses Apple Intelligence's on-device model.
+- Anonymous usage counts (for example number of words read, time to first word, settings used) are sent via TelemetryDeck. They never include text, audio or app names. On by default; turn off in Settings > Privacy.
+- No account and no crash reporting. Saved data is limited to settings (speed, voice, highlight, shortcuts).
+
+## Requirements
+
+- macOS 15 Sequoia or later, Mac with Apple silicon (M1 or newer).
+- Permissions: Screen Recording (to read), Microphone and Accessibility (to dictate).
+
+## Compared with other tools
+
+YapYap is free and open source with no subscription, combines reading aloud and dictation in one app, and processes text and voice on the Mac rather than on a server. People looking for a free, private alternative to Speechify (text to speech) or Wispr Flow (dictation) on Mac are its intended audience.
+
+## Links
+
+- [Home](https://yapyap.cc/): what YapYap does, live demos of reading and dictation
+- [Dictation demo](https://yapyap.cc/#dictate): hold Option-S and talk; real transcript output
+- [Read-aloud demo](https://yapyap.cc/#region): press Option-A and draw a box
+- [Privacy](https://yapyap.cc/#privacy): what leaves the Mac (anonymous usage counts only) and how to verify
+- [FAQ](https://yapyap.cc/#faq): pricing, offline use, supported Macs, languages, availability

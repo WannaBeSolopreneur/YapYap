@@ -1,0 +1,20 @@
+# Build output
+.build/
+build/
+*.profraw
+.swiftpm/
+*.dmg
+
+# Private: build secrets, tool state, internal notes
+scripts/local.env
+.gstack/
+.superpowers/
+.wrangler/
+web/dist/
+web/FULL-AUDIT-REPORT.md
+web/ACTION-PLAN.md
+
+# Film production (large media, personal recordings)
+video/
+
+.DS_Store
