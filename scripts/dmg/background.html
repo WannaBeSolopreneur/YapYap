@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>YapYap DMG background</title>
+<!-- The DMG window's background, 660×400. Rendered to background.png and background@2x.png by
+     opening it in a 660×400 window and saving screenshots at 1x and 2x, combined with
+     `tiffutil -cathidpicheck background.png background@2x.png -out background.tiff`. The two icons sit on top of it at (170, 190) and (490, 190). -->
+<style>
+  html, body { margin: 0; }
+  body {
+    width: 660px; height: 400px; overflow: hidden; position: relative;
+    background: linear-gradient(135deg, #fefefe 0%, #f1f3f7 55%, #e6ebf3 100%);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #1d1d1f; -webkit-font-smoothing: antialiased;
+  }
+  svg { position: absolute; left: 0; top: 0; }
+  .caption {
+    position: absolute; left: 0; right: 0; top: 300px; text-align: center;
+    font-size: 19px; font-weight: 600; letter-spacing: -0.01em;
+  }
+  .caption mark { background: #ffeb4d; color: inherit; padding: 1px 6px 2px; border-radius: 6px; }
+  .foot {
+    position: absolute; left: 0; right: 0; top: 340px; text-align: center;
+    font-size: 12.5px; color: #6e6e73;
+  }
+</style>
+</head>
+<body>
+  <svg width="660" height="400" viewBox="0 0 660 400" aria-hidden="true">
+    <path d="M 262 178 C 300 146, 362 146, 400 180" fill="none" stroke="#0071e3" stroke-width="3.5"
+          stroke-linecap="round" stroke-dasharray="1 9"/>
+    <path d="M 385 178 L 401 181 L 395 166" fill="none" stroke="#0071e3" stroke-width="3.5"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <div class="caption">Drag YapYap to <mark>Applications</mark></div>
+  <div class="foot">Then open it from Applications. Free and open source · yapyap.cc</div>
+</body>
+</html>
