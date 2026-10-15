@@ -9,7 +9,7 @@
 A free Mac app that reads any text on your screen aloud, highlighting each word as it's spoken,
 and types what you say into any app. Everything runs on your Mac.
 
-**[yapyap.cc](https://yapyap.cc)** · download coming soon · [build it yourself](#build-from-source)
+**[Download for Mac](https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg)** · [yapyap.cc](https://yapyap.cc) · [build it yourself](#build-from-source)
 
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-2f6fd8)](LICENSE)
 ![macOS 15+](https://img.shields.io/badge/macOS-15%2B-121118)
@@ -135,7 +135,9 @@ with a network monitor such as [LuLu](https://objective-see.org/products/lulu.ht
 
 ## Install
 
-A signed, notarized download is coming soon at [yapyap.cc](https://yapyap.cc). Until then, build it from source.
+**[Download YapYap](https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg)**, open it,
+and drag YapYap onto Applications. It's signed and notarized by Apple and keeps itself up to date. Requires macOS 15
+or later on Apple silicon. All versions are on the [releases page](https://github.com/WannaBeSolopreneur/YapYap/releases).
 
 ### Build from source
 
