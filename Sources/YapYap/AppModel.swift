@@ -153,6 +153,13 @@ final class AppModel {
         return Speaker.voice()?.identifier
     }
 
+    /// At launch: start fetching the natural voices in the background, so a new user hears them
+    /// on their first read instead of the macOS voice. The first one (Heart) is picked when they arrive.
+    func downloadVoicesIfNeeded() {
+        guard settings.autoDownloadVoices, !kokoroInstalled, download.state != .downloading else { return }
+        download.start()
+    }
+
     func removeKokoro() {
         let alert = NSAlert()
         alert.messageText = "Remove natural voices?"
@@ -163,6 +170,7 @@ final class AppModel {
         guard alert.runModal() == .alertFirstButtonReturn else { return }
         if KokoroSpeaker.isSelected { controller.stop() }
         KokoroSpeaker.uninstall()
+        settings.autoDownloadVoices = false
         if settings.voiceID.flatMap(KokoroSpeaker.voiceName) != nil { settings.voiceID = nil }
         kokoroInstalled = false
     }

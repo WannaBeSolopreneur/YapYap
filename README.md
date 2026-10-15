@@ -46,7 +46,8 @@ YapYap does both, for free, on your Mac:
   it, and finds its place again after you scroll or resize.
 - **Real reading order:** columns, sidebars and headings are read in the right order. Web and email addresses are
   skipped (optional).
-- **Natural voices:** 28 Kokoro voices (US and UK English) that run on your Mac, or the voices built into macOS.
+- **Natural voices from the start:** 28 Kokoro voices (US and UK English) that run on your Mac. They download in the
+  background the first time you open YapYap; until then, or if you remove them, it uses the voices built into macOS.
 - **Control it from the keyboard:** pause, skip sentences, change speed (0.5× to 2.5×), or ⌥-click any word to jump to it.
 
 **Dictation**
@@ -106,7 +107,8 @@ What you read and say never leaves your Mac.
   shortcut, and audio is never saved. The optional tidy-up uses Apple Intelligence on your Mac, never Private
   Cloud Compute.
 - **Speech:** the Kokoro voices run locally with [MLX](https://github.com/ml-explore/mlx-swift).
-- **Two one-time downloads:** the optional Kokoro voices (about 340 MB, from GitHub), and on macOS 26 Apple's speech
+- **Two one-time downloads:** the Kokoro voices (about 340 MB, from GitHub, fetched in the background on first
+  launch; remove them in Settings → Reading and they stay gone), and on macOS 26 Apple's speech
   model, which macOS fetches itself.
 - **Anonymous stats:** official builds send anonymous counts through [TelemetryDeck](https://telemetrydeck.com),
   like how many words were read and how quickly the voice started. Never text, audio, window titles or app names.
@@ -119,7 +121,7 @@ Check it yourself:
 $ grep -rnE 'URLSession\(|https://' Sources
 Sources/YapYap/Kokoro.swift:253:   …/kokoro-v1_0.safetensors
 Sources/YapYap/Kokoro.swift:254:   …/voices.npz
-Sources/YapYap/AppModel.swift:350: session = URLSession(configuration: …)
+Sources/YapYap/AppModel.swift:358: session = URLSession(configuration: …)
 ```
 
 That's all of YapYap's own network code: the voice download. The only other connection is TelemetryDeck's
