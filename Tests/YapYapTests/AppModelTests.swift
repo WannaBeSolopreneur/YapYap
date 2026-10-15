@@ -150,4 +150,13 @@ final class ShortcutTests: XCTestCase {
         _ = model.setRegionShortcut(.defaultRegion)
     }
 
+    func testNoVoiceDownloadAfterTheUserRemovedThem() {
+        let model = AppModel(controller: Controller(speaker: Speaker()))
+        let was = model.settings.autoDownloadVoices
+        defer { model.settings.autoDownloadVoices = was }
+        model.settings.autoDownloadVoices = false
+        model.downloadVoicesIfNeeded()
+        XCTAssertEqual(model.download.state, KokoroDownload.State.idle)
+    }
+
 }

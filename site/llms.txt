@@ -15,7 +15,7 @@ Status: the signed download is in final testing and will be free from https://ya
 
 - On-screen text is recognised with Apple's Vision framework, on the Mac. Screenshots are kept in memory only and never saved.
 - Dictation uses Apple's on-device speech recognition (SpeechAnalyzer on macOS 26+, on-device SFSpeechRecognizer on macOS 15). Audio is never saved or uploaded. The microphone is on only while the shortcut is held.
-- The app's own network code downloads the optional Kokoro voice (about 340 MB) from GitHub. On macOS 26+ macOS itself downloads Apple's speech model once.
+- The app's own network code downloads the Kokoro voices (about 340 MB) from GitHub once, in the background on first launch; they can be removed in Settings. On macOS 26+ macOS itself downloads Apple's speech model once.
 - Optional dictation tidy-up (filler removal and polishing) uses Apple Intelligence's on-device model.
 - Anonymous usage counts (for example number of words read, time to first word, settings used) are sent via TelemetryDeck. They never include text, audio or app names. On by default; turn off in Settings > Privacy.
 - No account and no crash reporting. Saved data is limited to settings (speed, voice, highlight, shortcuts).

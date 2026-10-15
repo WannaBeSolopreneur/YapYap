@@ -365,12 +365,15 @@ private struct TryItStep: View {
                     Text("Voice").foregroundStyle(.secondary)
                     VoiceMenu()
                     Spacer()
-                    if !model.kokoroInstalled && model.download.state == .idle {
-                        Button("Get natural voices (340 MB)") { model.download.start() }
-                            .buttonStyle(.link)
-                    } else if model.download.state == .downloading {
+                    if model.download.state == .downloading {
                         ProgressView(value: model.download.fraction).frame(width: 90)
-                        Text("Natural voices").foregroundStyle(.secondary)
+                        Text("Getting natural voices…").foregroundStyle(.secondary)
+                    } else if !model.kokoroInstalled {
+                        Button(model.download.state == .idle ? "Get natural voices (340 MB)" : "Retry natural voices") {
+                            model.settings.autoDownloadVoices = true
+                            model.download.start()
+                        }
+                        .buttonStyle(.link)
                     }
                 }
                 .font(.caption)
