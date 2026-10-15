@@ -26,16 +26,21 @@ if $NOTARIZE && [[ "$SIGNER" != Developer\ ID\ Application* ]]; then
     exit 1
 fi
 
-# The disk image: the app and an Applications shortcut to drag it onto. Always named YapYap.dmg,
-# so https://github.com/…/releases/latest/download/YapYap.dmg is the newest version.
+# The disk image: YapYap and an Applications shortcut on a branded background with an arrow
+# (scripts/dmg/), and the app icon on the disk. Always named YapYap.dmg, so
+# https://github.com/…/releases/latest/download/YapYap.dmg is the newest version.
+# dmgbuild (pinned) lives in a private venv under .build/, set up on first use.
+DMGBUILD=.build/dmgbuild-venv/bin/dmgbuild
+if [[ ! -x "$DMGBUILD" ]]; then
+    PY=$(command -v python3.13 python3.12 python3.11 python3.10 | head -1)
+    [[ -n "$PY" ]] || { echo "error: dmgbuild needs Python 3.10+ (brew install python)" >&2; exit 1; }
+    "$PY" -m venv .build/dmgbuild-venv
+    .build/dmgbuild-venv/bin/pip install -q dmgbuild==1.6.7
+fi
 OUT=build/release-$VERSION
 DMG=$OUT/YapYap.dmg
-STAGE=$(mktemp -d)
-trap 'rm -rf "$STAGE"' EXIT
-cp -R "$APP" "$STAGE/"
-ln -s /Applications "$STAGE/Applications"
 rm -rf "$OUT" && mkdir -p "$OUT"
-hdiutil create -volname YapYap -srcfolder "$STAGE" -fs HFS+ -format UDZO -ov "$DMG" -quiet
+"$DMGBUILD" -s scripts/dmg/settings.py -D app="$APP" "YapYap" "$DMG" >/dev/null
 if [[ "$SIGNER" == Developer\ ID* ]]; then
     codesign --force --timestamp --sign "$SIGNER" "$DMG"
 fi
