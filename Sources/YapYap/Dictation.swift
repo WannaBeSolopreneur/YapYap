@@ -700,22 +700,36 @@ struct Paster: TextInserting {
         return true
     }
 
-    /// True only when macOS says nothing typeable has focus: no focused element at all, or one
-    /// that's plainly not text (a button, list, table, image…). Unclear answers count as
-    /// typeable, since many apps don't describe their text boxes, so a paste that would have
-    /// worked is never skipped.
+    /// True when the focused thing isn't somewhere text can be typed, so the words go to the
+    /// Copy card instead of a ⌘V that would land nowhere (or, on the desktop, make Finder save a
+    /// text clipping file). Text boxes are recognised by what they do: an editable value, a text
+    /// cursor or selection, or a text role. Anything else focused gets the card. When an app
+    /// won't say what's focused, Finder gets the card (only its rename fields take text) and
+    /// other apps get the paste, as many don't describe their text boxes.
     static func focusIsClearlyNotText() -> Bool {
+        let front = NSWorkspace.shared.frontmostApplication?.bundleIdentifier
         let (result, focused) = focusedElement()
-        if result == .noValue { return true }
-        guard result == .success, let element = focused else { return false }
+        guard result == .success, let element = focused else {
+            return result == .noValue || front == "com.apple.finder"
+        }
+        return !looksLikeText(element)
+    }
+
+    private static func looksLikeText(_ element: AXUIElement) -> Bool {
         var settable: DarwinBoolean = false
         if AXUIElementIsAttributeSettable(element, kAXValueAttribute as CFString, &settable) == .success, settable.boolValue {
-            return false
+            return true
+        }
+        var range: CFTypeRef?
+        if AXUIElementCopyAttributeValue(element, kAXSelectedTextRangeAttribute as CFString, &range) == .success, range != nil {
+            return true
         }
         var role: CFTypeRef?
         AXUIElementCopyAttributeValue(element, kAXRoleAttribute as CFString, &role)
-        return (role as? String).map(nonTextRoles.contains) ?? false
+        return (role as? String).map(textRoles.contains) ?? false
     }
+
+    static let textRoles: Set<String> = ["AXTextField", "AXTextArea", "AXComboBox", "AXSearchField"]
 
     /// The front app's focused element. Asked of the app itself: the system-wide element often
     /// answers "cannot complete" (-25204) on current macOS.
@@ -739,11 +753,6 @@ struct Paster: TextInserting {
         return "\(role as? String ?? "?")/\(subrole as? String ?? "-")\(settable.boolValue ? " (value settable)" : "")"
     }
 
-    static let nonTextRoles: Set<String> = [
-        "AXApplication", "AXWindow", "AXButton", "AXCheckBox", "AXRadioButton", "AXPopUpButton", "AXMenuButton",
-        "AXSlider", "AXImage", "AXStaticText", "AXList", "AXTable", "AXOutline", "AXRow", "AXCell", "AXScrollArea",
-        "AXTabGroup", "AXToolbar", "AXMenuBar", "AXMenuBarItem", "AXMenuItem",
-    ]
 
     private static func pressCommandV() {
         let source = CGEventSource(stateID: .combinedSessionState)
