@@ -56,7 +56,7 @@ xcrun stapler staple "$DMG"
 spctl --assess --type open --context context:primary-signature -v "$DMG"
 
 # Add this release to the update feed. sign_update prints: sparkle:edSignature="…" length="…"
-SIGN_UPDATE=.build/xcode/SourcePackages/artifacts/sparkle/Sparkle/bin/sign_update
+SIGN_UPDATE=.build/release/SourcePackages/artifacts/sparkle/Sparkle/bin/sign_update
 ATTRS=$("$SIGN_UPDATE" "$DMG")
 ITEM="    <item>
       <title>YapYap $VERSION</title>

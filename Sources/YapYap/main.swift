@@ -141,13 +141,15 @@ if args.count >= 4, args[1] == "--vo" {
 }
 
 // `YapYap --transcribe speech.wav` streams the file through dictation as if spoken and prints the text.
-if args.count == 3, args[1] == "--transcribe" {
+// `YapYap --transcribe talk.wav "Name One,Name Two"` also gives those words as screen context.
+if (3...4).contains(args.count), args[1] == "--transcribe" {
     guard #available(macOS 26, *) else {
         FileHandle.standardError.write("--transcribe needs macOS 26\n".data(using: .utf8)!)
         exit(1)
     }
     let source = try FileAudioSource(url: URL(fileURLWithPath: args[2]))
     let transcriber = AnalyzerTranscriber(source: source)
+    if args.count == 4 { transcriber.setContext(args[3].split(separator: ",").map(String.init)) }
     let started = Date()
     transcriber.onText = { FileHandle.standardError.write(String(format: "%6.2fs  %@\n", Date().timeIntervalSince(started), $0).data(using: .utf8)!) }
     transcriber.start { error in
@@ -173,6 +175,34 @@ if args.count == 3, args[1] == "--transcribe" {
 if args.count == 2, args[1] == "--permissions" {
     print("screen=\(Capture.hasPermission) needsRestart=\(Capture.needsRestart) mic=\(DictationAccess.microphone) accessibility=\(DictationAccess.accessibility)")
     exit(0)
+}
+
+// `YapYap --focus` prints, every second for 10 s, what has keyboard focus as Accessibility reports
+// it and whether dictation would paste there (launch with `open --stdout`; click around meanwhile).
+if args.count == 2, args[1] == "--focus" {
+    for _ in 0..<10 {
+        let app = NSWorkspace.shared.frontmostApplication?.localizedName ?? "?"
+        print("\(app): \(Paster.describeFocus()) → \(Paster.focusIsClearlyNotText() ? "copy instead" : "paste")")
+        Thread.sleep(forTimeInterval: 1)
+    }
+    exit(0)
+}
+
+// `YapYap --screen-terms` waits 3 s, then prints the names dictation would favour from the
+// front window (launch with `open --stdout` and switch to the app to test).
+if args.count == 2, args[1] == "--screen-terms" {
+    _ = NSApplication.shared
+    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+        let app = NSWorkspace.shared.frontmostApplication
+        print("front app: \(app?.localizedName ?? "?"), window: \(app.flatMap { Capture.frontWindow(of: $0.processIdentifier) }.map { "\($0.id)" } ?? "none"), screen access: \(Capture.hasPermission)")
+        let started = Date()
+        ScreenContext.terms(in: app) { terms in
+            print("terms (\(terms.count)) in \(Int(Date().timeIntervalSince(started) * 1000)) ms: \(terms.joined(separator: ", "))")
+            exit(0)
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) { print("no terms after 5 s"); exit(1) }
+    }
+    NSApplication.shared.run()
 }
 
 // `YapYap --demo outdir speech.wav` records the product film's take (see Demo.swift).

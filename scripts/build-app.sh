@@ -14,9 +14,12 @@ VERSION="${VERSION:-0.1.0}"
 BUILD="${BUILD:-1}"
 
 # xcodebuild, not `swift build`: MLX (Kokoro) needs its Metal shaders compiled.
+# Its own build folder, with code coverage off: sharing .build/xcode with `xcodebuild test` let
+# coverage instrumentation leak into release frameworks (1.0.0–1.0.3).
 xcodebuild -scheme YapYap -destination 'platform=macOS,arch=arm64' -configuration Release \
-    -derivedDataPath .build/xcode -quiet build
-PRODUCTS=.build/xcode/Build/Products/Release
+    -derivedDataPath .build/release -quiet build \
+    CLANG_COVERAGE_MAPPING=NO CLANG_ENABLE_CODE_COVERAGE=NO
+PRODUCTS=.build/release/Build/Products/Release
 
 APP=build/YapYap.app
 rm -rf "$APP"

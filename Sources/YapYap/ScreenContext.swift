@@ -12,7 +12,7 @@ enum ScreenContext {
         Capture.image(of: window.id) { image in
             guard let image else { return }
             DispatchQueue.global(qos: .userInitiated).async {
-                let lines = (try? OCR.lines(in: image, fast: true)) ?? []
+                let lines = (try? OCR.lines(in: image)) ?? []
                 let terms = ContextTerms.from(lines.map(\.text).joined(separator: "\n"))
                 DispatchQueue.main.async { if !terms.isEmpty { done(terms) } }
             }

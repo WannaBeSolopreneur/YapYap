@@ -1,4 +1,5 @@
 import AppKit
+import os
 import AVFoundation
 import Carbon
 import YapYapCore
@@ -285,11 +286,13 @@ extension Transcriber {
     }
 }
 
-/// macOS 26+: SpeechAnalyzer with SpeechTranscriber, or the dictation model where that isn't
-/// supported. The model is a system asset, downloaded once and shared with other apps.
+/// macOS 26+: SpeechAnalyzer with the dictation model (DictationTranscriber), which honours names
+/// from the screen, or SpeechTranscriber for languages it doesn't cover. The model is a system
+/// asset, downloaded once and shared with other apps.
 @available(macOS 26, *)
 /// State is only touched on the main queue; background tasks hop there before using it.
 final class AnalyzerTranscriber: Transcriber, @unchecked Sendable {
+    private static let log = Logger(subsystem: "cc.yapyap.app", category: "dictation")
     var onText: ((String) -> Void)?
     var onLevel: ((Float) -> Void)?
 
@@ -328,17 +331,21 @@ final class AnalyzerTranscriber: Transcriber, @unchecked Sendable {
     private func prepare() async throws {
         if mic is Microphone, let error = await Self.microphoneAccess() { throw error }
 
+        // The dictation model first: it's the one that uses the names from the screen (the general
+        // SpeechTranscriber ignores AnalysisContext). The general model covers other languages.
         let module: any SpeechModule
-        if SpeechTranscriber.isAvailable {
-            guard let locale = await SpeechTranscriber.supportedLocale(equivalentTo: .current) else { throw DictationError.unavailable }
+        if let locale = await DictationTranscriber.supportedLocale(equivalentTo: .current) {
+            var preset = DictationTranscriber.Preset.progressiveLongDictation
+            preset.transcriptionOptions.insert(.punctuation)
+            let transcriber = DictationTranscriber(locale: locale, preset: preset)
+            results = consume(transcriber.results) { ($0.text, $0.isFinal) }
+            module = transcriber
+        } else if SpeechTranscriber.isAvailable, let locale = await SpeechTranscriber.supportedLocale(equivalentTo: .current) {
             let transcriber = SpeechTranscriber(locale: locale, preset: .progressiveTranscription)
             results = consume(transcriber.results) { ($0.text, $0.isFinal) }
             module = transcriber
         } else {
-            guard let locale = await DictationTranscriber.supportedLocale(equivalentTo: .current) else { throw DictationError.unavailable }
-            let transcriber = DictationTranscriber(locale: locale, preset: .progressiveLongDictation)
-            results = consume(transcriber.results) { ($0.text, $0.isFinal) }
-            module = transcriber
+            throw DictationError.unavailable
         }
 
         if let request = try await AssetInventory.assetInstallationRequest(supporting: [module]) {
@@ -353,7 +360,7 @@ final class AnalyzerTranscriber: Transcriber, @unchecked Sendable {
             self.analyzer = analyzer
             return self.contextTerms
         }
-        if !terms.isEmpty { try? await Self.apply(terms, to: analyzer) }
+        if !terms.isEmpty { await Self.apply(terms, to: analyzer) }
 
         let (stream, input) = AsyncStream.makeStream(of: AnalyzerInput.self)
         self.input = input
@@ -379,13 +386,18 @@ final class AnalyzerTranscriber: Transcriber, @unchecked Sendable {
     func setContext(_ terms: [String]) {
         contextTerms = terms
         guard let analyzer else { return } // still loading: prepare() applies them
-        Task { try? await Self.apply(terms, to: analyzer) }
+        Task { await Self.apply(terms, to: analyzer) }
     }
 
-    private static func apply(_ terms: [String], to analyzer: SpeechAnalyzer) async throws {
+    private static func apply(_ terms: [String], to analyzer: SpeechAnalyzer) async {
         let context = AnalysisContext()
         context.contextualStrings[.general] = terms
-        try await analyzer.setContext(context)
+        do {
+            try await analyzer.setContext(context)
+            log.debug("Context set: \(terms.count) terms")
+        } catch {
+            log.error("Context not set: \(error, privacy: .public)")
+        }
     }
 
     func finish(_ done: @escaping (String) -> Void) {
@@ -690,11 +702,9 @@ struct Paster: TextInserting {
     /// typeable, since many apps don't describe their text boxes, so a paste that would have
     /// worked is never skipped.
     static func focusIsClearlyNotText() -> Bool {
-        var focused: CFTypeRef?
-        let result = AXUIElementCopyAttributeValue(AXUIElementCreateSystemWide(), kAXFocusedUIElementAttribute as CFString, &focused)
+        let (result, focused) = focusedElement()
         if result == .noValue { return true }
-        guard result == .success, let focused, CFGetTypeID(focused) == AXUIElementGetTypeID() else { return false }
-        let element = focused as! AXUIElement
+        guard result == .success, let element = focused else { return false }
         var settable: DarwinBoolean = false
         if AXUIElementIsAttributeSettable(element, kAXValueAttribute as CFString, &settable) == .success, settable.boolValue {
             return false
@@ -702,6 +712,28 @@ struct Paster: TextInserting {
         var role: CFTypeRef?
         AXUIElementCopyAttributeValue(element, kAXRoleAttribute as CFString, &role)
         return (role as? String).map(nonTextRoles.contains) ?? false
+    }
+
+    /// The front app's focused element. Asked of the app itself: the system-wide element often
+    /// answers "cannot complete" (-25204) on current macOS.
+    private static func focusedElement() -> (AXError, AXUIElement?) {
+        guard let pid = NSWorkspace.shared.frontmostApplication?.processIdentifier else { return (.noValue, nil) }
+        var focused: CFTypeRef?
+        let result = AXUIElementCopyAttributeValue(AXUIElementCreateApplication(pid), kAXFocusedUIElementAttribute as CFString, &focused)
+        guard result == .success, let focused, CFGetTypeID(focused) == AXUIElementGetTypeID() else { return (result, nil) }
+        return (result, (focused as! AXUIElement))
+    }
+
+    /// "AXTextArea (value settable)", or what went wrong, for `--focus`.
+    static func describeFocus() -> String {
+        let (result, focused) = focusedElement()
+        guard let element = focused else { return "no focused element (AXError \(result.rawValue))" }
+        var role: CFTypeRef?, subrole: CFTypeRef?
+        AXUIElementCopyAttributeValue(element, kAXRoleAttribute as CFString, &role)
+        AXUIElementCopyAttributeValue(element, kAXSubroleAttribute as CFString, &subrole)
+        var settable: DarwinBoolean = false
+        AXUIElementIsAttributeSettable(element, kAXValueAttribute as CFString, &settable)
+        return "\(role as? String ?? "?")/\(subrole as? String ?? "-")\(settable.boolValue ? " (value settable)" : "")"
     }
 
     static let nonTextRoles: Set<String> = [
