@@ -702,16 +702,15 @@ struct Paster: TextInserting {
 
     /// True when the focused thing isn't somewhere text can be typed, so the words go to the
     /// Copy card instead of a ⌘V that would land nowhere (or, on the desktop, make Finder save a
-    /// text clipping file). Text boxes are recognised by what they do: an editable value, a text
-    /// cursor or selection, or a text role. Anything else focused gets the card. When an app
-    /// won't say what's focused, Finder gets the card (only its rename fields take text) and
-    /// other apps get the paste, as many don't describe their text boxes.
+    /// text clipping file). Finder (windows and the desktop) always gets the card: it reports a
+    /// selected file's name as an editable text field, so a paste there renamed the file.
+    /// Elsewhere, text boxes are recognised by what they do: an editable value, a text cursor or
+    /// selection, or a text role. Anything else focused gets the card. When an app won't say
+    /// what's focused, it gets the paste, as many don't describe their text boxes.
     static func focusIsClearlyNotText() -> Bool {
-        let front = NSWorkspace.shared.frontmostApplication?.bundleIdentifier
+        if NSWorkspace.shared.frontmostApplication?.bundleIdentifier == "com.apple.finder" { return true }
         let (result, focused) = focusedElement()
-        guard result == .success, let element = focused else {
-            return result == .noValue || front == "com.apple.finder"
-        }
+        guard result == .success, let element = focused else { return result == .noValue }
         return !looksLikeText(element)
     }
 
