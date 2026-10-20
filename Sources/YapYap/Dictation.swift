@@ -46,6 +46,8 @@ final class Dictation {
     var onMessage: ((String) -> Void)?
     /// The final text, once typed (or left on the clipboard).
     var onTyped: ((String) -> Void)?
+    /// Nothing that takes text had focus: the words are on the clipboard, to show with a Copy button.
+    var onNoTextBox: ((String) -> Void)?
 
     private let makeTranscriber: () -> Transcriber
     private let inserter: TextInserting
@@ -193,7 +195,8 @@ final class Dictation {
         reset()
         onTyped?(text)
         let copied: () -> Void = { [weak self] in
-            self?.onMessage?("No text box here, so it's copied. Press ⌘V to paste it where you want it.")
+            if let show = self?.onNoTextBox { show(text) }
+            else { self?.onMessage?("No text box here, so it's copied. Press ⌘V to paste it where you want it.") }
         }
         if !inserter.insert(text, into: target, noField: copied) {
             onMessage?("Copied what you said. Press ⌘V to paste, or allow YapYap in Accessibility to type it for you.")

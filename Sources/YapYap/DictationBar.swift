@@ -59,6 +59,14 @@ struct DictationBarView: View {
     @Environment(AppModel.self) private var model
 
     var body: some View {
+        if let text = model.leftover {
+            LeftoverCard(text: text)
+        } else {
+            capsule
+        }
+    }
+
+    private var capsule: some View {
         HStack(spacing: 12) {
             mic
             Text(caption)
@@ -140,5 +148,65 @@ struct DictationBarView: View {
             }
         }
         .frame(width: 28, height: 28)
+    }
+}
+
+/// Dictated with nowhere to type: everything that was said, ready to copy and paste anywhere.
+private struct LeftoverCard: View {
+    @Environment(AppModel.self) private var model
+    let text: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 8) {
+                Image(systemName: "text.bubble")
+                    .foregroundStyle(.secondary)
+                Text("No text box here. Copy it and paste anywhere.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                Spacer(minLength: 8)
+                Button { model.dismissLeftover() } label: {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundStyle(.secondary)
+                        .frame(width: 22, height: 22)
+                        .background(.primary.opacity(0.08), in: Circle())
+                        .contentShape(Circle())
+                }
+                .buttonStyle(.plain)
+                .help("Close (Esc)")
+                .accessibilityLabel("Close")
+            }
+            Text(text)
+                .font(.callout)
+                .lineLimit(8)
+                .truncationMode(.tail)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            HStack {
+                Spacer()
+                // Drawn by hand: the panel never becomes key (your app keeps focus), and system
+                // prominent buttons turn grey in windows that aren't key.
+                Button { model.copyLeftover() } label: {
+                    Label(model.leftoverCopied ? "Copied" : "Copy",
+                          systemImage: model.leftoverCopied ? "checkmark" : "doc.on.doc")
+                        .font(.callout.weight(.semibold))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 7)
+                        .frame(minWidth: 96)
+                        .background(model.leftoverCopied ? Color.green : Color.accentColor, in: Capsule())
+                        .contentShape(Capsule())
+                }
+                .buttonStyle(.plain)
+                .disabled(model.leftoverCopied)
+                .accessibilityLabel(model.leftoverCopied ? "Copied" : "Copy")
+            }
+        }
+        .padding(14)
+        .frame(width: 400)
+        .glassBackground(in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .padding(12) // room for the glass shadow inside the panel
+        .fixedSize()
     }
 }
