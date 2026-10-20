@@ -25,6 +25,8 @@ final class AppModel {
     private(set) var dictationPhase = Dictation.Phase.idle
     /// Listening without the shortcut held; the capsule shows Done and Cancel.
     private(set) var dictationHandsFree = false
+    /// What was dictated last, for Paste Last Dictation. In memory only.
+    private(set) var lastDictation: String?
     /// What dictation has heard so far.
     private(set) var dictationText = ""
     private(set) var micLevel: Float = 0
@@ -56,7 +58,8 @@ final class AppModel {
         self.telemetry = telemetry
         dictation.onStateChange = { [weak self] in self?.syncDictation() }
         dictation.onMessage = { [weak self] in self?.show($0) }
-        dictation.onTyped = { [weak dictation] text in
+        dictation.onTyped = { [weak self, weak dictation] text in
+            self?.lastDictation = text
             history.addDictation(text)
             telemetry.dictated(words: text.split(whereSeparator: \.isWhitespace).count,
                                handsFree: dictation?.lastWasHandsFree ?? false)
@@ -110,9 +113,10 @@ final class AppModel {
         }
         if controller.phase == .reading { controller.togglePause() }
         let typingHere = (NSApp.keyWindow?.firstResponder as? NSTextView)?.isEditable == true
-        dictation.begin(target: Self.dictationTarget(front: NSWorkspace.shared.frontmostApplication,
-                                                     last: controller.lastApp, typingInYapYap: typingHere),
-                        handsFree: handsFree)
+        let target = Self.dictationTarget(front: NSWorkspace.shared.frontmostApplication,
+                                          last: controller.lastApp, typingInYapYap: typingHere)
+        dictation.begin(target: target, handsFree: handsFree)
+        ScreenContext.terms(in: target) { [weak self] in self?.dictation.setContext($0) }
     }
 
     /// Where dictated text goes: the app in front. When that's YapYap itself, its own text box
@@ -131,6 +135,17 @@ final class AppModel {
 
     /// Cancel or Esc: stop listening and type nothing.
     func cancelDictation() { dictation.cancel() }
+
+    /// Menu bar: type the last dictation again where the cursor is now (or copy it if there's
+    /// no text box).
+    func pasteLastDictation(inserter: TextInserting = Paster()) {
+        guard let text = lastDictation else { return }
+        let app = NSWorkspace.shared.frontmostApplication.flatMap { $0.processIdentifier == getpid() ? controller.lastApp : $0 }
+        let typed = inserter.insert(text, into: app) { [weak self] in
+            self?.show("No text box here, so it's copied. Press ⌘V to paste it where you want it.")
+        }
+        if !typed { show("Copied your last dictation. Press ⌘V to paste.") }
+    }
 
     func read(_ window: NSWindow) {
         guard let frame = Capture.frame(of: CGWindowID(window.windowNumber)) else { return }

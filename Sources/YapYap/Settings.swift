@@ -55,6 +55,8 @@ final class Settings {
     var polishDictation: Bool { didSet { defaults.set(polishDictation, forKey: "polishDictation") } }
     /// Remember what was read and dictated, for the home page. Totals are kept either way.
     var keepHistory: Bool { didSet { defaults.set(keepHistory, forKey: "keepHistory") } }
+    /// Before dictating, read the names in the window you're typing in so they're spelled right.
+    var useScreenContext: Bool { didSet { defaults.set(useScreenContext, forKey: "useScreenContext") } }
     /// Fetch the natural (Kokoro) voices on launch when they're missing. Turned off when you remove them.
     var autoDownloadVoices: Bool { didSet { defaults.set(autoDownloadVoices, forKey: "autoDownloadVoices") } }
     /// Send anonymous usage stats (counts and timings, never text). On unless turned off.
@@ -77,6 +79,7 @@ final class Settings {
         removeFillers = defaults.object(forKey: "removeFillers") as? Bool ?? true
         polishDictation = defaults.object(forKey: "polishDictation") as? Bool ?? true
         autoDownloadVoices = defaults.object(forKey: "autoDownloadVoices") as? Bool ?? true
+        useScreenContext = defaults.object(forKey: "useScreenContext") as? Bool ?? true
         shareUsageStats = defaults.object(forKey: "shareUsageStats") as? Bool ?? true
         dictationShortcut = defaults.data(forKey: "dictationShortcut").flatMap { try? JSONDecoder().decode(KeyCombo.self, from: $0) } ?? .defaultDictation
     }

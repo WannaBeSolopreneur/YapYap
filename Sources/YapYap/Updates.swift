@@ -1,7 +1,7 @@
 import Foundation
 import Sparkle
 
-/// Automatic updates with Sparkle, from the feed in Info.plist (`SUFeedURL`, https://yapyap.cc/appcast.xml).
+/// Automatic updates with Sparkle, from the feed in Info.plist (`SUFeedURL`: yapyap.cc/appcast.xml).
 /// Every update must be signed with the key whose public half is `SUPublicEDKey`; Sparkle refuses
 /// anything else. Builds without a key (tests, the command line) never start the updater.
 final class Updates {

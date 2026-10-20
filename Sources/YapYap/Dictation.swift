@@ -191,9 +191,18 @@ final class Dictation {
         let target = self.target
         reset()
         onTyped?(text)
-        if !inserter.insert(text, into: target) {
+        let copied: () -> Void = { [weak self] in
+            self?.onMessage?("No text box here, so it's copied. Press ⌘V to paste it where you want it.")
+        }
+        if !inserter.insert(text, into: target, noField: copied) {
             onMessage?("Copied what you said. Press ⌘V to paste, or allow YapYap in Accessibility to type it for you.")
         }
+    }
+
+    /// Names and terms from the screen, to spell them right. Ignored once listening has ended.
+    func setContext(_ terms: [String]) {
+        guard phase == .starting || phase == .listening, !terms.isEmpty else { return }
+        transcriber?.setContext(terms)
     }
 
     /// Stops without typing anything.
@@ -259,9 +268,13 @@ protocol Transcriber: AnyObject {
     /// Stops listening; calls back with the final text.
     func finish(_ done: @escaping (String) -> Void)
     func cancel()
+    /// Words to favour, such as names on screen. May arrive after listening has started.
+    func setContext(_ terms: [String])
 }
 
 extension Transcriber {
+    func setContext(_ terms: [String]) {}
+
     /// Asks for the microphone the first time; nil when it's allowed.
     static func microphoneAccess() async -> DictationError? {
         switch AVCaptureDevice.authorizationStatus(for: .audio) {
@@ -286,6 +299,8 @@ final class AnalyzerTranscriber: Transcriber, @unchecked Sendable {
     private var results: Task<Void, Never>?
     private var transcript = Transcript()
     private var cancelled = false
+    /// Names and terms to favour; applied as soon as the analyzer exists.
+    private var contextTerms: [String] = []
 
     init(source: AudioSource = Microphone()) {
         mic = source
@@ -334,7 +349,11 @@ final class AnalyzerTranscriber: Transcriber, @unchecked Sendable {
         let format = await SpeechAnalyzer.bestAvailableAudioFormat(compatibleWith: [module])
         let analyzer = SpeechAnalyzer(modules: [module])
         try await analyzer.prepareToAnalyze(in: format)
-        self.analyzer = analyzer
+        let terms = await MainActor.run {
+            self.analyzer = analyzer
+            return self.contextTerms
+        }
+        if !terms.isEmpty { try? await Self.apply(terms, to: analyzer) }
 
         let (stream, input) = AsyncStream.makeStream(of: AnalyzerInput.self)
         self.input = input
@@ -355,6 +374,18 @@ final class AnalyzerTranscriber: Transcriber, @unchecked Sendable {
                 }
             } catch {}
         }
+    }
+
+    func setContext(_ terms: [String]) {
+        contextTerms = terms
+        guard let analyzer else { return } // still loading: prepare() applies them
+        Task { try? await Self.apply(terms, to: analyzer) }
+    }
+
+    private static func apply(_ terms: [String], to analyzer: SpeechAnalyzer) async throws {
+        let context = AnalysisContext()
+        context.contextualStrings[.general] = terms
+        try await analyzer.setContext(context)
     }
 
     func finish(_ done: @escaping (String) -> Void) {
@@ -393,6 +424,13 @@ final class RecognizerTranscriber: Transcriber, @unchecked Sendable {
     private var transcript = Transcript()
     private var finished: ((String) -> Void)?
     private var isDone = false
+    private var contextTerms: [String] = []
+
+    /// Recognition may have begun; the request still takes new strings for the audio to come.
+    func setContext(_ terms: [String]) {
+        contextTerms = terms
+        request?.contextualStrings = terms
+    }
 
     func start(_ done: @escaping (Error?) -> Void) {
         mic.onLevel = { [weak self] in self?.onLevel?($0) }
@@ -427,6 +465,7 @@ final class RecognizerTranscriber: Transcriber, @unchecked Sendable {
         request.shouldReportPartialResults = true
         request.addsPunctuation = true
         request.requiresOnDeviceRecognition = true
+        request.contextualStrings = contextTerms
         self.request = request
         task = recognizer.recognitionTask(with: request) { [weak self] result, error in
             let text = result?.bestTranscription.formattedString
@@ -595,15 +634,17 @@ final class FileAudioSource: AudioSource {
 // MARK: Typing it out
 
 protocol TextInserting {
-    /// False when the text was only left on the clipboard.
-    func insert(_ text: String, into app: NSRunningApplication?) -> Bool
+    /// False when the text was only left on the clipboard (no permission to type).
+    /// `noField` is called instead of typing when nothing that takes text has focus; the text
+    /// is then left on the clipboard to paste wherever the user wants.
+    func insert(_ text: String, into app: NSRunningApplication?, noField: @escaping () -> Void) -> Bool
 }
 
 /// Types text into another app by pasting: clipboard, ⌘V, then the old clipboard back.
 /// Pasting works in every kind of text field, unlike setting text through Accessibility.
 /// Sending ⌘V needs the Accessibility permission; without it the text stays on the clipboard.
 struct Paster: TextInserting {
-    func insert(_ text: String, into app: NSRunningApplication?) -> Bool {
+    func insert(_ text: String, into app: NSRunningApplication?, noField: @escaping () -> Void) -> Bool {
         let board = NSPasteboard.general
         let saved = Self.copyItems(of: board)
         // This Mac only: not to other devices over Universal Clipboard, and marked so
@@ -627,6 +668,12 @@ struct Paster: TextInserting {
             delay = 0.15
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+            if Self.focusIsClearlyNotText() {
+                // Nowhere to type: keep the words on the clipboard, as an ordinary copy.
+                board.clearContents()
+                board.setString(text, forType: .string)
+                return noField()
+            }
             Self.pressCommandV()
             // Give the app time to read the clipboard before putting the old contents back.
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -637,6 +684,31 @@ struct Paster: TextInserting {
         }
         return true
     }
+
+    /// True only when macOS says nothing typeable has focus: no focused element at all, or one
+    /// that's plainly not text (a button, list, table, image…). Unclear answers count as
+    /// typeable, since many apps don't describe their text boxes, so a paste that would have
+    /// worked is never skipped.
+    static func focusIsClearlyNotText() -> Bool {
+        var focused: CFTypeRef?
+        let result = AXUIElementCopyAttributeValue(AXUIElementCreateSystemWide(), kAXFocusedUIElementAttribute as CFString, &focused)
+        if result == .noValue { return true }
+        guard result == .success, let focused, CFGetTypeID(focused) == AXUIElementGetTypeID() else { return false }
+        let element = focused as! AXUIElement
+        var settable: DarwinBoolean = false
+        if AXUIElementIsAttributeSettable(element, kAXValueAttribute as CFString, &settable) == .success, settable.boolValue {
+            return false
+        }
+        var role: CFTypeRef?
+        AXUIElementCopyAttributeValue(element, kAXRoleAttribute as CFString, &role)
+        return (role as? String).map(nonTextRoles.contains) ?? false
+    }
+
+    static let nonTextRoles: Set<String> = [
+        "AXApplication", "AXWindow", "AXButton", "AXCheckBox", "AXRadioButton", "AXPopUpButton", "AXMenuButton",
+        "AXSlider", "AXImage", "AXStaticText", "AXList", "AXTable", "AXOutline", "AXRow", "AXCell", "AXScrollArea",
+        "AXTabGroup", "AXToolbar", "AXMenuBar", "AXMenuBarItem", "AXMenuItem",
+    ]
 
     private static func pressCommandV() {
         let source = CGEventSource(stateID: .combinedSessionState)

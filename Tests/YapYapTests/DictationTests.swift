@@ -9,10 +9,12 @@ private final class FakeTranscriber: Transcriber {
     var started: ((Error?) -> Void)?
     var finished: ((String) -> Void)?
     var cancelled = false
+    var context: [String] = []
 
     func start(_ done: @escaping (Error?) -> Void) { started = done }
     func finish(_ done: @escaping (String) -> Void) { finished = done }
     func cancel() { cancelled = true }
+    func setContext(_ terms: [String]) { context = terms }
 }
 
 private final class FakePolisher: TextPolishing {
@@ -28,8 +30,11 @@ private final class FakePolisher: TextPolishing {
 private final class FakeInserter: TextInserting {
     var inserted: [String] = []
     var allowed = true
-    func insert(_ text: String, into app: NSRunningApplication?) -> Bool {
+    /// Pretend nothing that takes text has focus.
+    var noTextBox = false
+    func insert(_ text: String, into app: NSRunningApplication?, noField: @escaping () -> Void) -> Bool {
         inserted.append(text)
+        if noTextBox { noField() }
         return allowed
     }
 }
@@ -121,6 +126,33 @@ final class DictationTests: XCTestCase {
         dictation.release()
         XCTAssertTrue(dictation.handsFree)
         XCTAssertEqual(dictation.phase, .listening)
+    }
+
+    // MARK: Screen context and nowhere to type
+
+    func testScreenNamesReachTheRecognizerWhileListening() {
+        dictation.begin(target: nil)
+        dictation.setContext(["Priya Shah", "Fernway"])
+        XCTAssertEqual(engine.context, ["Priya Shah", "Fernway"])
+    }
+
+    func testLateScreenNamesAreIgnored() {
+        dictation.begin(target: nil)
+        engine.started?(nil)
+        dictation.end()
+        dictation.setContext(["Too late"])
+        XCTAssertEqual(engine.context, [])
+    }
+
+    func testNoTextBoxSaysItWasCopied() {
+        inserter.noTextBox = true
+        dictation.begin(target: nil)
+        engine.started?(nil)
+        clock += 1
+        dictation.release()
+        engine.finished?("Remember the milk.")
+        XCTAssertEqual(messages.count, 1)
+        XCTAssertTrue(messages[0].contains("copied"), messages[0])
     }
 
     // MARK: Hold to talk
