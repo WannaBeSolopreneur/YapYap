@@ -27,7 +27,13 @@ struct StatusMenu: View {
         Button("Read Aloud") { model.readRegion() }
             .keyboardShortcut(model.settings.regionShortcut.keyboardShortcut)
             .disabled(!model.hasPermission)
-        Text("Dictate: hold \(model.settings.dictationShortcut.displayKeys.joined())")
+        if model.dictationHandsFree {
+            Button("Finish Dictation") { model.finishDictation() }
+        } else {
+            Button("Start Dictation") { model.startDictation(handsFree: true) }
+                .disabled(model.dictationPhase != .idle)
+        }
+        Text("Dictate: hold \(model.settings.dictationShortcut.displayKeys.joined()), or tap it to keep listening")
 
         Divider()
 

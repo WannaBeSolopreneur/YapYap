@@ -31,6 +31,11 @@ final class Dictation {
     }
 
     private(set) var phase = Phase.idle
+    /// Listening without the shortcut held: a quick tap started it, and the next press, Done or
+    /// Esc ends it.
+    private(set) var handsFree = false
+    /// Whether the session that just typed its text was hands-free (for the anonymous stats).
+    private(set) var lastWasHandsFree = false
     /// What has been heard so far, for the live preview.
     private(set) var text = ""
     /// Microphone loudness, 0…1.
@@ -51,13 +56,24 @@ final class Dictation {
     private var releasedEarly = false
     /// Bumped on every start so callbacks from an abandoned session are dropped.
     private var session = 0
+    private var pressedAt: Date?
+    private let now: () -> Date
+    /// Ends a forgotten hands-free session, so the mic is never left on for long.
+    private var handsFreeLimit: DispatchWorkItem?
+
+    /// A press shorter than this is a tap, which keeps listening hands-free.
+    static let tapLength: TimeInterval = 0.35
+    /// Hands-free sessions finish and type on their own after this long.
+    static let handsFreeMaximum: TimeInterval = 10 * 60
 
     init(makeTranscriber: @escaping () -> Transcriber = Dictation.systemTranscriber, inserter: TextInserting = Paster(),
-         polisher: TextPolishing = Dictation.systemPolisher(), cleanup: @escaping () -> Cleanup = { .current }) {
+         polisher: TextPolishing = Dictation.systemPolisher(), cleanup: @escaping () -> Cleanup = { .current },
+         now: @escaping () -> Date = Date.init) {
         self.makeTranscriber = makeTranscriber
         self.inserter = inserter
         self.polisher = polisher
         self.cleanup = cleanup
+        self.now = now
     }
 
     static func systemPolisher() -> TextPolishing {
@@ -73,13 +89,15 @@ final class Dictation {
         return RecognizerTranscriber()
     }
 
-    /// Shortcut pressed.
-    func begin(target: NSRunningApplication?) {
+    /// Shortcut pressed (or Start Dictation chosen, with `handsFree`).
+    func begin(target: NSRunningApplication?, handsFree: Bool = false) {
         guard phase == .idle else { return }
         session += 1
         let id = session
         self.target = target
         releasedEarly = false
+        pressedAt = now()
+        if handsFree { startHandsFree() }
         text = ""
         level = 0
         let transcriber = makeTranscriber()
@@ -111,8 +129,38 @@ final class Dictation {
         }
     }
 
-    /// Shortcut released.
+    /// Shortcut released. After a hold, finish and type; after a quick tap, keep listening hands-free.
+    func release() {
+        guard !handsFree, phase == .starting || phase == .listening else { return }
+        if let pressedAt, now().timeIntervalSince(pressedAt) < Self.tapLength {
+            startHandsFree()
+            onStateChange?()
+            return
+        }
+        end()
+    }
+
+    private func startHandsFree() {
+        handsFree = true
+        let id = session
+        let limit = DispatchWorkItem { [weak self] in
+            guard let self, self.session == id else { return }
+            self.end()
+        }
+        handsFreeLimit = limit
+        DispatchQueue.main.asyncAfter(deadline: .now() + Self.handsFreeMaximum, execute: limit)
+    }
+
+    /// Stop listening, then clean up and type what was said: shortcut released after a hold,
+    /// or pressed again / Done in hands-free mode.
     func end() {
+        if handsFree {
+            handsFree = false
+            handsFreeLimit?.cancel()
+            lastWasHandsFree = true
+        } else if phase == .starting || phase == .listening {
+            lastWasHandsFree = false
+        }
         switch phase {
         case .starting:
             releasedEarly = true
@@ -162,6 +210,10 @@ final class Dictation {
         transcriber = nil
         target = nil
         level = 0
+        handsFree = false
+        handsFreeLimit?.cancel()
+        handsFreeLimit = nil
+        pressedAt = nil
         setPhase(.idle)
     }
 

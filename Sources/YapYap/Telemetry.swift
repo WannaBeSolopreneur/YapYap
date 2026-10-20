@@ -62,10 +62,11 @@ final class Telemetry {
         signal("Read.failed", ["reason": reason])
     }
 
-    func dictated(words: Int) {
+    /// `handsFree`: started with a tap or the menu instead of holding the shortcut.
+    func dictated(words: Int, handsFree: Bool = false) {
         let s = Settings.shared
         let cleanup = !s.removeFillers ? "none" : s.polishDictation ? "polish" : "fillers"
-        signal("Dictation.finished", ["cleanup": cleanup], value: Double(words))
+        signal("Dictation.finished", ["cleanup": cleanup, "mode": handsFree ? "handsFree" : "hold"], value: Double(words))
     }
 
     private func signal(_ name: String, _ parameters: [String: String] = [:], value: Double? = nil) {
