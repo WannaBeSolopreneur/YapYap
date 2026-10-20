@@ -17,6 +17,7 @@ enum Snapshots {
             ("app-settings", AnyView(PageSnapshot(page: .settings))),
             ("bar", AnyView(PlayerBarView())),
             ("dictation", AnyView(DictationBarView())),
+            ("dictation-leftover", AnyView(DictationBarView().environment(leftoverModel()))),
             ("settings-reading", AnyView(ReadingSettings().frame(width: 520))),
             ("settings-dictation", AnyView(DictationSettings().frame(width: 520))),
             ("settings-general", AnyView(GeneralSettings().frame(width: 520))),
@@ -42,6 +43,13 @@ enum Snapshots {
                 render(view.environment(model), appearance: appearance, to: dir.appendingPathComponent("\(name)-\(suffix).png"))
             }
         }
+    }
+
+    /// The capsule after dictating with no text box in focus.
+    private static func leftoverModel() -> AppModel {
+        let model = AppModel(history: History(file: nil))
+        model.previewLeftover("Hi Siobhan, can you send the Fernway numbers to Tadhg and Priya Shah before Thursday? I'll bring the slides.")
+        return model
     }
 
     /// Made-up history and name, so screenshots never show what you really read or said.

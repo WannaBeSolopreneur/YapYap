@@ -33,6 +33,8 @@ struct StatusMenu: View {
             Button("Start Dictation") { model.startDictation(handsFree: true) }
                 .disabled(model.dictationPhase != .idle)
         }
+        Button("Paste Last Dictation") { model.pasteLastDictation() }
+            .disabled(model.lastDictation == nil || model.dictationPhase != .idle)
         Text("Dictate: hold \(model.settings.dictationShortcut.displayKeys.joined()), or tap it to keep listening")
 
         Divider()

@@ -39,7 +39,7 @@
  "softwareRequirements": "Mac with Apple silicon (M1 or newer)",
  "isAccessibleForFree": true,
  "downloadUrl": "https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg",
- "softwareVersion": "1.0.3",
+ "softwareVersion": "1.0.4",
  "license": "https://www.gnu.org/licenses/agpl-3.0.html",
  "sameAs": ["https://github.com/WannaBeSolopreneur/YapYap"],
  "offers": {
@@ -739,7 +739,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
         </article>
         <article>
           <h3>Screenshots stay in memory.</h3>
-          <p>Each read takes one still image of the window or box you chose. macOS’s Vision framework turns it into text, then the image is thrown away.</p>
+          <p>Each read takes one still image of the window or box you chose. macOS’s Vision framework turns it into text, then the image is thrown away. When you dictate, YapYap does the same with the window you’re typing in, only to spell the names in it right (you can turn this off).</p>
           <a class="src" href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/Capture.swift">Capture.swift</a>
         </article>
         <article>
@@ -757,15 +757,15 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
         <div>
           <h3>Check it yourself.</h3>
           <ul>
-            <li><b><a href="https://github.com/WannaBeSolopreneur/YapYap">Search the code.</a></b> YapYap’s own network code fits on three lines. The only other connection is TelemetryDeck’s anonymous stats.</li>
+            <li><b><a href="https://github.com/WannaBeSolopreneur/YapYap">Search the code.</a></b> YapYap’s own network code fits on three lines. The only other connections are TelemetryDeck’s anonymous stats and a daily check of yapyap.cc for updates.</li>
             <li><b>Turn off Wi‑Fi.</b> Once the voice and speech model are installed, reading and dictation work exactly the same.</li>
-            <li><b>Watch the traffic.</b> Run a network monitor such as LuLu while YapYap reads or listens. Turn stats off and nothing else goes out.</li>
+            <li><b>Watch the traffic.</b> Run a network monitor such as LuLu while YapYap reads or listens. Turn stats off and the only other request is the daily update check.</li>
           </ul>
         </div>
         <div class="term" aria-label="YapYap’s own network code">
           <div class="bar-t"><i></i><i></i><i></i><b>Terminal — yapyap</b></div>
           <pre><span>$ </span>grep -rnE 'URLSession\(|https://' Sources
-<a href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/AppModel.swift#L358"><em>AppModel.swift:358</em></a>  session = URLSession(configuration: …)
+<a href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/AppModel.swift#L395"><em>AppModel.swift:395</em></a>  session = URLSession(configuration: …)
 <a href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/Kokoro.swift#L253"><em>Kokoro.swift:253</em></a>    "https://media.githubusercontent.com/…/kokoro-v1_0.safetensors"
 <a href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/Kokoro.swift#L254"><em>Kokoro.swift:254</em></a>    "https://raw.githubusercontent.com/…/voices.npz"</pre>
         </div>

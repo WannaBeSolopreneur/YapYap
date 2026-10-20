@@ -36,6 +36,8 @@ YapYap does both, for free, on your Mac:
   web pages, PDFs, chats, screenshots, even text inside photos.
 - **Hold ⌥S and talk.** Your words appear live as you speak. Let go and they're typed wherever your cursor is.
   For longer dictation, **tap ⌥S** instead: it keeps listening until you tap it again or click ✓.
+  Names on screen (the person you're emailing, a product in the chat) come out spelled right, and if there's no
+  text box to type into, your words wait on the clipboard.
 
 ## Features
 
@@ -104,7 +106,9 @@ The names and text in the screenshots are made up (`YapYap --snapshots <dir> --s
 What you read and say never leaves your Mac.
 
 - **Screen:** each read takes one still image of the window or box you chose. Apple's Vision framework turns it into
-  text on your Mac, then the image is thrown away. Nothing is recorded or saved.
+  text on your Mac, then the image is thrown away. Nothing is recorded or saved. When you dictate, YapYap does the
+  same with the window you're typing in, only to pick out names so they're spelled right
+  ([`ScreenContext.swift`](Sources/YapYap/ScreenContext.swift); turn it off in Settings → Dictation).
 - **Voice:** dictation uses Apple's on-device speech recognition. The microphone is on only while you dictate:
   while you hold the shortcut, or in hands-free mode until you stop it (at most 10 minutes). Audio is never saved. The optional tidy-up uses Apple Intelligence on your Mac, never Private
   Cloud Compute.
@@ -123,11 +127,11 @@ Check it yourself:
 $ grep -rnE 'URLSession\(|https://' Sources
 Sources/YapYap/Kokoro.swift:253:   …/kokoro-v1_0.safetensors
 Sources/YapYap/Kokoro.swift:254:   …/voices.npz
-Sources/YapYap/AppModel.swift:358: session = URLSession(configuration: …)
+Sources/YapYap/AppModel.swift:395: session = URLSession(configuration: …)
 ```
 
-That's all of YapYap's own network code: the voice download. The only other connection is TelemetryDeck's
-anonymous stats. Turn off Wi-Fi once the voices are installed and reading and dictation work the same, or watch
+That's all of YapYap's own network code: the voice download. The only other connections are TelemetryDeck's
+anonymous stats and Sparkle's daily update check (`yapyap.cc/appcast.xml`, then the new version from GitHub). Turn off Wi-Fi once the voices are installed and reading and dictation work the same, or watch
 with a network monitor such as [LuLu](https://objective-see.org/products/lulu.html).
 
 > [!NOTE]

@@ -25,6 +25,8 @@ final class AppModel {
     private(set) var dictationPhase = Dictation.Phase.idle
     /// Listening without the shortcut held; the capsule shows Done and Cancel.
     private(set) var dictationHandsFree = false
+    /// What was dictated last, for Paste Last Dictation. In memory only.
+    private(set) var lastDictation: String?
     /// What dictation has heard so far.
     private(set) var dictationText = ""
     private(set) var micLevel: Float = 0
@@ -56,7 +58,9 @@ final class AppModel {
         self.telemetry = telemetry
         dictation.onStateChange = { [weak self] in self?.syncDictation() }
         dictation.onMessage = { [weak self] in self?.show($0) }
-        dictation.onTyped = { [weak dictation] text in
+        dictation.onNoTextBox = { [weak self] in self?.showLeftover($0) }
+        dictation.onTyped = { [weak self, weak dictation] text in
+            self?.lastDictation = text
             history.addDictation(text)
             telemetry.dictated(words: text.split(whereSeparator: \.isWhitespace).count,
                                handsFree: dictation?.lastWasHandsFree ?? false)
@@ -110,9 +114,10 @@ final class AppModel {
         }
         if controller.phase == .reading { controller.togglePause() }
         let typingHere = (NSApp.keyWindow?.firstResponder as? NSTextView)?.isEditable == true
-        dictation.begin(target: Self.dictationTarget(front: NSWorkspace.shared.frontmostApplication,
-                                                     last: controller.lastApp, typingInYapYap: typingHere),
-                        handsFree: handsFree)
+        let target = Self.dictationTarget(front: NSWorkspace.shared.frontmostApplication,
+                                          last: controller.lastApp, typingInYapYap: typingHere)
+        dictation.begin(target: target, handsFree: handsFree)
+        ScreenContext.terms(in: target) { [weak self] in self?.dictation.setContext($0) }
     }
 
     /// Where dictated text goes: the app in front. When that's YapYap itself, its own text box
@@ -131,6 +136,61 @@ final class AppModel {
 
     /// Cancel or Esc: stop listening and type nothing.
     func cancelDictation() { dictation.cancel() }
+
+    /// Menu bar: type the last dictation again where the cursor is now (or copy it if there's
+    /// no text box).
+    func pasteLastDictation(inserter: TextInserting = Paster()) {
+        guard let text = lastDictation else { return }
+        let app = NSWorkspace.shared.frontmostApplication.flatMap { $0.processIdentifier == getpid() ? controller.lastApp : $0 }
+        let typed = inserter.insert(text, into: app) { [weak self] in self?.showLeftover(text) }
+        if !typed { show("Copied your last dictation. Press ⌘V to paste.") }
+    }
+
+    // MARK: Nowhere to type
+
+    /// Dictated with no text box in focus: the capsule stays up showing everything that was said,
+    /// with Copy, until it's copied, closed (✕ or Esc) or a new dictation starts.
+    private(set) var leftover: String?
+    private(set) var leftoverCopied = false
+    @ObservationIgnored private var leftoverEscape: HotKey?
+
+    func showLeftover(_ text: String) {
+        leftover = text
+        leftoverCopied = false
+        leftoverEscape = HotKey(keyCode: Keys.escape, modifiers: 0) { [weak self] in self?.dismissLeftover() }
+        dictationBar.ignoresMouseEvents = false
+        dictationBar.show()
+        // The card draws on the next pass; size the panel to it then.
+        DispatchQueue.main.async { [weak self] in self?.dictationBar.refit() }
+    }
+
+    /// For `--dictate-test`: what the dictation panel is doing.
+    var dictationBarState: String {
+        "visible=\(dictationBar.isVisible) alpha=\(dictationBar.alphaValue) frame=\(dictationBar.frame) leftover=\(leftover != nil)"
+    }
+
+    /// Screenshots only: the card's content without showing the panel.
+    func previewLeftover(_ text: String) { leftover = text }
+
+    func copyLeftover() {
+        guard let leftover else { return }
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(leftover, forType: .string)
+        leftoverCopied = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) { [weak self] in
+            guard self?.leftover == leftover else { return }
+            self?.dismissLeftover()
+        }
+    }
+
+    func dismissLeftover() {
+        guard leftover != nil else { return }
+        leftover = nil
+        leftoverCopied = false
+        leftoverEscape = nil
+        dictationBar.ignoresMouseEvents = !dictationHandsFree
+        if dictation.phase == .idle { dictationBar.fadeOut() }
+    }
 
     func read(_ window: NSWindow) {
         guard let frame = Capture.frame(of: CGWindowID(window.windowNumber)) else { return }
@@ -316,8 +376,17 @@ final class AppModel {
                 ? HotKey(keyCode: Keys.escape, modifiers: 0) { [weak self] in self?.cancelDictation() } : nil
             dictationBar.ignoresMouseEvents = !dictationHandsFree
         }
+        if dictation.phase != .idle, leftover != nil {
+            // A new dictation replaces the words waiting to be copied.
+            leftover = nil
+            leftoverCopied = false
+            leftoverEscape = nil
+            dictationBar.ignoresMouseEvents = !dictationHandsFree
+            dictationBar.show()
+            DispatchQueue.main.async { [weak self] in self?.dictationBar.refit() }
+        }
         if dictation.phase == .idle {
-            dictationBar.fadeOut()
+            if leftover == nil { dictationBar.fadeOut() }
         } else if !dictationBar.isVisible {
             dictationBar.show()
         }

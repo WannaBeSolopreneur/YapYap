@@ -171,8 +171,9 @@ struct DictationSettings: View {
                     KeyCaps(keys: ["tap"] + settings.dictationShortcut.displayKeys)
                 }
                 Toggle("Remove filler words", isOn: $settings.removeFillers)
+                Toggle("Spell names from the screen", isOn: $settings.useScreenContext)
             } footer: {
-                footnote("Tap the shortcut to keep listening without holding it; tap it again or click ✓ to type, or press Esc to cancel. Takes out um, uh, er and hmm before typing. Change the shortcut under General.")
+                footnote("Tap the shortcut to keep listening without holding it; tap it again or click ✓ to type, or press Esc to cancel. Takes out um, uh, er and hmm before typing. Spelling names from the screen reads the window you're typing in, on your Mac, so names like Priya come out right; nothing is saved. Change the shortcut under General.")
             }
 
             Section {
