@@ -22,8 +22,12 @@ final class DictationPanel: NSPanel {
     override var canBecomeKey: Bool { false }
     override var canBecomeMain: Bool { false }
 
+    /// Bumped by show(), so a fade-out that's still finishing doesn't hide what was just shown.
+    private var generation = 0
+
     /// Bottom centre of the screen with the mouse on it.
     func show() {
+        generation += 1
         if host == nil {
             // Built lazily: AppModel.shared owns this panel and must finish initializing first.
             let view: NSHostingView<AnyView> = FirstClickHostingView(rootView: AnyView(DictationBarView().environment(AppModel.shared)))
@@ -42,10 +46,18 @@ final class DictationPanel: NSPanel {
 
     func fadeOut() {
         guard isVisible else { return }
+        let shown = generation
         NSAnimationContext.runAnimationGroup({ $0.duration = 0.2; animator().alphaValue = 0 }) { [weak self] in
-            guard let self, self.alphaValue == 0 else { return }
+            guard let self, self.generation == shown else { return }
             self.orderOut(nil)
         }
+    }
+
+    /// Fits the panel to its content again, keeping it at the bottom centre: the Copy card is
+    /// taller than the capsule. Call after the content has had a chance to redraw.
+    func refit() {
+        guard isVisible, let size = host?.fittingSize, size != frame.size else { return }
+        setFrame(NSRect(x: (frame.midX - size.width / 2).rounded(), y: frame.minY, width: size.width, height: size.height), display: true)
     }
 }
 

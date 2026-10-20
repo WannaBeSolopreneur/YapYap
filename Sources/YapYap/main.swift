@@ -205,6 +205,30 @@ if args.count == 2, args[1] == "--screen-terms" {
     NSApplication.shared.run()
 }
 
+// `YapYap --dictate-test speech.wav` runs real hands-free dictation on the file (instead of the
+// mic) into whatever app is in front, then reports what the dictation panel did. Launch with
+// `open -g --stdout` so the app in front stays in front.
+if args.count == 3, args[1] == "--dictate-test" {
+    let app = NSApplication.shared
+    app.setActivationPolicy(.accessory)
+    Demo.dictationAudio = URL(fileURLWithPath: args[2])
+    let model = AppModel.shared
+    let seconds = (try? AVAudioFile(forReading: URL(fileURLWithPath: args[2]))).map { Double($0.length) / $0.processingFormat.sampleRate } ?? 3
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        print("front: \(NSWorkspace.shared.frontmostApplication?.localizedName ?? "?") — \(Paster.describeFocus()) → \(Paster.focusIsClearlyNotText() ? "card" : "paste")")
+        model.startDictation(handsFree: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds + 1.5) {
+            print("finishing: \(model.dictationBarState)")
+            model.finishDictation()
+            for t in [0.5, 1.5, 3.0, 6.0] {
+                DispatchQueue.main.asyncAfter(deadline: .now() + t) { print(String(format: "+%.1fs: ", t) + model.dictationBarState) }
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 6.5) { print("text: \(model.leftover ?? model.lastDictation ?? "-")"); exit(0) }
+        }
+    }
+    app.run()
+}
+
 // `YapYap --demo outdir speech.wav` records the product film's take (see Demo.swift).
 if args.count == 4, args[1] == "--demo" {
     MainActor.assumeIsolated { Demo.run(out: URL(fileURLWithPath: args[2]), speech: URL(fileURLWithPath: args[3])) }

@@ -160,6 +160,13 @@ final class AppModel {
         leftoverEscape = HotKey(keyCode: Keys.escape, modifiers: 0) { [weak self] in self?.dismissLeftover() }
         dictationBar.ignoresMouseEvents = false
         dictationBar.show()
+        // The card draws on the next pass; size the panel to it then.
+        DispatchQueue.main.async { [weak self] in self?.dictationBar.refit() }
+    }
+
+    /// For `--dictate-test`: what the dictation panel is doing.
+    var dictationBarState: String {
+        "visible=\(dictationBar.isVisible) alpha=\(dictationBar.alphaValue) frame=\(dictationBar.frame) leftover=\(leftover != nil)"
     }
 
     /// Screenshots only: the card's content without showing the panel.
@@ -376,6 +383,7 @@ final class AppModel {
             leftoverEscape = nil
             dictationBar.ignoresMouseEvents = !dictationHandsFree
             dictationBar.show()
+            DispatchQueue.main.async { [weak self] in self?.dictationBar.refit() }
         }
         if dictation.phase == .idle {
             if leftover == nil { dictationBar.fadeOut() }
