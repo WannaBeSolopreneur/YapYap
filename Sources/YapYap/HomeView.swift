@@ -216,7 +216,7 @@ private struct DictatePanel: View {
                 .padding(.bottom, 12)
             }
         }
-        .help("Hold \(model.settings.dictationShortcut.displayKeys.joined()) in any app where you can type")
+        .help("Hold \(model.settings.dictationShortcut.displayKeys.joined()) in any app where you can type, or tap it to keep listening hands-free")
     }
 }
 

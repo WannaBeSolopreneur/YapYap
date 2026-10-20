@@ -167,9 +167,12 @@ struct DictationSettings: View {
                 LabeledContent("Dictate") {
                     KeyCaps(keys: ["hold"] + settings.dictationShortcut.displayKeys)
                 }
+                LabeledContent("Hands-free") {
+                    KeyCaps(keys: ["tap"] + settings.dictationShortcut.displayKeys)
+                }
                 Toggle("Remove filler words", isOn: $settings.removeFillers)
             } footer: {
-                footnote("Takes out um, uh, er and hmm before typing. Change the shortcut under General.")
+                footnote("Tap the shortcut to keep listening without holding it; tap it again or click ✓ to type, or press Esc to cancel. Takes out um, uh, er and hmm before typing. Change the shortcut under General.")
             }
 
             Section {

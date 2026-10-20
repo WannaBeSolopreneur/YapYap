@@ -48,9 +48,9 @@ cat > "$APP/Contents/Info.plist" <<PLIST
     <key>NSScreenCaptureUsageDescription</key>
     <string>YapYap captures the window you ask it to read so it can find the words. Nothing leaves your Mac.</string>
     <key>NSMicrophoneUsageDescription</key>
-    <string>YapYap listens while you hold the dictation shortcut and types what you say. Speech is recognized on your Mac.</string>
+    <string>YapYap listens only while you dictate (hold the shortcut, or tap it for hands-free) and types what you say. Speech is recognized on your Mac.</string>
     <key>NSSpeechRecognitionUsageDescription</key>
-    <string>YapYap turns what you say into text while you hold the dictation shortcut.</string>
+    <string>YapYap turns what you say into text while you dictate.</string>
     <key>SUFeedURL</key><string>https://yapyap.cc/appcast.xml</string>
     <key>SUPublicEDKey</key><string>dO3+zMLp0xNh7JIBb0nV8XfRIdA2FY3JkwjiYRY95aw=</string>
     <key>SUEnableAutomaticChecks</key><true/>

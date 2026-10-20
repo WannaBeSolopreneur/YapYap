@@ -41,15 +41,89 @@ final class DictationTests: XCTestCase {
     private var cleanup = Dictation.Cleanup(removeFillers: true, polish: false)
     private var dictation: Dictation!
     private var messages: [String] = []
+    /// The test moves time forward to make a press a tap or a hold.
+    private var clock = Date(timeIntervalSince1970: 0)
 
     override func setUp() {
         engine = FakeTranscriber()
         inserter = FakeInserter()
         polisher = FakePolisher()
         dictation = Dictation(makeTranscriber: { [unowned self] in self.engine }, inserter: inserter,
-                              polisher: polisher, cleanup: { [unowned self] in self.cleanup })
+                              polisher: polisher, cleanup: { [unowned self] in self.cleanup },
+                              now: { [unowned self] in self.clock })
         dictation.onMessage = { [unowned self] in self.messages.append($0) }
     }
+
+    // MARK: Hands-free
+
+    private func tap() {
+        dictation.begin(target: nil)
+        clock += 0.1
+        dictation.release()
+    }
+
+    func testTapKeepsListeningUntilFinished() {
+        tap()
+        engine.started?(nil)
+        XCTAssertTrue(dictation.handsFree)
+        XCTAssertEqual(dictation.phase, .listening)
+        engine.onText?("A long thought")
+        dictation.end()
+        XCTAssertFalse(dictation.handsFree)
+        XCTAssertEqual(dictation.phase, .finishing)
+        engine.finished?("A long thought.")
+        XCTAssertEqual(inserter.inserted, ["A long thought."])
+        XCTAssertTrue(dictation.lastWasHandsFree)
+    }
+
+    func testHoldStillTypesOnRelease() {
+        dictation.begin(target: nil)
+        engine.started?(nil)
+        clock += 1
+        dictation.release()
+        XCTAssertFalse(dictation.handsFree)
+        XCTAssertEqual(dictation.phase, .finishing)
+        engine.finished?("Held.")
+        XCTAssertEqual(inserter.inserted, ["Held."])
+        XCTAssertFalse(dictation.lastWasHandsFree)
+    }
+
+    func testTapBeforeReadyStillGoesHandsFree() {
+        tap()
+        XCTAssertEqual(dictation.phase, .starting)
+        engine.started?(nil)
+        XCTAssertEqual(dictation.phase, .listening, "a tap must not finish once the engine is ready")
+    }
+
+    func testLaterReleasesDontStopHandsFree() {
+        tap()
+        engine.started?(nil)
+        clock += 5
+        dictation.release()
+        XCTAssertEqual(dictation.phase, .listening)
+    }
+
+    func testCancelHandsFreeTypesNothing() {
+        tap()
+        engine.started?(nil)
+        engine.onText?("Never mind")
+        dictation.cancel()
+        XCTAssertEqual(dictation.phase, .idle)
+        XCTAssertFalse(dictation.handsFree)
+        XCTAssertTrue(engine.cancelled)
+        XCTAssertEqual(inserter.inserted, [])
+    }
+
+    func testStartFromMenuIsHandsFree() {
+        dictation.begin(target: nil, handsFree: true)
+        engine.started?(nil)
+        clock += 1
+        dictation.release()
+        XCTAssertTrue(dictation.handsFree)
+        XCTAssertEqual(dictation.phase, .listening)
+    }
+
+    // MARK: Hold to talk
 
     func testHoldSpeakRelease() {
         dictation.begin(target: nil)

@@ -234,7 +234,7 @@ private struct PermissionsStep: View {
 
             VStack(spacing: 0) {
                 AccessRow(symbol: "mic.fill", title: "Microphone",
-                          detail: "Hears you while you hold \(model.settings.dictationShortcut.displayKeys.joined()).") {
+                          detail: "Hears you only while you dictate: hold \(model.settings.dictationShortcut.displayKeys.joined()), or tap it to keep listening.") {
                     if model.micAllowed { Allowed() } else { Button("Allow") { DictationAccess.requestMicrophone() } }
                 }
                 if DictationAccess.needsSpeech {

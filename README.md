@@ -35,6 +35,7 @@ YapYap does both, for free, on your Mac:
 - **Press ⌥A, drag over any text, and listen.** A highlight follows each word on the original page, in any app:
   web pages, PDFs, chats, screenshots, even text inside photos.
 - **Hold ⌥S and talk.** Your words appear live as you speak. Let go and they're typed wherever your cursor is.
+  For longer dictation, **tap ⌥S** instead: it keeps listening until you tap it again or click ✓.
 
 ## Features
 
@@ -90,6 +91,7 @@ The names and text in the screenshots are made up (`YapYap --snapshots <dir> --s
 | ⌥A | Drag over any part of the screen to read it |
 | ⌥⌘R | Read the front window |
 | Hold ⌥S | Dictate: talk, then let go to type |
+| Tap ⌥S | Dictate hands-free: keeps listening until you tap ⌥S again or click ✓ (Esc cancels) |
 | ⌥⌘P | Pause or resume |
 | ⌥⌘= / ⌥⌘- | Faster / slower |
 | ⌥ + click | Read from that word |
@@ -103,8 +105,8 @@ What you read and say never leaves your Mac.
 
 - **Screen:** each read takes one still image of the window or box you chose. Apple's Vision framework turns it into
   text on your Mac, then the image is thrown away. Nothing is recorded or saved.
-- **Voice:** dictation uses Apple's on-device speech recognition. The microphone is on only while you hold the
-  shortcut, and audio is never saved. The optional tidy-up uses Apple Intelligence on your Mac, never Private
+- **Voice:** dictation uses Apple's on-device speech recognition. The microphone is on only while you dictate:
+  while you hold the shortcut, or in hands-free mode until you stop it (at most 10 minutes). Audio is never saved. The optional tidy-up uses Apple Intelligence on your Mac, never Private
   Cloud Compute.
 - **Speech:** the Kokoro voices run locally with [MLX](https://github.com/ml-explore/mlx-swift).
 - **Two one-time downloads:** the Kokoro voices (about 340 MB, from GitHub, fetched in the background on first

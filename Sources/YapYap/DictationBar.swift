@@ -26,7 +26,7 @@ final class DictationPanel: NSPanel {
     func show() {
         if host == nil {
             // Built lazily: AppModel.shared owns this panel and must finish initializing first.
-            let view = NSHostingView(rootView: AnyView(DictationBarView().environment(AppModel.shared)))
+            let view: NSHostingView<AnyView> = FirstClickHostingView(rootView: AnyView(DictationBarView().environment(AppModel.shared)))
             view.sizingOptions = [.intrinsicContentSize]
             contentView = view
             host = view
@@ -49,6 +49,12 @@ final class DictationPanel: NSPanel {
     }
 }
 
+/// The panel never becomes key, so the first click has to count: Done and Cancel work in one click
+/// while the app you're typing in keeps focus.
+private final class FirstClickHostingView<Content: View>: NSHostingView<Content> {
+    override func acceptsFirstMouse(for event: NSEvent?) -> Bool { true }
+}
+
 struct DictationBarView: View {
     @Environment(AppModel.self) private var model
 
@@ -62,8 +68,19 @@ struct DictationBarView: View {
                 .truncationMode(.head)
                 .frame(width: 300, alignment: .leading)
                 .animation(nil, value: model.dictationText)
-            KeyCaps(keys: model.settings.dictationShortcut.displayKeys)
-                .opacity(model.dictationPhase == .listening ? 1 : 0)
+            // Same width either way, so the capsule doesn't resize when hands-free starts.
+            ZStack(alignment: .trailing) {
+                if model.dictationHandsFree {
+                    HStack(spacing: 6) {
+                        capsuleButton("xmark", label: "Cancel", tint: .secondary) { model.cancelDictation() }
+                        capsuleButton("checkmark", label: "Done", tint: .accentColor) { model.finishDictation() }
+                    }
+                } else {
+                    KeyCaps(keys: model.settings.dictationShortcut.displayKeys)
+                        .opacity(model.dictationPhase == .listening ? 1 : 0)
+                }
+            }
+            .frame(width: 62, alignment: .trailing)
         }
         .padding(.leading, 10)
         .padding(.trailing, 14)
@@ -71,7 +88,21 @@ struct DictationBarView: View {
         .glassBackground(in: Capsule())
         .padding(12) // room for the glass shadow inside the panel
         .fixedSize()
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: model.dictationHandsFree ? .contain : .combine)
+    }
+
+    private func capsuleButton(_ symbol: String, label: String, tint: Color, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: symbol)
+                .font(.system(size: 11, weight: .bold))
+                .foregroundStyle(tint)
+                .frame(width: 26, height: 26)
+                .background(.primary.opacity(0.08), in: Circle())
+                .contentShape(Circle())
+        }
+        .buttonStyle(.plain)
+        .help(label)
+        .accessibilityLabel(label)
     }
 
     private var caption: String {
@@ -79,7 +110,12 @@ struct DictationBarView: View {
         case .starting: return "Getting ready…"
         case .finishing: return model.dictationText.isEmpty ? "Finishing…" : model.dictationText
         case .polishing: return "Tidying up…"
-        case .idle, .listening: return model.dictationText.isEmpty ? "Listening… let go to type" : model.dictationText
+        case .idle, .listening:
+            guard model.dictationText.isEmpty else { return model.dictationText }
+            if model.dictationHandsFree {
+                return "Listening… press \(model.settings.dictationShortcut.displayKeys.joined()) or ✓ to type"
+            }
+            return "Listening… let go to type"
         }
     }
 

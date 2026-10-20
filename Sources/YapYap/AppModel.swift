@@ -23,6 +23,8 @@ final class AppModel {
     private(set) var kokoroInstalled = KokoroSpeaker.isInstalled
     let download = KokoroDownload()
     private(set) var dictationPhase = Dictation.Phase.idle
+    /// Listening without the shortcut held; the capsule shows Done and Cancel.
+    private(set) var dictationHandsFree = false
     /// What dictation has heard so far.
     private(set) var dictationText = ""
     private(set) var micLevel: Float = 0
@@ -36,6 +38,7 @@ final class AppModel {
     @ObservationIgnored private let dictationBar = DictationPanel()
     @ObservationIgnored private var messageWork: DispatchWorkItem?
     @ObservationIgnored private var hideBarWork: DispatchWorkItem?
+    @ObservationIgnored private var dictationEscape: HotKey?
 
     var settings: Settings { .shared }
     var isReading: Bool { phase != .idle }
@@ -53,9 +56,10 @@ final class AppModel {
         self.telemetry = telemetry
         dictation.onStateChange = { [weak self] in self?.syncDictation() }
         dictation.onMessage = { [weak self] in self?.show($0) }
-        dictation.onTyped = { text in
+        dictation.onTyped = { [weak dictation] text in
             history.addDictation(text)
-            telemetry.dictated(words: text.split(whereSeparator: \.isWhitespace).count)
+            telemetry.dictated(words: text.split(whereSeparator: \.isWhitespace).count,
+                               handsFree: dictation?.lastWasHandsFree ?? false)
         }
         controller.onReadFinished = { text, words, seconds in
             history.addRead(text, words: words, seconds: seconds)
@@ -93,7 +97,10 @@ final class AppModel {
     func skip(by direction: Int) { controller.skip(by: direction) }
 
     /// Dictation shortcut went down: pause any reading so the mic doesn't hear it, then listen.
-    func startDictation() {
+    /// In hands-free mode, pressing it again finishes instead. `handsFree` (Start Dictation in
+    /// the menu) listens until Done, the shortcut or Esc.
+    func startDictation(handsFree: Bool = false) {
+        if dictation.handsFree { return finishDictation() }
         guard dictation.phase == .idle else { return }
         refreshPermission()
         guard dictationAllowed else {
@@ -104,7 +111,8 @@ final class AppModel {
         if controller.phase == .reading { controller.togglePause() }
         let typingHere = (NSApp.keyWindow?.firstResponder as? NSTextView)?.isEditable == true
         dictation.begin(target: Self.dictationTarget(front: NSWorkspace.shared.frontmostApplication,
-                                                     last: controller.lastApp, typingInYapYap: typingHere))
+                                                     last: controller.lastApp, typingInYapYap: typingHere),
+                        handsFree: handsFree)
     }
 
     /// Where dictated text goes: the app in front. When that's YapYap itself, its own text box
@@ -115,7 +123,14 @@ final class AppModel {
         return typingInYapYap ? front : last
     }
 
-    func stopDictation() { dictation.end() }
+    /// Dictation shortcut came back up: types after a hold, keeps listening after a quick tap.
+    func stopDictation() { dictation.release() }
+
+    /// Done (or the shortcut again) in hands-free mode: type what was said.
+    func finishDictation() { dictation.end() }
+
+    /// Cancel or Esc: stop listening and type nothing.
+    func cancelDictation() { dictation.cancel() }
 
     func read(_ window: NSWindow) {
         guard let frame = Capture.frame(of: CGWindowID(window.windowNumber)) else { return }
@@ -294,6 +309,13 @@ final class AppModel {
         if dictationPhase != dictation.phase { dictationPhase = dictation.phase }
         if dictationText != dictation.text { dictationText = dictation.text }
         if micLevel != dictation.level { micLevel = dictation.level }
+        if dictationHandsFree != dictation.handsFree {
+            dictationHandsFree = dictation.handsFree
+            // Esc cancels, and the capsule takes clicks for Done and Cancel, only while hands-free.
+            dictationEscape = dictationHandsFree
+                ? HotKey(keyCode: Keys.escape, modifiers: 0) { [weak self] in self?.cancelDictation() } : nil
+            dictationBar.ignoresMouseEvents = !dictationHandsFree
+        }
         if dictation.phase == .idle {
             dictationBar.fadeOut()
         } else if !dictationBar.isVisible {
