@@ -61,6 +61,8 @@ final class Settings {
     var autoDownloadVoices: Bool { didSet { defaults.set(autoDownloadVoices, forKey: "autoDownloadVoices") } }
     /// Send anonymous usage stats (counts and timings, never text). On unless turned off.
     var shareUsageStats: Bool { didSet { defaults.set(shareUsageStats, forKey: "shareUsageStats") } }
+    /// Ask for Touch ID before pasting a saved key or password.
+    var requireTouchIDForSecrets: Bool { didSet { defaults.set(requireTouchIDForSecrets, forKey: "requireTouchIDForSecrets") } }
     /// Which speech-to-text model dictation uses.
     var dictationEngine: DictationEngine { didSet { defaults.set(dictationEngine.rawValue, forKey: "dictationEngine") } }
     /// Held down to dictate.
@@ -83,6 +85,7 @@ final class Settings {
         autoDownloadVoices = defaults.object(forKey: "autoDownloadVoices") as? Bool ?? true
         useScreenContext = defaults.object(forKey: "useScreenContext") as? Bool ?? true
         shareUsageStats = defaults.object(forKey: "shareUsageStats") as? Bool ?? true
+        requireTouchIDForSecrets = defaults.bool(forKey: "requireTouchIDForSecrets")
         dictationEngine = DictationEngine(rawValue: defaults.string(forKey: "dictationEngine") ?? "") ?? .parakeet
         dictationShortcut = defaults.data(forKey: "dictationShortcut").flatMap { try? JSONDecoder().decode(KeyCombo.self, from: $0) } ?? .defaultDictation
     }

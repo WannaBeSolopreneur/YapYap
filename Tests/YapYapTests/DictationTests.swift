@@ -29,11 +29,13 @@ private final class FakePolisher: TextPolishing {
 
 private final class FakeInserter: TextInserting {
     var inserted: [String] = []
+    var secrets: [Bool] = []
     var allowed = true
     /// Pretend nothing that takes text has focus.
     var noTextBox = false
-    func insert(_ text: String, into app: NSRunningApplication?, noField: @escaping () -> Void) -> Bool {
+    func insert(_ text: String, into app: NSRunningApplication?, secret: Bool, noField: @escaping () -> Void) -> Bool {
         inserted.append(text)
+        secrets.append(secret)
         if noTextBox { noField() }
         return allowed
     }
@@ -48,6 +50,12 @@ final class DictationTests: XCTestCase {
     private var messages: [String] = []
     /// The test moves time forward to make a press a tap or a hold.
     private var clock = Date(timeIntervalSince1970: 0)
+    private var savedItems: [SavedItem] = []
+    private var ownerCheck = false
+    private var ownerAllows = true
+    private var ownerAsked: [String] = []
+    /// The confirmation pause, run when the test says.
+    private var scheduled: [() -> Void] = []
 
     override func setUp() {
         engine = FakeTranscriber()
@@ -55,8 +63,83 @@ final class DictationTests: XCTestCase {
         polisher = FakePolisher()
         dictation = Dictation(makeTranscriber: { [unowned self] in self.engine }, inserter: inserter,
                               polisher: polisher, cleanup: { [unowned self] in self.cleanup },
+                              saved: { [unowned self] said in
+                                  SavedText(storage: MemoryStorage(items: self.savedItems)).match(said)
+                              },
+                              requiresOwnerCheck: { [unowned self] in self.ownerCheck },
+                              checkOwner: { [unowned self] reason, done in self.ownerAsked.append(reason); done(self.ownerAllows) },
+                              schedule: { [unowned self] _, work in self.scheduled.append(work) },
                               now: { [unowned self] in self.clock })
         dictation.onMessage = { [unowned self] in self.messages.append($0) }
+    }
+
+    // MARK: Saved text
+
+    func testSavedTextPastesAfterAMoment() {
+        savedItems = [SavedItem(name: "Email address", value: "asad@example.com")]
+        var pasted: [String] = []
+        dictation.onSavedPasted = { pasted.append($0.name) }
+        say("Paste my email address.")
+        XCTAssertEqual(dictation.phase, .confirming)
+        XCTAssertEqual(dictation.text, "Pasting Email address…")
+        XCTAssertEqual(inserter.inserted, [], "not before the moment to press Esc")
+        scheduled.forEach { $0() }
+        XCTAssertEqual(inserter.inserted, ["asad@example.com"])
+        XCTAssertEqual(inserter.secrets, [false])
+        XCTAssertEqual(pasted, ["Email address"])
+        XCTAssertEqual(dictation.phase, .idle)
+    }
+
+    func testEscBeforeItsPastedPastesNothing() {
+        savedItems = [SavedItem(name: "Home address", value: "1 Main St")]
+        say("home address")
+        dictation.cancel()
+        scheduled.forEach { $0() }
+        XCTAssertEqual(inserter.inserted, [])
+        XCTAssertEqual(dictation.phase, .idle)
+    }
+
+    func testSecretsAreMarkedAndSkipTidying() {
+        cleanup = Dictation.Cleanup(removeFillers: true, polish: true)
+        savedItems = [SavedItem(name: "ElevenLabs key", value: "sk_123", secret: true)]
+        say("Um, paste the 11 labs key")
+        scheduled.forEach { $0() }
+        XCTAssertEqual(inserter.inserted, ["sk_123"])
+        XCTAssertEqual(inserter.secrets, [true])
+        XCTAssertEqual(polisher.asked, [], "the request isn't sent for tidying")
+    }
+
+    func testTouchIDWhenAskedFor() {
+        savedItems = [SavedItem(name: "ElevenLabs key", value: "sk_123", secret: true), SavedItem(name: "Email address", value: "a@b.c")]
+        ownerCheck = true
+        ownerAllows = false
+        say("ElevenLabs key")
+        scheduled.forEach { $0() }
+        XCTAssertEqual(ownerAsked, ["paste your ElevenLabs key"])
+        XCTAssertEqual(inserter.inserted, [], "refused")
+
+        scheduled = []
+        say("email address")
+        scheduled.forEach { $0() }
+        XCTAssertEqual(ownerAsked.count, 1, "plain text doesn't need Touch ID")
+        XCTAssertEqual(inserter.inserted, ["a@b.c"])
+    }
+
+    func testSavedItemWithNowhereToPaste() {
+        savedItems = [SavedItem(name: "ElevenLabs key", value: "sk_123", secret: true)]
+        inserter.noTextBox = true
+        var card: SavedItem?
+        dictation.onSavedNoTextBox = { card = $0 }
+        say("paste my ElevenLabs key")
+        scheduled.forEach { $0() }
+        XCTAssertEqual(card?.name, "ElevenLabs key")
+    }
+
+    func testOrdinaryDictationIsStillTyped() {
+        savedItems = [SavedItem(name: "Email address", value: "a@b.c")]
+        say("Send it to my email address tomorrow.")
+        XCTAssertEqual(inserter.inserted, ["Send it to my email address tomorrow."])
+        XCTAssertTrue(scheduled.isEmpty)
     }
 
     // MARK: Hands-free

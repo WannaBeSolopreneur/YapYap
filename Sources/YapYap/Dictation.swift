@@ -17,6 +17,8 @@ final class Dictation {
         case finishing
         /// Apple Intelligence is tidying the text.
         case polishing
+        /// A saved item was asked for: "Pasting Email address…", a moment to press Esc.
+        case confirming
     }
 
     /// How to clean up what was said before typing it.
@@ -50,11 +52,19 @@ final class Dictation {
     var onTyped: ((String) -> Void)?
     /// Nothing that takes text had focus: the words are on the clipboard, to show with a Copy button.
     var onNoTextBox: ((String) -> Void)?
+    /// A saved item was pasted (or copied, when there was nowhere to paste it).
+    var onSavedPasted: ((SavedItem) -> Void)?
+    /// A saved item with nowhere to paste it: on the clipboard, to show with a Copy button.
+    var onSavedNoTextBox: ((SavedItem) -> Void)?
 
     private let makeTranscriber: () -> Transcriber
     private let inserter: TextInserting
     private let polisher: TextPolishing
     private let cleanup: () -> Cleanup
+    private let saved: (String) -> SavedItem?
+    private let requiresOwnerCheck: () -> Bool
+    private let checkOwner: (String, @escaping (Bool) -> Void) -> Void
+    private let schedule: (TimeInterval, @escaping () -> Void) -> Void
     private var transcriber: Transcriber?
     /// The app to type into: whichever was in front when the shortcut went down.
     private var target: NSRunningApplication?
@@ -70,14 +80,24 @@ final class Dictation {
     static let tapLength: TimeInterval = 0.35
     /// Hands-free sessions finish and type on their own after this long.
     static let handsFreeMaximum: TimeInterval = 10 * 60
+    /// How long "Pasting …" shows before it's pasted, to catch the wrong item with Esc.
+    static let confirmDelay: TimeInterval = 0.5
 
     init(makeTranscriber: @escaping () -> Transcriber = Dictation.systemTranscriber, inserter: TextInserting = Paster(),
          polisher: TextPolishing = Dictation.systemPolisher(), cleanup: @escaping () -> Cleanup = { .current },
+         saved: @escaping (String) -> SavedItem? = { SavedText.shared.match($0) },
+         requiresOwnerCheck: @escaping () -> Bool = { Settings.shared.requireTouchIDForSecrets },
+         checkOwner: @escaping (String, @escaping (Bool) -> Void) -> Void = OwnerCheck.confirm,
+         schedule: @escaping (TimeInterval, @escaping () -> Void) -> Void = { DispatchQueue.main.asyncAfter(deadline: .now() + $0, execute: $1) },
          now: @escaping () -> Date = Date.init) {
         self.makeTranscriber = makeTranscriber
         self.inserter = inserter
         self.polisher = polisher
         self.cleanup = cleanup
+        self.saved = saved
+        self.requiresOwnerCheck = requiresOwnerCheck
+        self.checkOwner = checkOwner
+        self.schedule = schedule
         self.now = now
     }
 
@@ -184,6 +204,8 @@ final class Dictation {
             let id = session
             transcriber?.finish { [weak self] said in
                 guard let self, self.session == id else { return }
+                // Before any tidying, which could change the words of the request.
+                if let item = self.saved(Fillers.strip(said)) { return self.confirm(item) }
                 let options = self.cleanup()
                 let filtered = options.removeFillers ? Fillers.strip(said) : said
                 guard !filtered.isEmpty else { return self.reset() }
@@ -197,8 +219,34 @@ final class Dictation {
                     self.type(faithful ?? filtered)
                 }
             }
-        case .idle, .finishing, .polishing:
+        case .idle, .finishing, .polishing, .confirming:
             break
+        }
+    }
+
+    /// Shows which item is about to be pasted, then pastes it unless Esc cancelled. Keys and
+    /// passwords ask for Touch ID first when Settings says so.
+    private func confirm(_ item: SavedItem) {
+        let id = session
+        text = "Pasting \(item.name)…"
+        setPhase(.confirming)
+        schedule(Self.confirmDelay) { [weak self] in
+            guard let self, self.session == id else { return }
+            guard item.secret, self.requiresOwnerCheck() else { return self.paste(item) }
+            self.checkOwner("paste your \(item.name)") { [weak self] allowed in
+                guard let self, self.session == id else { return }
+                allowed ? self.paste(item) : self.reset()
+            }
+        }
+    }
+
+    private func paste(_ item: SavedItem) {
+        let target = self.target
+        reset()
+        onSavedPasted?(item)
+        let copied: () -> Void = { [weak self] in self?.onSavedNoTextBox?(item) }
+        if !inserter.insert(item.value, into: target, secret: item.secret, noField: copied) {
+            onMessage?("Copied \(item.name). Press ⌘V to paste, or allow YapYap in Accessibility to paste it for you.")
         }
     }
 
@@ -664,14 +712,21 @@ protocol TextInserting {
     /// False when the text was only left on the clipboard (no permission to type).
     /// `noField` is called instead of typing when nothing that takes text has focus; the text
     /// is then left on the clipboard to paste wherever the user wants.
-    func insert(_ text: String, into app: NSRunningApplication?, noField: @escaping () -> Void) -> Bool
+    /// `secret`: a key or password, marked so clipboard managers skip it.
+    func insert(_ text: String, into app: NSRunningApplication?, secret: Bool, noField: @escaping () -> Void) -> Bool
+}
+
+extension TextInserting {
+    func insert(_ text: String, into app: NSRunningApplication?, noField: @escaping () -> Void) -> Bool {
+        insert(text, into: app, secret: false, noField: noField)
+    }
 }
 
 /// Types text into another app by pasting: clipboard, ⌘V, then the old clipboard back.
 /// Pasting works in every kind of text field, unlike setting text through Accessibility.
 /// Sending ⌘V needs the Accessibility permission; without it the text stays on the clipboard.
 struct Paster: TextInserting {
-    func insert(_ text: String, into app: NSRunningApplication?, noField: @escaping () -> Void) -> Bool {
+    func insert(_ text: String, into app: NSRunningApplication?, secret: Bool, noField: @escaping () -> Void) -> Bool {
         let board = NSPasteboard.general
         let saved = Self.copyItems(of: board)
         // This Mac only: not to other devices over Universal Clipboard, and marked so
@@ -681,6 +736,7 @@ struct Paster: TextInserting {
         item.setString(text, forType: .string)
         item.setData(Data(), forType: NSPasteboard.PasteboardType("org.nspasteboard.TransientType"))
         item.setData(Data(), forType: NSPasteboard.PasteboardType("org.nspasteboard.AutoGeneratedType"))
+        if secret { item.setData(Data(), forType: Self.concealed) }
         board.writeObjects([item])
         let ours = board.changeCount
 
@@ -697,8 +753,7 @@ struct Paster: TextInserting {
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
             if Self.focusIsClearlyNotText() {
                 // Nowhere to type: keep the words on the clipboard, as an ordinary copy.
-                board.clearContents()
-                board.setString(text, forType: .string)
+                Self.copy(text, secret: secret)
                 return noField()
             }
             Self.pressCommandV()
@@ -741,6 +796,24 @@ struct Paster: TextInserting {
     }
 
     static let textRoles: Set<String> = ["AXTextField", "AXTextArea", "AXComboBox", "AXSearchField"]
+
+    /// Marks a password: clipboard managers don't keep or show it (nspasteboard.org).
+    static let concealed = NSPasteboard.PasteboardType("org.nspasteboard.ConcealedType")
+
+    /// Puts text on the clipboard to paste yourself; a secret stays on this Mac and out of clipboard managers.
+    static func copy(_ text: String, secret: Bool = false) {
+        let board = NSPasteboard.general
+        if secret {
+            board.prepareForNewContents(with: .currentHostOnly)
+            let item = NSPasteboardItem()
+            item.setString(text, forType: .string)
+            item.setData(Data(), forType: concealed)
+            board.writeObjects([item])
+        } else {
+            board.clearContents()
+            board.setString(text, forType: .string)
+        }
+    }
 
     /// The front app's focused element. Asked of the app itself: the system-wide element often
     /// answers "cannot complete" (-25204) on current macOS.

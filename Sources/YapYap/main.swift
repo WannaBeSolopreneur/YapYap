@@ -246,6 +246,21 @@ if args.count == 3, args[1] == "--dictate-test" {
     app.run()
 }
 
+// `YapYap --keychain-test` saves, reads back and deletes a made-up saved item, away from the real list.
+if args.count == 2, args[1] == "--keychain-test" {
+    let storage = KeychainStorage(service: "cc.yapyap.app.saved-text.test")
+    let items = [SavedItem(name: "Test key", value: "sk_test_\(UUID().uuidString)", secret: true)]
+    storage.save(items)
+    let first = storage.load() == items
+    var changed = items
+    changed[0].value = "changed"
+    storage.save(changed)
+    let second = storage.load() == changed
+    storage.delete()
+    print("saved and read back: \(first), updated: \(second), deleted: \(storage.load().isEmpty)")
+    exit(first && second ? 0 : 1)
+}
+
 // `YapYap --engine-test` shows which speech model dictation would use now and once Parakeet is ready.
 if args.count == 2, args[1] == "--engine-test" {
     let started = Date()

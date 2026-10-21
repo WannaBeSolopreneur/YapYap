@@ -61,6 +61,9 @@ YapYap does both, for free, on your Mac:
   drops filler "like"s, stutters and self-corrections ("Tuesday, no, Wednesday" becomes "Wednesday").
 - **Never makes things up:** if the tidy-up adds a word you didn't say, YapYap types your plain words instead.
 - **Your clipboard is put back** after typing.
+- **Saved text by voice:** save your email address, home address or an API key under **Saved**, then dictate just
+  its name ("email address") or ask ("paste my ElevenLabs key") and it's pasted. Kept in your Mac's keychain; keys
+  and passwords are never kept in history and clipboard apps are told not to keep them. Touch ID is optional.
 
 **And**
 
@@ -120,6 +123,8 @@ What you read and say never leaves your Mac.
   launch; remove them in Settings → Reading and they stay gone), the Parakeet speech model (about 700 MB, from
   Hugging Face, fetched by FluidAudio in the background; switch to Apple in Settings → Dictation to remove it), and on
   macOS 26 Apple's speech model, which macOS fetches itself.
+- **Saved text:** what you save under Saved stays in your Mac's keychain, on this Mac only
+  ([`SavedText.swift`](Sources/YapYap/SavedText.swift)). Keys and passwords never go into your history.
 - **Anonymous stats:** official builds send anonymous counts through [TelemetryDeck](https://telemetrydeck.com),
   like how many words were read and how quickly the voice started. Never text, audio, window titles or app names.
   Turn it off in Settings → Privacy. Builds from this repo send nothing unless you add your own TelemetryDeck App ID.
@@ -131,7 +136,7 @@ Check it yourself:
 $ grep -rnE 'URLSession\(|https://' Sources
 Sources/YapYap/Kokoro.swift:253:   …/kokoro-v1_0.safetensors
 Sources/YapYap/Kokoro.swift:254:   …/voices.npz
-Sources/YapYap/AppModel.swift:450: session = URLSession(configuration: …)
+Sources/YapYap/AppModel.swift:471: session = URLSession(configuration: …)
 ```
 
 That's all of YapYap's own network code: the voice download. FluidAudio fetches the Parakeet model from
