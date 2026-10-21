@@ -158,6 +158,8 @@ struct DictationSettings: View {
     @Environment(AppModel.self) private var model
     /// Checked when the tab appears; Apple Intelligence can be turned on while YapYap runs.
     @State private var aiStatus = AppleIntelligence.status
+    /// The files are checked on disk, which SwiftUI doesn't watch.
+    @State private var parakeetRemoved = false
 
     var body: some View {
         @Bindable var settings = model.settings
@@ -178,17 +180,25 @@ struct DictationSettings: View {
 
             Section {
                 Picker("Speech model", selection: $settings.dictationEngine) {
+                    Text("Parakeet").tag(DictationEngine.parakeet)
                     Text("Apple").tag(DictationEngine.apple)
-                    Text("Parakeet (trial)").tag(DictationEngine.parakeet)
                 }
                 .onChange(of: settings.dictationEngine) { _, engine in
                     // Have it ready before the next dictation.
-                    if engine == .parakeet { Task { try? await ParakeetEngine.shared.load() } }
+                    if engine == .parakeet { ParakeetEngine.prepare() }
+                }
+                if settings.dictationEngine == .apple, !parakeetRemoved, ParakeetEngine.isDownloaded {
+                    Button("Remove Parakeet download") {
+                        ParakeetEngine.remove()
+                        parakeetRemoved = true
+                    }
                 }
             } footer: {
                 footnote(settings.dictationEngine == .apple
                     ? "Apple's dictation model, built into macOS."
-                    : "NVIDIA's Parakeet, run by YapYap on your Mac. Downloads about 700 MB once and uses about 450 MB of memory while YapYap is open.")
+                    : !ParakeetEngine.speaksMacLanguage
+                    ? "Parakeet understands 25 European languages, not your Mac's language, so Apple's model is used."
+                    : "NVIDIA's Parakeet, more accurate than Apple's model, running on your Mac. It downloads once (about 700 MB) in the background; until then Apple's model is used. Uses about 450 MB of memory while YapYap is open.")
             }
 
             Section {

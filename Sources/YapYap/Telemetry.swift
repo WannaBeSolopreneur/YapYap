@@ -63,10 +63,11 @@ final class Telemetry {
     }
 
     /// `handsFree`: started with a tap or the menu instead of holding the shortcut.
-    func dictated(words: Int, handsFree: Bool = false) {
+    /// `engine`: parakeet or apple.
+    func dictated(words: Int, handsFree: Bool = false, engine: String = "apple") {
         let s = Settings.shared
         let cleanup = !s.removeFillers ? "none" : s.polishDictation ? "polish" : "fillers"
-        signal("Dictation.finished", ["cleanup": cleanup, "mode": handsFree ? "handsFree" : "hold"], value: Double(words))
+        signal("Dictation.finished", ["cleanup": cleanup, "mode": handsFree ? "handsFree" : "hold", "engine": engine], value: Double(words))
     }
 
     private func signal(_ name: String, _ parameters: [String: String] = [:], value: Double? = nil) {

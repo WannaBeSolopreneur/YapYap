@@ -63,7 +63,8 @@ final class AppModel {
             self?.lastDictation = text
             history.addDictation(text)
             telemetry.dictated(words: text.split(whereSeparator: \.isWhitespace).count,
-                               handsFree: dictation?.lastWasHandsFree ?? false)
+                               handsFree: dictation?.lastWasHandsFree ?? false,
+                               engine: dictation?.lastEngine ?? "apple")
         }
         controller.onReadFinished = { text, words, seconds in
             history.addRead(text, words: words, seconds: seconds)

@@ -32,6 +32,54 @@ actor ParakeetEngine {
 
     var isLoaded: Bool { manager != nil }
 
+    /// The 25 European languages Parakeet v3 (and Ultra) understands. Macs set to another language
+    /// keep Apple's model, which covers more, and never download Parakeet.
+    static let languages: Set<String> = ["bg", "cs", "da", "de", "el", "en", "es", "et", "fi", "fr", "hr", "hu", "it",
+                                         "lt", "lv", "mt", "nl", "pl", "pt", "ro", "ru", "sk", "sl", "sv", "uk"]
+    static var speaksMacLanguage: Bool { languages.contains(Locale.current.language.languageCode?.identifier ?? "en") }
+
+    /// Loaded and ready to dictate. Until then dictation uses Apple's model. Main thread.
+    @MainActor static var isReady = false
+    @MainActor private static var preparing = false
+
+    /// Downloads (the first time, ~700 MB in the background) and loads Parakeet, and the names model
+    /// when names from the screen are on. Call on the main thread; does nothing if already under way.
+    @MainActor static func prepare() {
+        guard !isReady, !preparing, speaksMacLanguage else { return }
+        preparing = true
+        let names = Settings.shared.useScreenContext
+        Task {
+            do {
+                try await shared.load()
+                if names { try? await shared.loadNames() }
+                await MainActor.run { isReady = true }
+            } catch {
+                log.error("Parakeet not ready: \(error, privacy: .public)")
+            }
+            await MainActor.run { preparing = false }
+        }
+    }
+
+    /// Frees the memory and deletes the downloaded models. Picking Parakeet again fetches them again.
+    @MainActor static func remove() {
+        isReady = false
+        Task {
+            await shared.unload()
+            for folder in [AsrModels.defaultCacheDirectory(for: version), CtcModels.defaultCacheDirectory(for: .ctc110m)] {
+                try? FileManager.default.removeItem(at: folder)
+            }
+        }
+    }
+
+    private func unload() async {
+        await manager?.cleanup()
+        manager = nil
+        ctc = nil
+        spotters = nil
+    }
+
+    private func loadNames() async throws { _ = try await ctcModels() }
+
     /// Downloads (the first time) and loads the model. Safe to call again while it's loading.
     @discardableResult
     func load() async throws -> AsrManager {

@@ -83,14 +83,14 @@ final class Settings {
         autoDownloadVoices = defaults.object(forKey: "autoDownloadVoices") as? Bool ?? true
         useScreenContext = defaults.object(forKey: "useScreenContext") as? Bool ?? true
         shareUsageStats = defaults.object(forKey: "shareUsageStats") as? Bool ?? true
-        dictationEngine = DictationEngine(rawValue: defaults.string(forKey: "dictationEngine") ?? "") ?? .apple
+        dictationEngine = DictationEngine(rawValue: defaults.string(forKey: "dictationEngine") ?? "") ?? .parakeet
         dictationShortcut = defaults.data(forKey: "dictationShortcut").flatMap { try? JSONDecoder().decode(KeyCombo.self, from: $0) } ?? .defaultDictation
     }
 }
 
 enum DictationEngine: String, CaseIterable {
-    /// Apple's on-device dictation model, shared with the system.
+    /// Apple's on-device dictation model, shared with the system. Also used while Parakeet downloads.
     case apple
-    /// NVIDIA Parakeet, downloaded once and run by YapYap itself.
+    /// NVIDIA Parakeet, downloaded once and run by YapYap itself. The default since 1.0.5.
     case parakeet
 }

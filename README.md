@@ -109,13 +109,17 @@ What you read and say never leaves your Mac.
   text on your Mac, then the image is thrown away. Nothing is recorded or saved. When you dictate, YapYap does the
   same with the window you're typing in, only to pick out names so they're spelled right
   ([`ScreenContext.swift`](Sources/YapYap/ScreenContext.swift); turn it off in Settings → Dictation).
-- **Voice:** dictation uses Apple's on-device speech recognition. The microphone is on only while you dictate:
+- **Voice:** dictation runs NVIDIA's [Parakeet](https://huggingface.co/moondream/parakeet-ultra) speech model on your Mac
+  through [FluidAudio](https://github.com/FluidInference/FluidAudio), on the Neural Engine
+  ([`Parakeet.swift`](Sources/YapYap/Parakeet.swift)), or Apple's on-device speech recognition for other languages,
+  if you pick it in Settings → Dictation, or until Parakeet has downloaded. The microphone is on only while you dictate:
   while you hold the shortcut, or in hands-free mode until you stop it (at most 10 minutes). Audio is never saved. The optional tidy-up uses Apple Intelligence on your Mac, never Private
   Cloud Compute.
 - **Speech:** the Kokoro voices run locally with [MLX](https://github.com/ml-explore/mlx-swift).
-- **Two one-time downloads:** the Kokoro voices (about 340 MB, from GitHub, fetched in the background on first
-  launch; remove them in Settings → Reading and they stay gone), and on macOS 26 Apple's speech
-  model, which macOS fetches itself.
+- **One-time downloads:** the Kokoro voices (about 340 MB, from GitHub, fetched in the background on first
+  launch; remove them in Settings → Reading and they stay gone), the Parakeet speech model (about 700 MB, from
+  Hugging Face, fetched by FluidAudio in the background; switch to Apple in Settings → Dictation to remove it), and on
+  macOS 26 Apple's speech model, which macOS fetches itself.
 - **Anonymous stats:** official builds send anonymous counts through [TelemetryDeck](https://telemetrydeck.com),
   like how many words were read and how quickly the voice started. Never text, audio, window titles or app names.
   Turn it off in Settings → Privacy. Builds from this repo send nothing unless you add your own TelemetryDeck App ID.
@@ -127,10 +131,11 @@ Check it yourself:
 $ grep -rnE 'URLSession\(|https://' Sources
 Sources/YapYap/Kokoro.swift:253:   …/kokoro-v1_0.safetensors
 Sources/YapYap/Kokoro.swift:254:   …/voices.npz
-Sources/YapYap/AppModel.swift:395: session = URLSession(configuration: …)
+Sources/YapYap/AppModel.swift:450: session = URLSession(configuration: …)
 ```
 
-That's all of YapYap's own network code: the voice download. The only other connections are TelemetryDeck's
+That's all of YapYap's own network code: the voice download. FluidAudio fetches the Parakeet model from
+`huggingface.co`. The only other connections are TelemetryDeck's
 anonymous stats and Sparkle's daily update check (`yapyap.cc/appcast.xml`, then the new version from GitHub). Turn off Wi-Fi once the voices are installed and reading and dictation work the same, or watch
 with a network monitor such as [LuLu](https://objective-see.org/products/lulu.html).
 
@@ -191,6 +196,7 @@ Dictation hold ⌥S ─► Transcriber ─► Fillers ─► Apple Intelligence 
 | `Sources/YapYap/Controller.swift` | The reading pipeline: capture → OCR → speech → highlight |
 | `Sources/YapYap/Kokoro.swift`, `Speaker.swift` | The Kokoro voice (download, MLX synthesis, word timings) and the macOS system voice |
 | `Sources/YapYap/Dictation.swift`, `Polish.swift` | Hold-to-talk dictation, speech recognition, Apple Intelligence tidy-up, typing |
+| `Sources/YapYap/Parakeet.swift` | Parakeet speech model: download, live text, names from the screen |
 | `Sources/YapYap/AppModel.swift` | The observable state every window reads |
 | `Sources/YapYap/AppShell.swift`, `HomeView.swift`, `SettingsView.swift`, `WelcomeView.swift` | The SwiftUI windows |
 | `Sources/YapYap/Overlay.swift`, `PlayerBar.swift`, `DictationBar.swift`, `RegionSelector.swift` | The floating highlight, reading bar, dictation capsule and region picker |

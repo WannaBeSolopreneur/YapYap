@@ -246,6 +246,29 @@ if args.count == 3, args[1] == "--dictate-test" {
     app.run()
 }
 
+// `YapYap --engine-test` shows which speech model dictation would use now and once Parakeet is ready.
+if args.count == 2, args[1] == "--engine-test" {
+    let started = Date()
+    func report(_ when: String) {
+        let engine = Dictation.systemTranscriber() is ParakeetTranscriber ? "parakeet" : "apple"
+        print(String(format: "%@ (%.1f s): %@", when, Date().timeIntervalSince(started), engine))
+    }
+    print("setting: \(Settings.shared.dictationEngine.rawValue)")
+    MainActor.assumeIsolated {
+        ParakeetEngine.prepare()
+        report("at launch")
+    }
+    Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
+        MainActor.assumeIsolated {
+            if ParakeetEngine.isReady || Date().timeIntervalSince(started) > 120 {
+                report("ready")
+                exit(0)
+            }
+        }
+    }
+    RunLoop.main.run()
+}
+
 // `YapYap --demo outdir speech.wav` records the product film's take (see Demo.swift).
 if args.count == 4, args[1] == "--demo" {
     MainActor.assumeIsolated { Demo.run(out: URL(fileURLWithPath: args[2]), speech: URL(fileURLWithPath: args[3])) }
