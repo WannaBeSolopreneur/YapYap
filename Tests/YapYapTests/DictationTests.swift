@@ -30,12 +30,14 @@ private final class FakePolisher: TextPolishing {
 private final class FakeInserter: TextInserting {
     var inserted: [String] = []
     var secrets: [Bool] = []
+    var targets: [pid_t?] = []
     var allowed = true
     /// Pretend nothing that takes text has focus.
     var noTextBox = false
     func insert(_ text: String, into app: NSRunningApplication?, secret: Bool, noField: @escaping () -> Void) -> Bool {
         inserted.append(text)
         secrets.append(secret)
+        targets.append(app?.processIdentifier)
         if noTextBox { noField() }
         return allowed
     }
@@ -71,6 +73,46 @@ final class DictationTests: XCTestCase {
                               schedule: { [unowned self] _, work in self.scheduled.append(work) },
                               now: { [unowned self] in self.clock })
         dictation.onMessage = { [unowned self] in self.messages.append($0) }
+    }
+
+    // MARK: Never losing what was said
+
+    func testHandsFreeTypesWhereYouAreWhenItFinishes() {
+        let started = NSRunningApplication.current
+        let moved = NSWorkspace.shared.runningApplications.first { $0.processIdentifier != started.processIdentifier }!
+        dictation.currentTarget = { moved }
+        dictation.begin(target: started, handsFree: true)
+        engine.started?(nil)
+        dictation.end()
+        engine.finished?("Two minutes of thoughts.")
+        XCTAssertEqual(inserter.targets, [moved.processIdentifier])
+    }
+
+    func testHoldKeepsTheAppItStartedIn() {
+        let started = NSRunningApplication.current
+        dictation.currentTarget = { NSWorkspace.shared.runningApplications.first { $0 != started } }
+        dictation.begin(target: started)
+        engine.started?(nil)
+        clock += 1
+        dictation.release()
+        engine.finished?("Quick one.")
+        XCTAssertEqual(inserter.targets, [started.processIdentifier])
+    }
+
+    func testAnEmptyFinalPassKeepsWhatWasHeard() {
+        tap()
+        engine.started?(nil)
+        engine.onText?("Everything I said in the meeting")
+        dictation.end()
+        engine.finished?("")
+        XCTAssertEqual(inserter.inserted, ["Everything I said in the meeting"])
+    }
+
+    func testLongDictationsStayOnTheClipboard() {
+        let long = Array(repeating: "word", count: 30).joined(separator: " ")
+        XCTAssertTrue(Paster.staysOnClipboard(long, secret: false))
+        XCTAssertFalse(Paster.staysOnClipboard("Short reply.", secret: false))
+        XCTAssertFalse(Paster.staysOnClipboard(long, secret: true), "keys never linger")
     }
 
     // MARK: Saved text

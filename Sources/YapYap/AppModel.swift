@@ -59,6 +59,11 @@ final class AppModel {
         dictation.onStateChange = { [weak self] in self?.syncDictation() }
         dictation.onMessage = { [weak self] in self?.show($0) }
         dictation.onNoTextBox = { [weak self] in self?.showLeftover($0) }
+        dictation.currentTarget = { [weak self] in
+            guard let self else { return nil }
+            let typingHere = (NSApp.keyWindow?.firstResponder as? NSTextView)?.isEditable == true
+            return Self.dictationTarget(front: NSWorkspace.shared.frontmostApplication, last: self.controller.lastApp, typingInYapYap: typingHere)
+        }
         dictation.onSavedNoTextBox = { [weak self] item in
             // A secret's card names it; the value only goes to the clipboard.
             self?.showLeftover(item.secret ? item.name : item.value, copying: item.value, secret: item.secret)

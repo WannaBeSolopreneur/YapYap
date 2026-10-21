@@ -8,6 +8,7 @@ import Speech
 /// Hold the dictation shortcut, talk, let go: what you said is typed into the app you were in.
 /// Speech recognition runs on device. Everything here runs on the main thread.
 final class Dictation {
+    private static let log = Logger(subsystem: "cc.yapyap.app", category: "dictation")
     enum Phase {
         case idle
         /// Asking for permission, loading the speech model, starting the mic.
@@ -56,6 +57,9 @@ final class Dictation {
     var onSavedPasted: ((SavedItem) -> Void)?
     /// A saved item with nowhere to paste it: on the clipboard, to show with a Copy button.
     var onSavedNoTextBox: ((SavedItem) -> Void)?
+    /// Where to type now. A hands-free session can last minutes and you may have moved to another
+    /// app, so its words go where you are when it finishes, not where it started.
+    var currentTarget: (() -> NSRunningApplication?)?
 
     private let makeTranscriber: () -> Transcriber
     private let inserter: TextInserting
@@ -193,6 +197,7 @@ final class Dictation {
             handsFree = false
             handsFreeLimit?.cancel()
             lastWasHandsFree = true
+            if let now = currentTarget?() { target = now }
         } else if phase == .starting || phase == .listening {
             lastWasHandsFree = false
         }
@@ -202,8 +207,12 @@ final class Dictation {
         case .listening:
             setPhase(.finishing)
             let id = session
-            transcriber?.finish { [weak self] said in
+            transcriber?.finish { [weak self] final in
                 guard let self, self.session == id else { return }
+                // The last pass came back empty (it failed): keep what the live preview heard
+                // rather than dropping it.
+                let said = final.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? self.text : final
+                if final.isEmpty, !said.isEmpty { Self.log.error("Final transcript empty; typing the live preview instead") }
                 // Before any tidying, which could change the words of the request.
                 if let item = self.saved(Fillers.strip(said)) { return self.confirm(item) }
                 let options = self.cleanup()
@@ -600,8 +609,31 @@ final class Microphone: AudioSource {
     /// Audio thread only. The meter needs ~15 updates a second, not one per buffer.
     private var lastMeter = 0.0
 
+    private var format: AVAudioFormat?
+    private var handle: ((AVAudioPCMBuffer) -> Void)?
+    private var changes: NSObjectProtocol?
+
     /// `handle` is called on an audio thread.
     func start(format: AVAudioFormat?, _ handle: @escaping (AVAudioPCMBuffer) -> Void) throws {
+        self.format = format
+        self.handle = handle
+        try listen()
+        // AirPods connecting, a call taking the mic, another input chosen: the engine stops and
+        // would hear nothing for the rest of the session. Start again on the new input.
+        changes = NotificationCenter.default.addObserver(forName: .AVAudioEngineConfigurationChange, object: engine, queue: .main) { [weak self] _ in
+            guard let self, self.running else { return }
+            self.engine.inputNode.removeTap(onBus: 0)
+            self.engine.stop()
+            self.running = false
+            do { try self.listen() } catch { Self.log.error("Microphone didn't restart: \(error, privacy: .public)") }
+        }
+    }
+
+    private static let log = Logger(subsystem: "cc.yapyap.app", category: "dictation")
+
+    private func listen() throws {
+        guard let handle else { return }
+        let format = self.format
         let input = engine.inputNode
         let inFormat = input.outputFormat(forBus: 0)
         guard inFormat.sampleRate > 0, inFormat.channelCount > 0 else { throw DictationError.noMicrophone }
@@ -626,6 +658,8 @@ final class Microphone: AudioSource {
     }
 
     func stop() {
+        if let changes { NotificationCenter.default.removeObserver(changes) }
+        changes = nil
         guard running else { return }
         running = false
         engine.inputNode.removeTap(onBus: 0)
@@ -722,7 +756,8 @@ extension TextInserting {
     }
 }
 
-/// Types text into another app by pasting: clipboard, ⌘V, then the old clipboard back.
+/// Types text into another app by pasting: clipboard, ⌘V, then the old clipboard back (except
+/// after long dictations, see `staysOnClipboard`).
 /// Pasting works in every kind of text field, unlike setting text through Accessibility.
 /// Sending ⌘V needs the Accessibility permission; without it the text stays on the clipboard.
 struct Paster: TextInserting {
@@ -732,10 +767,13 @@ struct Paster: TextInserting {
         // This Mac only: not to other devices over Universal Clipboard, and marked so
         // clipboard managers don't keep it (nspasteboard.org conventions).
         board.prepareForNewContents(with: .currentHostOnly)
+        let keep = Self.staysOnClipboard(text, secret: secret)
         let item = NSPasteboardItem()
         item.setString(text, forType: .string)
-        item.setData(Data(), forType: NSPasteboard.PasteboardType("org.nspasteboard.TransientType"))
-        item.setData(Data(), forType: NSPasteboard.PasteboardType("org.nspasteboard.AutoGeneratedType"))
+        if !keep {
+            item.setData(Data(), forType: NSPasteboard.PasteboardType("org.nspasteboard.TransientType"))
+            item.setData(Data(), forType: NSPasteboard.PasteboardType("org.nspasteboard.AutoGeneratedType"))
+        }
         if secret { item.setData(Data(), forType: Self.concealed) }
         board.writeObjects([item])
         let ours = board.changeCount
@@ -759,7 +797,7 @@ struct Paster: TextInserting {
             Self.pressCommandV()
             // Give the app time to read the clipboard before putting the old contents back.
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                guard board.changeCount == ours, !saved.isEmpty else { return }
+                guard !keep, board.changeCount == ours, !saved.isEmpty else { return }
                 board.prepareForNewContents(with: .currentHostOnly)
                 board.writeObjects(saved)
             }
@@ -796,6 +834,13 @@ struct Paster: TextInserting {
     }
 
     static let textRoles: Set<String> = ["AXTextField", "AXTextArea", "AXComboBox", "AXSearchField"]
+
+    /// A long dictation stays on the clipboard after it's pasted instead of the old contents
+    /// coming back, so if the paste went astray (another app, a field that ignored it) ⌘V still
+    /// has it. Short text and secrets put the clipboard back as before.
+    static func staysOnClipboard(_ text: String, secret: Bool) -> Bool {
+        !secret && text.split(whereSeparator: \.isWhitespace).count >= 25
+    }
 
     /// Marks a password: clipboard managers don't keep or show it (nspasteboard.org).
     static let concealed = NSPasteboard.PasteboardType("org.nspasteboard.ConcealedType")

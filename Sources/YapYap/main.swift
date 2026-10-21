@@ -1,5 +1,6 @@
 import AppKit
 import AVFoundation
+import FluidAudio
 import ImageIO
 import YapYapCore
 
@@ -268,6 +269,33 @@ if args.count == 3, args[1] == "--saved-match" {
     }
     print("\(String(reflecting: args[2])) → \(SavedText.shared.match(args[2]).map(\.name) ?? "no match")")
     print("after fillers: \(String(reflecting: Fillers.strip(args[2])))")
+    exit(0)
+}
+
+// `YapYap --parakeet-race speech.wav` reads the whole file while live previews of its end run at the
+// same moment, as when dictation finishes mid-preview, and checks the final text matches a lone read.
+if args.count == 3, args[1] == "--parakeet-race" {
+    let samples = try AudioConverter().resampleAudioFile(URL(fileURLWithPath: args[2]))
+    let semaphore = DispatchSemaphore(value: 0)
+    Task {
+        let engine = ParakeetEngine.shared
+        let alone = (try? await engine.transcribe(samples).text) ?? "<failed>"
+        var failures = 0
+        for round in 1...10 {
+            async let preview1 = try? engine.transcribe(Array(samples.suffix(12 * 16_000)))
+            async let final: Result<String, Error> = { do { return .success(try await engine.transcribe(samples).text) } catch { return .failure(error) } }()
+            async let preview2 = try? engine.transcribe(Array(samples.suffix(8 * 16_000)))
+            let (result, _, _) = await (final, preview1, preview2)
+            switch result {
+            case .success(let text) where text == alone: print("round \(round): same")
+            case .success(let text): failures += 1; print("round \(round): DIFFERENT (\(text.count) vs \(alone.count) characters): \(text.prefix(80))")
+            case .failure(let error): failures += 1; print("round \(round): FAILED \(error)")
+            }
+        }
+        print("\(failures) of 10 rounds went wrong")
+        semaphore.signal()
+    }
+    semaphore.wait()
     exit(0)
 }
 

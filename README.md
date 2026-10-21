@@ -60,7 +60,7 @@ YapYap does both, for free, on your Mac:
 - **Clean text:** "um", "uh" and friends are removed. On macOS 26 with Apple Intelligence, an on-device model also
   drops filler "like"s, stutters and self-corrections ("Tuesday, no, Wednesday" becomes "Wednesday").
 - **Never makes things up:** if the tidy-up adds a word you didn't say, YapYap types your plain words instead.
-- **Your clipboard is put back** after typing.
+- **Your clipboard is put back** after typing. Long dictations (25+ words) stay on the clipboard instead, so ⌘V gets them back if the paste went astray.
 - **Saved text by voice:** save your email address, home address or an API key under **Saved**, then dictate just
   its name ("email address") or ask ("paste my ElevenLabs key") and it's pasted. Kept in your Mac's keychain; keys
   and passwords are never kept in history and clipboard apps are told not to keep them. Touch ID is optional.
@@ -136,7 +136,7 @@ Check it yourself:
 $ grep -rnE 'URLSession\(|https://' Sources
 Sources/YapYap/Kokoro.swift:253:   …/kokoro-v1_0.safetensors
 Sources/YapYap/Kokoro.swift:254:   …/voices.npz
-Sources/YapYap/AppModel.swift:471: session = URLSession(configuration: …)
+Sources/YapYap/AppModel.swift:476: session = URLSession(configuration: …)
 ```
 
 That's all of YapYap's own network code: the voice download. FluidAudio fetches the Parakeet model from

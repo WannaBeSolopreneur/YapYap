@@ -245,13 +245,28 @@ final class ParakeetTranscriber: Transcriber, @unchecked Sendable {
         let names = self.names
         Task {
             var text = ""
-            if samples.count >= 4_000, let result = try? await ParakeetEngine.shared.transcribe(samples) {
+            if samples.count >= 4_000, let result = await Self.transcribeAll(samples) {
                 text = await ParakeetEngine.shared.respell(result, samples: samples, names: names)
             }
             let final = text.trimmingCharacters(in: .whitespacesAndNewlines)
             DispatchQueue.main.async { done(final) }
         }
     }
+
+    /// The whole recording, tried twice: losing minutes of hands-free dictation to one failed
+    /// pass is the worst thing dictation can do.
+    private static func transcribeAll(_ samples: [Float]) async -> ASRResult? {
+        for attempt in 1...2 {
+            do {
+                return try await ParakeetEngine.shared.transcribe(samples)
+            } catch {
+                log.error("Final transcription failed (attempt \(attempt)) on \(samples.count / 16_000) s: \(error, privacy: .public)")
+            }
+        }
+        return nil
+    }
+
+    private static let log = Logger(subsystem: "cc.yapyap.app", category: "parakeet")
 
     func cancel() { stop() }
 
