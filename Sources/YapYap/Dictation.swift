@@ -845,6 +845,17 @@ struct Paster: TextInserting {
         if AXUIElementCopyAttributeValue(element, kAXSelectedTextRangeAttribute as CFString, &range) == .success, range != nil {
             return true
         }
+        // Web editors: browsers name the editable element a text cursor sits in.
+        var editable: CFTypeRef?
+        if AXUIElementCopyAttributeValue(element, "AXEditableAncestor" as CFString, &editable) == .success, editable != nil {
+            return true
+        }
+        // Google Docs, Sheets and Slides type into a hidden element that browsers call a group.
+        var id: CFTypeRef?
+        if AXUIElementCopyAttributeValue(element, "AXDOMIdentifier" as CFString, &id) == .success,
+           (id as? String)?.hasPrefix("docs-texteventtarget") == true {
+            return true
+        }
         var role: CFTypeRef?
         AXUIElementCopyAttributeValue(element, kAXRoleAttribute as CFString, &role)
         return (role as? String).map(textRoles.contains) ?? false
