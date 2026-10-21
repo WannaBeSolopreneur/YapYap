@@ -811,12 +811,29 @@ struct Paster: TextInserting {
     /// selected file's name as an editable text field, so a paste there renamed the file.
     /// Elsewhere, text boxes are recognised by what they do: an editable value, a text cursor or
     /// selection, or a text role. Anything else focused gets the card. When an app won't say
-    /// what's focused, it gets the paste, as many don't describe their text boxes.
+    /// what's focused, it gets the paste, as many don't describe their text boxes: Chrome (so
+    /// Google Docs), Electron apps and Word answer "nothing focused" even in a text box. Only a
+    /// front app with no window in front really has nowhere to type.
     static func focusIsClearlyNotText() -> Bool {
-        if NSWorkspace.shared.frontmostApplication?.bundleIdentifier == "com.apple.finder" { return true }
+        guard let app = NSWorkspace.shared.frontmostApplication else { return true }
+        if app.bundleIdentifier == "com.apple.finder" { return true }
+        if let id = app.bundleIdentifier, alwaysPaste.contains(id) { return false }
         let (result, focused) = focusedElement()
-        guard result == .success, let element = focused else { return result == .noValue }
-        return !looksLikeText(element)
+        if result == .success, let element = focused { return !looksLikeText(element) }
+        if result == .noValue { return !hasFocusedWindow(app.processIdentifier) }
+        return false
+    }
+
+    /// Microsoft Office: its documents don't describe themselves as text boxes, and ⌘V always
+    /// lands somewhere sensible.
+    static let alwaysPaste: Set<String> = [
+        "com.microsoft.Word", "com.microsoft.Excel", "com.microsoft.Powerpoint",
+        "com.microsoft.Outlook", "com.microsoft.onenote.mac",
+    ]
+
+    private static func hasFocusedWindow(_ pid: pid_t) -> Bool {
+        var window: CFTypeRef?
+        return AXUIElementCopyAttributeValue(AXUIElementCreateApplication(pid), kAXFocusedWindowAttribute as CFString, &window) == .success && window != nil
     }
 
     private static func looksLikeText(_ element: AXUIElement) -> Bool {
@@ -826,6 +843,17 @@ struct Paster: TextInserting {
         }
         var range: CFTypeRef?
         if AXUIElementCopyAttributeValue(element, kAXSelectedTextRangeAttribute as CFString, &range) == .success, range != nil {
+            return true
+        }
+        // Web editors: browsers name the editable element a text cursor sits in.
+        var editable: CFTypeRef?
+        if AXUIElementCopyAttributeValue(element, "AXEditableAncestor" as CFString, &editable) == .success, editable != nil {
+            return true
+        }
+        // Google Docs, Sheets and Slides type into a hidden element that browsers call a group.
+        var id: CFTypeRef?
+        if AXUIElementCopyAttributeValue(element, "AXDOMIdentifier" as CFString, &id) == .success,
+           (id as? String)?.hasPrefix("docs-texteventtarget") == true {
             return true
         }
         var role: CFTypeRef?
@@ -873,7 +901,10 @@ struct Paster: TextInserting {
     /// "AXTextArea (value settable)", or what went wrong, for `--focus`.
     static func describeFocus() -> String {
         let (result, focused) = focusedElement()
-        guard let element = focused else { return "no focused element (AXError \(result.rawValue))" }
+        guard let element = focused else {
+            let pid = NSWorkspace.shared.frontmostApplication?.processIdentifier ?? 0
+            return "no focused element (AXError \(result.rawValue)), \(hasFocusedWindow(pid) ? "window in front" : "no window")"
+        }
         var role: CFTypeRef?, subrole: CFTypeRef?
         AXUIElementCopyAttributeValue(element, kAXRoleAttribute as CFString, &role)
         AXUIElementCopyAttributeValue(element, kAXSubroleAttribute as CFString, &subrole)
