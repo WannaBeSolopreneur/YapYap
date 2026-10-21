@@ -5,6 +5,7 @@ Licensed under the GNU Affero General Public License v3.0 (see LICENSE).
 YapYap builds on the following open-source software. Each keeps its own licence.
 
 Swift packages (compiled into the app)
+  FluidAudio 0.17.7        Apache-2.0   https://github.com/FluidInference/FluidAudio
   kokoro-ios 1.0.11        MIT          https://github.com/mlalma/kokoro-ios
   MisakiSwift 1.0.6        Apache-2.0   https://github.com/mlalma/MisakiSwift
   MLXUtilsLibrary 0.0.6    Apache-2.0   https://github.com/mlalma/MLXUtilsLibrary
@@ -20,6 +21,12 @@ Downloaded on request (not bundled)
     https://huggingface.co/hexgrad/Kokoro-82M
     fetched from https://github.com/mlalma/KokoroTestApp when you choose to download
     the natural voices in Settings → Reading.
+  Parakeet Ultra speech model, by Moondream, retrained from NVIDIA's parakeet-tdt-0.6b-v3, CC-BY-4.0
+    https://huggingface.co/moondream/parakeet-ultra
+    Core ML build https://huggingface.co/FluidInference/parakeet-ultra-coreml
+  Parakeet CTC 110M (spots names from the screen), by NVIDIA, CC-BY-4.0
+    https://huggingface.co/FluidInference/parakeet-ctc-110m-coreml
+    Both fetched when you choose Parakeet in Settings → Dictation.
 
 Apple frameworks used through the macOS SDK (Vision, Speech, ScreenCaptureKit, AVFoundation,
 FoundationModels) are part of macOS and are not redistributed.

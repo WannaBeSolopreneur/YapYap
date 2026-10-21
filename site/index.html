@@ -39,7 +39,7 @@
  "softwareRequirements": "Mac with Apple silicon (M1 or newer)",
  "isAccessibleForFree": true,
  "downloadUrl": "https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg",
- "softwareVersion": "1.0.4",
+ "softwareVersion": "1.0.5",
  "license": "https://www.gnu.org/licenses/agpl-3.0.html",
  "sameAs": ["https://github.com/WannaBeSolopreneur/YapYap"],
  "offers": {
@@ -733,8 +733,8 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
       </div>
       <div class="proof">
         <article>
-          <h3>Two one-time downloads.</h3>
-          <p>The natural Kokoro voices, about 340 MB from GitHub, fetched in the background the first time you open YapYap (you can remove them in Settings). And on macOS 26 or later, Apple’s speech model, which macOS fetches itself. Text, audio and screenshots are never uploaded.</p>
+          <h3>One-time downloads.</h3>
+          <p>The natural Kokoro voices, about 340 MB from GitHub, and NVIDIA’s Parakeet speech model, about 700 MB from Hugging Face, both fetched in the background the first time you open YapYap (you can remove them in Settings). And on macOS 26 or later, Apple’s speech model, which macOS fetches itself. Text, audio and screenshots are never uploaded.</p>
           <a class="src" href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/Kokoro.swift#L253-L254">Kokoro.swift</a>
         </article>
         <article>
@@ -744,8 +744,8 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
         </article>
         <article>
           <h3>Your voice stays on your Mac.</h3>
-          <p>Dictation uses Apple’s on-device speech recognition, and the optional tidy-up uses Apple Intelligence on your Mac. The mic is on only while you dictate: while you hold the shortcut, or in hands-free mode until you stop it. Audio is never saved.</p>
-          <a class="src" href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/Dictation.swift">Dictation.swift</a>
+          <p>Dictation runs NVIDIA’s Parakeet speech model on your Mac (or Apple’s on-device speech recognition, if you prefer it or until Parakeet has downloaded), and the optional tidy-up uses Apple Intelligence on your Mac. The mic is on only while you dictate: while you hold the shortcut, or in hands-free mode until you stop it. Audio is never saved.</p>
+          <a class="src" href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/Parakeet.swift">Parakeet.swift</a>
         </article>
         <article>
           <h3>No account. Anonymous stats you can switch off.</h3>
@@ -757,15 +757,15 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
         <div>
           <h3>Check it yourself.</h3>
           <ul>
-            <li><b><a href="https://github.com/WannaBeSolopreneur/YapYap">Search the code.</a></b> YapYap’s own network code fits on three lines. The only other connections are TelemetryDeck’s anonymous stats and a daily check of yapyap.cc for updates.</li>
-            <li><b>Turn off Wi‑Fi.</b> Once the voice and speech model are installed, reading and dictation work exactly the same.</li>
+            <li><b><a href="https://github.com/WannaBeSolopreneur/YapYap">Search the code.</a></b> YapYap’s own network code fits on three lines; the open-source FluidAudio library fetches the speech model from Hugging Face. The only other connections are TelemetryDeck’s anonymous stats and a daily check of yapyap.cc for updates.</li>
+            <li><b>Turn off Wi‑Fi.</b> Once the voices and speech models are installed, reading and dictation work exactly the same.</li>
             <li><b>Watch the traffic.</b> Run a network monitor such as LuLu while YapYap reads or listens. Turn stats off and the only other request is the daily update check.</li>
           </ul>
         </div>
         <div class="term" aria-label="YapYap’s own network code">
           <div class="bar-t"><i></i><i></i><i></i><b>Terminal — yapyap</b></div>
           <pre><span>$ </span>grep -rnE 'URLSession\(|https://' Sources
-<a href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/AppModel.swift#L395"><em>AppModel.swift:395</em></a>  session = URLSession(configuration: …)
+<a href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/AppModel.swift#L450"><em>AppModel.swift:450</em></a>  session = URLSession(configuration: …)
 <a href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/Kokoro.swift#L253"><em>Kokoro.swift:253</em></a>    "https://media.githubusercontent.com/…/kokoro-v1_0.safetensors"
 <a href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/Kokoro.swift#L254"><em>Kokoro.swift:254</em></a>    "https://raw.githubusercontent.com/…/voices.npz"</pre>
         </div>
@@ -780,7 +780,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
         <h2>Free, and every line is on GitHub.</h2>
         <p class="soon">Read it, build it yourself, or help make it better. Licensed under the AGPL, so it stays free.</p>
         <div class="cta"><a class="btn lg" href="https://github.com/WannaBeSolopreneur/YapYap">View on GitHub</a></div>
-        <ul class="stack" aria-label="Built with"><li>Swift &amp; SwiftUI</li><li>Vision</li><li>Speech</li><li>MLX</li><li>Kokoro-82M</li></ul>
+        <ul class="stack" aria-label="Built with"><li>Swift &amp; SwiftUI</li><li>Vision</li><li>Speech</li><li>MLX</li><li>Kokoro-82M</li><li>Parakeet</li></ul>
       </div>
       <div class="term" aria-label="Build from source">
         <div class="bar-t"><i></i><i></i><i></i><b>Terminal</b></div>
@@ -808,11 +808,11 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
       </details>
       <details id="faq-private">
         <summary><h3>Does YapYap send my voice or screen anywhere?</h3></summary>
-        <p>No. Text on screen is recognised with Apple’s Vision framework, dictation uses Apple’s on-device speech recognition, and the voices run locally. YapYap only sends anonymous usage counts, never content, and you can turn that off in Settings.</p>
+        <p>No. Text on screen is recognised with Apple’s Vision framework, dictation runs NVIDIA’s Parakeet model on your Mac, and the voices run locally. YapYap only sends anonymous usage counts, never content, and you can turn that off in Settings.</p>
       </details>
       <details id="faq-offline">
         <summary><h3>Does YapYap work offline?</h3></summary>
-        <p>Yes. Once the Kokoro voices and macOS’s speech model are downloaded, reading and dictation both work with Wi‑Fi turned off. Until the voices arrive, or if you remove them, YapYap reads with the voices built into macOS.</p>
+        <p>Yes. Once the Kokoro voices and the speech models are downloaded, reading and dictation both work with Wi‑Fi turned off. Until the voices arrive, or if you remove them, YapYap reads with the voices built into macOS.</p>
       </details>
       <details id="faq-macs">
         <summary><h3>Which Macs does YapYap run on?</h3></summary>
@@ -820,7 +820,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
       </details>
       <details id="faq-languages">
         <summary><h3>What languages does YapYap support?</h3></summary>
-        <p>The natural Kokoro voices speak US and UK English. Dictation uses Apple’s on-device speech recognition for your Mac’s language where Apple supports it. YapYap is designed and tested in English.</p>
+        <p>The natural Kokoro voices speak US and UK English. Dictation uses NVIDIA’s Parakeet for English and 24 other European languages, and Apple’s on-device speech recognition for other languages Apple supports. YapYap is designed and tested in English.</p>
       </details>
       <details id="faq-compare">
         <summary><h3>How is YapYap different from Speechify or Wispr Flow?</h3></summary>

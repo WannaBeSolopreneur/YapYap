@@ -56,6 +56,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         model.telemetry.update()
         Updates.shared.start()
         model.downloadVoicesIfNeeded()
+        if model.settings.dictationEngine == .parakeet { ParakeetEngine.prepare() }
 
         // Remember the last app the user was in, in case one of our windows is frontmost.
         NSWorkspace.shared.notificationCenter.addObserver(forName: NSWorkspace.didActivateApplicationNotification, object: nil, queue: .main) { note in

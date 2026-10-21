@@ -61,6 +61,8 @@ final class Settings {
     var autoDownloadVoices: Bool { didSet { defaults.set(autoDownloadVoices, forKey: "autoDownloadVoices") } }
     /// Send anonymous usage stats (counts and timings, never text). On unless turned off.
     var shareUsageStats: Bool { didSet { defaults.set(shareUsageStats, forKey: "shareUsageStats") } }
+    /// Which speech-to-text model dictation uses.
+    var dictationEngine: DictationEngine { didSet { defaults.set(dictationEngine.rawValue, forKey: "dictationEngine") } }
     /// Held down to dictate.
     var dictationShortcut: KeyCombo {
         didSet { defaults.set(try? JSONEncoder().encode(dictationShortcut), forKey: "dictationShortcut") }
@@ -81,6 +83,14 @@ final class Settings {
         autoDownloadVoices = defaults.object(forKey: "autoDownloadVoices") as? Bool ?? true
         useScreenContext = defaults.object(forKey: "useScreenContext") as? Bool ?? true
         shareUsageStats = defaults.object(forKey: "shareUsageStats") as? Bool ?? true
+        dictationEngine = DictationEngine(rawValue: defaults.string(forKey: "dictationEngine") ?? "") ?? .parakeet
         dictationShortcut = defaults.data(forKey: "dictationShortcut").flatMap { try? JSONDecoder().decode(KeyCombo.self, from: $0) } ?? .defaultDictation
     }
+}
+
+enum DictationEngine: String, CaseIterable {
+    /// Apple's on-device dictation model, shared with the system. Also used while Parakeet downloads.
+    case apple
+    /// NVIDIA Parakeet, downloaded once and run by YapYap itself. The default since 1.0.5.
+    case parakeet
 }

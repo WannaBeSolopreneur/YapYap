@@ -142,13 +142,30 @@ if args.count >= 4, args[1] == "--vo" {
 
 // `YapYap --transcribe speech.wav` streams the file through dictation as if spoken and prints the text.
 // `YapYap --transcribe talk.wav "Name One,Name Two"` also gives those words as screen context.
-if (3...4).contains(args.count), args[1] == "--transcribe" {
-    guard #available(macOS 26, *) else {
+// `--transcribe-parakeet` does the same with Parakeet (YAPYAP_PARAKEET_MODEL picks which), loading it
+// first, and reports YapYap's memory.
+if (3...4).contains(args.count), args[1] == "--transcribe" || args[1] == "--transcribe-parakeet" {
+    let source = try FileAudioSource(url: URL(fileURLWithPath: args[2]))
+    let transcriber: Transcriber
+    if args[1] == "--transcribe-parakeet" {
+        let loading = Date()
+        let semaphore = DispatchSemaphore(value: 0)
+        Task {
+            do { try await ParakeetEngine.shared.load() } catch {
+                FileHandle.standardError.write("Failed to load Parakeet: \(error)\n".data(using: .utf8)!)
+                exit(1)
+            }
+            semaphore.signal()
+        }
+        semaphore.wait()
+        FileHandle.standardError.write(String(format: "[Parakeet %@ loaded in %.1f s, %.0f MB]\n", "\(ParakeetEngine.version)", Date().timeIntervalSince(loading), Diagnostics.memoryMB()).data(using: .utf8)!)
+        transcriber = ParakeetTranscriber(source: source)
+    } else if #available(macOS 26, *) {
+        transcriber = AnalyzerTranscriber(source: source)
+    } else {
         FileHandle.standardError.write("--transcribe needs macOS 26\n".data(using: .utf8)!)
         exit(1)
     }
-    let source = try FileAudioSource(url: URL(fileURLWithPath: args[2]))
-    let transcriber = AnalyzerTranscriber(source: source)
     if args.count == 4 { transcriber.setContext(args[3].split(separator: ",").map(String.init)) }
     let started = Date()
     transcriber.onText = { FileHandle.standardError.write(String(format: "%6.2fs  %@\n", Date().timeIntervalSince(started), $0).data(using: .utf8)!) }
@@ -163,7 +180,7 @@ if (3...4).contains(args.count), args[1] == "--transcribe" {
             let released = Date()
             transcriber.finish { text in
                 print(text)
-                FileHandle.standardError.write(String(format: "[final text %.0f ms after release]\n", Date().timeIntervalSince(released) * 1000).data(using: .utf8)!)
+                FileHandle.standardError.write(String(format: "[final text %.0f ms after release; YapYap memory now %.0f MB, peak %.0f MB]\n", Date().timeIntervalSince(released) * 1000, Diagnostics.memoryMB(), Diagnostics.peakMemoryMB()).data(using: .utf8)!)
                 exit(0)
             }
         }
@@ -227,6 +244,29 @@ if args.count == 3, args[1] == "--dictate-test" {
         }
     }
     app.run()
+}
+
+// `YapYap --engine-test` shows which speech model dictation would use now and once Parakeet is ready.
+if args.count == 2, args[1] == "--engine-test" {
+    let started = Date()
+    func report(_ when: String) {
+        let engine = Dictation.systemTranscriber() is ParakeetTranscriber ? "parakeet" : "apple"
+        print(String(format: "%@ (%.1f s): %@", when, Date().timeIntervalSince(started), engine))
+    }
+    print("setting: \(Settings.shared.dictationEngine.rawValue)")
+    MainActor.assumeIsolated {
+        ParakeetEngine.prepare()
+        report("at launch")
+    }
+    Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
+        MainActor.assumeIsolated {
+            if ParakeetEngine.isReady || Date().timeIntervalSince(started) > 120 {
+                report("ready")
+                exit(0)
+            }
+        }
+    }
+    RunLoop.main.run()
 }
 
 // `YapYap --demo outdir speech.wav` records the product film's take (see Demo.swift).

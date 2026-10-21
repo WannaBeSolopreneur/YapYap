@@ -37,6 +37,8 @@ final class Dictation {
     private(set) var handsFree = false
     /// Whether the session that just typed its text was hands-free (for the anonymous stats).
     private(set) var lastWasHandsFree = false
+    /// "parakeet" or "apple", for the usage stats.
+    private(set) var lastEngine = "apple"
     /// What has been heard so far, for the live preview.
     private(set) var text = ""
     /// Microphone loudness, 0…1.
@@ -85,6 +87,15 @@ final class Dictation {
     }
 
     static func systemTranscriber() -> Transcriber {
+        // Dictation starts on the main thread.
+        if Settings.shared.dictationEngine == .parakeet, MainActor.assumeIsolated({ ParakeetEngine.isReady }) {
+            if let file = Demo.dictationAudio, let source = try? FileAudioSource(url: file) { return ParakeetTranscriber(source: source) }
+            return ParakeetTranscriber()
+        }
+        if Settings.shared.dictationEngine == .parakeet {
+            // Still downloading or loading: Apple's model this time.
+            MainActor.assumeIsolated { ParakeetEngine.prepare() }
+        }
         if #available(macOS 26, *), let file = Demo.dictationAudio, let source = try? FileAudioSource(url: file) {
             return AnalyzerTranscriber(source: source)
         }
@@ -105,6 +116,7 @@ final class Dictation {
         level = 0
         let transcriber = makeTranscriber()
         self.transcriber = transcriber
+        lastEngine = transcriber is ParakeetTranscriber ? "parakeet" : "apple"
         transcriber.onText = { [weak self] text in
             guard let self, self.session == id, self.text != text else { return }
             self.text = text

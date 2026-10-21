@@ -158,6 +158,8 @@ struct DictationSettings: View {
     @Environment(AppModel.self) private var model
     /// Checked when the tab appears; Apple Intelligence can be turned on while YapYap runs.
     @State private var aiStatus = AppleIntelligence.status
+    /// The files are checked on disk, which SwiftUI doesn't watch.
+    @State private var parakeetRemoved = false
 
     var body: some View {
         @Bindable var settings = model.settings
@@ -174,6 +176,29 @@ struct DictationSettings: View {
                 Toggle("Spell names from the screen", isOn: $settings.useScreenContext)
             } footer: {
                 footnote("Tap the shortcut to keep listening without holding it; tap it again or click ✓ to type, or press Esc to cancel. Takes out um, uh, er and hmm before typing. Spelling names from the screen reads the window you're typing in, on your Mac, so names like Priya come out right; nothing is saved. Change the shortcut under General.")
+            }
+
+            Section {
+                Picker("Speech model", selection: $settings.dictationEngine) {
+                    Text("Parakeet").tag(DictationEngine.parakeet)
+                    Text("Apple").tag(DictationEngine.apple)
+                }
+                .onChange(of: settings.dictationEngine) { _, engine in
+                    // Have it ready before the next dictation.
+                    if engine == .parakeet { ParakeetEngine.prepare() }
+                }
+                if settings.dictationEngine == .apple, !parakeetRemoved, ParakeetEngine.isDownloaded {
+                    Button("Remove Parakeet download") {
+                        ParakeetEngine.remove()
+                        parakeetRemoved = true
+                    }
+                }
+            } footer: {
+                footnote(settings.dictationEngine == .apple
+                    ? "Apple's dictation model, built into macOS."
+                    : !ParakeetEngine.speaksMacLanguage
+                    ? "Parakeet understands 25 European languages, not your Mac's language, so Apple's model is used."
+                    : "NVIDIA's Parakeet, more accurate than Apple's model, running on your Mac. It downloads once (about 700 MB) in the background; until then Apple's model is used. Uses about 450 MB of memory while YapYap is open.")
             }
 
             Section {
