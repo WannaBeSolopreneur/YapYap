@@ -25,6 +25,8 @@ enum Snapshots {
                 SavedItem(name: "Email address", value: "sam@example.com"),
                 SavedItem(name: "Home address", value: "1 Main Street, Springfield"),
                 SavedItem(name: "ElevenLabs key", value: "sk_0123456789abcdef", secret: true),
+                SavedItem(name: "", value: "sam@work.example.com"),
+                SavedItem(name: "", value: ""),
             ]))).frame(width: 560))),
             ("dictation-saved", AnyView(DictationBarView().environment(confirmingModel()))),
             ("welcome-1", AnyView(WelcomeView(initialStep: 0))),

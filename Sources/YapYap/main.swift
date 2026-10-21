@@ -261,6 +261,16 @@ if args.count == 2, args[1] == "--keychain-test" {
     exit(first && second ? 0 : 1)
 }
 
+// `YapYap --saved-match "email address"` lists the saved names (never the values) and what the phrase matches.
+if args.count == 3, args[1] == "--saved-match" {
+    for item in SavedText.shared.items {
+        print("saved: \(String(reflecting: item.name)) value \(item.value.count) characters\(item.secret ? ", secret" : "")")
+    }
+    print("\(String(reflecting: args[2])) → \(SavedText.shared.match(args[2]).map(\.name) ?? "no match")")
+    print("after fillers: \(String(reflecting: Fillers.strip(args[2])))")
+    exit(0)
+}
+
 // `YapYap --engine-test` shows which speech model dictation would use now and once Parakeet is ready.
 if args.count == 2, args[1] == "--engine-test" {
     let started = Date()

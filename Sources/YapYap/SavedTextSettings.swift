@@ -6,6 +6,8 @@ struct SavedTextSettings: View {
     @Bindable var store = SavedText.shared
     /// Secrets shown in plain text for now, by their eye button.
     @State private var revealed: Set<UUID> = []
+    /// A new item starts with its name to type.
+    @FocusState private var focusedName: UUID?
 
     var body: some View {
         @Bindable var settings = model.settings
@@ -43,18 +45,22 @@ struct SavedTextSettings: View {
         let secret = item.wrappedValue.secret
         let hidden = secret && !revealed.contains(item.wrappedValue.id)
         return HStack(spacing: 8) {
-            Image(systemName: secret ? "key" : "text.quote")
-                .foregroundStyle(.secondary)
+            // Saved but nothing to say: it can't be pasted until it has a name.
+            let unnamed = item.wrappedValue.name.trimmingCharacters(in: .whitespaces).isEmpty && !item.wrappedValue.value.isEmpty
+            Image(systemName: unnamed ? "exclamationmark.triangle.fill" : secret ? "key" : "text.quote")
+                .foregroundStyle(unnamed ? AnyShapeStyle(.orange) : AnyShapeStyle(.secondary))
                 .frame(width: 16)
-                .help(secret ? "Key or password" : "Text")
-            TextField("Name", text: item.name, prompt: Text(secret ? "ElevenLabs key" : "Email address"))
+                .help(unnamed ? "Give it a name to say" : secret ? "Key or password" : "Text")
+            // Plain prompts: an example here looked like a name already filled in.
+            TextField("Name", text: item.name, prompt: Text("Name you'll say"))
                 .labelsHidden()
                 .frame(width: 150)
+                .focused($focusedName, equals: item.wrappedValue.id)
             Group {
                 if hidden {
-                    SecureField("Value", text: item.value, prompt: Text("Paste it here"))
+                    SecureField("Value", text: item.value, prompt: Text("Key or password"))
                 } else {
-                    TextField("Value", text: item.value, prompt: Text(secret ? "Paste it here" : "you@example.com"))
+                    TextField("Value", text: item.value, prompt: Text(secret ? "Key or password" : "Text to paste"))
                 }
             }
             .labelsHidden()
@@ -76,7 +82,9 @@ struct SavedTextSettings: View {
     }
 
     private func add(secret: Bool) {
-        store.items.append(SavedItem(name: "", value: "", secret: secret))
+        let item = SavedItem(name: "", value: "", secret: secret)
+        store.items.append(item)
+        focusedName = item.id
     }
 
     private func footnote(_ text: String) -> some View {
