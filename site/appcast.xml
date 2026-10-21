@@ -6,6 +6,15 @@
     <link>https://yapyap.cc/appcast.xml</link>
     <language>en</language>
     <item>
+      <title>YapYap 1.0.5</title>
+      <pubDate>Wed, 21 Oct 2026 01:07:45 +0000</pubDate>
+      <sparkle:version>6</sparkle:version>
+      <sparkle:shortVersionString>1.0.5</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+      <sparkle:releaseNotesLink>https://github.com/WannaBeSolopreneur/YapYap/releases/tag/v1.0.5</sparkle:releaseNotesLink>
+      <enclosure url="https://github.com/WannaBeSolopreneur/YapYap/releases/download/v1.0.5/YapYap.dmg" type="application/octet-stream" sparkle:edSignature="hF4UGLjXGXJake7F2xykkQYXbfSoGo9yVvuKK7rcq7mjQSLG+M31o4qgZeNj4io71LwZlWOFWSD/8bsK5a1aAA==" length="29681558"/>
+    </item>
+    <item>
       <title>YapYap 1.0.4</title>
       <pubDate>Tue, 20 Oct 2026 03:53:04 +0000</pubDate>
       <sparkle:version>5</sparkle:version>
