@@ -70,6 +70,11 @@ final class Telemetry {
         signal("Dictation.finished", ["cleanup": cleanup, "mode": handsFree ? "handsFree" : "hold", "engine": engine], value: Double(words))
     }
 
+    /// A saved item pasted by voice. `kind`: secret or text. Never its name or value.
+    func pastedSaved(secret: Bool) {
+        signal("SavedText.pasted", ["kind": secret ? "secret" : "text"])
+    }
+
     private func signal(_ name: String, _ parameters: [String: String] = [:], value: Double? = nil) {
         update()
         guard started else { return }

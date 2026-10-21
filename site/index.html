@@ -39,7 +39,7 @@
  "softwareRequirements": "Mac with Apple silicon (M1 or newer)",
  "isAccessibleForFree": true,
  "downloadUrl": "https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg",
- "softwareVersion": "1.0.5",
+ "softwareVersion": "1.0.6",
  "license": "https://www.gnu.org/licenses/agpl-3.0.html",
  "sameAs": ["https://github.com/WannaBeSolopreneur/YapYap"],
  "offers": {
@@ -53,6 +53,7 @@
   "Read any text on screen aloud: press Option-A and draw a box",
   "Word-by-word highlight and optional reading ruler on the original app",
   "Hold Option-S to dictate into any app, or tap it for hands-free dictation",
+  "Paste saved text by voice: say \"email address\" or \"paste my API key\"",
   "Natural Kokoro voices running on the Mac",
   "Reads text inside images, PDFs and screenshots",
   "Reading speed from 0.5x to 2.5x",
@@ -765,7 +766,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
         <div class="term" aria-label="YapYap’s own network code">
           <div class="bar-t"><i></i><i></i><i></i><b>Terminal — yapyap</b></div>
           <pre><span>$ </span>grep -rnE 'URLSession\(|https://' Sources
-<a href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/AppModel.swift#L450"><em>AppModel.swift:450</em></a>  session = URLSession(configuration: …)
+<a href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/AppModel.swift#L476"><em>AppModel.swift:476</em></a>  session = URLSession(configuration: …)
 <a href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/Kokoro.swift#L253"><em>Kokoro.swift:253</em></a>    "https://media.githubusercontent.com/…/kokoro-v1_0.safetensors"
 <a href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/Kokoro.swift#L254"><em>Kokoro.swift:254</em></a>    "https://raw.githubusercontent.com/…/voices.npz"</pre>
         </div>
@@ -804,7 +805,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
       </details>
       <details id="faq-dictate">
         <summary><h3>How does dictation work?</h3></summary>
-        <p>Hold ⌥S and talk. Your words appear live in a small panel at the bottom of the screen. Let go and YapYap types the text wherever your cursor is, in any app. For longer dictation, tap ⌥S instead: it keeps listening until you tap it again or click ✓. It can drop filler words and tidy the text with Apple Intelligence, on your Mac.</p>
+        <p>Hold ⌥S and talk. Your words appear live in a small panel at the bottom of the screen. Let go and YapYap types the text wherever your cursor is, in any app. For longer dictation, tap ⌥S instead: it keeps listening until you tap it again or click ✓. It can drop filler words and tidy the text with Apple Intelligence, on your Mac. Save things you type often under Saved, like your email address or an API key, and dictate just the name to paste them.</p>
       </details>
       <details id="faq-private">
         <summary><h3>Does YapYap send my voice or screen anywhere?</h3></summary>

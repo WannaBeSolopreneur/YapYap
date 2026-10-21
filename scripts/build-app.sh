@@ -57,6 +57,16 @@ cat > "$APP/Contents/Info.plist" <<PLIST
     <key>SUFeedURL</key><string>https://yapyap.cc/appcast.xml</string>
     <key>SUPublicEDKey</key><string>dO3+zMLp0xNh7JIBb0nV8XfRIdA2FY3JkwjiYRY95aw=</string>
     <key>SUEnableAutomaticChecks</key><true/>
+    <key>NSServices</key>
+    <array>
+        <dict>
+            <key>NSMenuItem</key><dict><key>default</key><string>Save to YapYap</string></dict>
+            <key>NSMessage</key><string>saveToYapYap</string>
+            <key>NSPortName</key><string>YapYap</string>
+            <key>NSSendTypes</key><array><string>public.utf8-plain-text</string><string>NSStringPboardType</string></array>
+            <key>NSRequiredContext</key><dict/>
+        </dict>
+    </array>
 </dict>
 </plist>
 PLIST

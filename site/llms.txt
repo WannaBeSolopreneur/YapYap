@@ -8,6 +8,7 @@ Status: available now, free. Download: https://github.com/WannaBeSolopreneur/Yap
 
 - Read aloud: press Option-A, drag a box around any text on screen, and YapYap reads it aloud while a highlight follows each word on the original app. Works on text inside images, screenshots, PDFs and web pages. Optional reading ruler dims everything except the current line.
 - Dictation: hold Option-S and talk, or tap Option-S for hands-free dictation that keeps listening until you tap it again. Words appear live in a small panel; the text is typed where your cursor is, in any app (Mail, Messages, Slack, Notes, browsers, Terminal). Filler words can be removed and text tidied with Apple Intelligence on the Mac. Reading pauses while you talk.
+- Saved text: save an email address, home address, API key or anything else under Saved, then dictate its name ("email address", "paste my ElevenLabs key") to paste it. Stored in the macOS Keychain on the Mac; keys and passwords are never kept in history and are marked so clipboard managers skip them; Touch ID is optional.
 - Voices: natural Kokoro-82M voices (US and UK English) running locally on Apple silicon, or the voices built into macOS.
 - Speed: 0.5x to 2.5x. Option-click a word to start reading from there.
 

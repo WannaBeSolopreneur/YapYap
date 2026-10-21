@@ -6,7 +6,7 @@ final class Navigation {
     static let shared = Navigation()
 
     enum Page: String, CaseIterable, Identifiable {
-        case home, reading, dictation, settings
+        case home, reading, dictation, saved, settings
         var id: Self { self }
 
         var title: String {
@@ -14,6 +14,7 @@ final class Navigation {
             case .home: return "Home"
             case .reading: return "Reading"
             case .dictation: return "Dictation"
+            case .saved: return "Saved"
             case .settings: return "Settings"
             }
         }
@@ -23,6 +24,7 @@ final class Navigation {
             case .home: return "house"
             case .reading: return "speaker.wave.2"
             case .dictation: return "mic"
+            case .saved: return "list.bullet.clipboard"
             case .settings: return "gearshape"
             }
         }
@@ -69,6 +71,7 @@ struct AppShell: View {
         case .home: HomePage()
         case .reading: SettingsPage(title: "Reading", subtitle: "How YapYap sounds and how it highlights.") { ReadingSettings() }
         case .dictation: SettingsPage(title: "Dictation", subtitle: "What happens to your words before they're typed.") { DictationSettings() }
+        case .saved: SettingsPage(title: "Saved", subtitle: "Say a name to paste it: your email address, a home address, an API key.") { SavedTextSettings() }
         case .settings: SettingsPage(title: "Settings", subtitle: "Shortcuts, permissions and history.") { GeneralSettings() }
         }
     }
@@ -85,7 +88,7 @@ private struct Sidebar: View {
                 .padding(.top, 52) // below the window's traffic lights
                 .padding(.bottom, 22)
 
-            ForEach([Navigation.Page.home, .reading, .dictation]) { page in
+            ForEach([Navigation.Page.home, .reading, .dictation, .saved]) { page in
                 item(page)
             }
 

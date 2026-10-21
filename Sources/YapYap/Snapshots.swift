@@ -21,6 +21,16 @@ enum Snapshots {
             ("settings-reading", AnyView(ReadingSettings().frame(width: 520))),
             ("settings-dictation", AnyView(DictationSettings().frame(width: 520))),
             ("settings-general", AnyView(GeneralSettings().frame(width: 520))),
+            ("settings-saved", AnyView(SavedTextSettings(store: SavedText(storage: MemoryStorage(items: [
+                SavedItem(name: "Email address", value: "sam@example.com"),
+                SavedItem(name: "Home address", value: "1 Main Street, Springfield"),
+                SavedItem(name: "ElevenLabs key", value: "sk_0123456789abcdef", secret: true),
+                SavedItem(name: "", value: "sam@work.example.com"),
+                SavedItem(name: "", value: ""),
+            ]))).frame(width: 560))),
+            ("dictation-saved", AnyView(DictationBarView().environment(confirmingModel()))),
+            ("save-selection-key", AnyView(SaveSelectionView(text: "sk-ant-api03-AbCdEf0123456789xyz", name: "Anthropic key", secret: true) { _ in })),
+            ("save-selection-text", AnyView(SaveSelectionView(text: "sam@example.com", name: "Email address", secret: false) { _ in })),
             ("welcome-1", AnyView(WelcomeView(initialStep: 0))),
             ("welcome-2", AnyView(WelcomeView(initialStep: 1))),
             ("welcome-3", AnyView(WelcomeView(initialStep: 2))),
@@ -43,6 +53,13 @@ enum Snapshots {
                 render(view.environment(model), appearance: appearance, to: dir.appendingPathComponent("\(name)-\(suffix).png"))
             }
         }
+    }
+
+    /// The capsule about to paste a saved item.
+    private static func confirmingModel() -> AppModel {
+        let model = AppModel(history: History(file: nil))
+        model.previewSaved("Pasting ElevenLabs key…")
+        return model
     }
 
     /// The capsule after dictating with no text box in focus.

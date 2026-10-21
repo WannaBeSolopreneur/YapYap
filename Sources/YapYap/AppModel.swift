@@ -59,6 +59,20 @@ final class AppModel {
         dictation.onStateChange = { [weak self] in self?.syncDictation() }
         dictation.onMessage = { [weak self] in self?.show($0) }
         dictation.onNoTextBox = { [weak self] in self?.showLeftover($0) }
+        dictation.currentTarget = { [weak self] in
+            guard let self else { return nil }
+            let typingHere = (NSApp.keyWindow?.firstResponder as? NSTextView)?.isEditable == true
+            return Self.dictationTarget(front: NSWorkspace.shared.frontmostApplication, last: self.controller.lastApp, typingInYapYap: typingHere)
+        }
+        dictation.onSavedNoTextBox = { [weak self] item in
+            // A secret's card names it; the value only goes to the clipboard.
+            self?.showLeftover(item.secret ? item.name : item.value, copying: item.value, secret: item.secret)
+        }
+        dictation.onSavedPasted = { [weak self] item in
+            history.addDictation("Pasted \(item.name)")
+            if !item.secret { self?.lastDictation = item.value }
+            telemetry.pastedSaved(secret: item.secret)
+        }
         dictation.onTyped = { [weak self, weak dictation] text in
             self?.lastDictation = text
             history.addDictation(text)
@@ -154,9 +168,14 @@ final class AppModel {
     private(set) var leftover: String?
     private(set) var leftoverCopied = false
     @ObservationIgnored private var leftoverEscape: HotKey?
+    /// What Copy puts on the clipboard: the leftover itself, or a saved secret the card only names.
+    @ObservationIgnored private var leftoverValue: String?
+    @ObservationIgnored private var leftoverSecret = false
 
-    func showLeftover(_ text: String) {
+    func showLeftover(_ text: String, copying value: String? = nil, secret: Bool = false) {
         leftover = text
+        leftoverValue = value
+        leftoverSecret = secret
         leftoverCopied = false
         leftoverEscape = HotKey(keyCode: Keys.escape, modifiers: 0) { [weak self] in self?.dismissLeftover() }
         dictationBar.ignoresMouseEvents = false
@@ -172,11 +191,15 @@ final class AppModel {
 
     /// Screenshots only: the card's content without showing the panel.
     func previewLeftover(_ text: String) { leftover = text }
+    /// Screenshots only: the capsule about to paste a saved item.
+    func previewSaved(_ text: String) {
+        dictationPhase = .confirming
+        dictationText = text
+    }
 
     func copyLeftover() {
         guard let leftover else { return }
-        NSPasteboard.general.clearContents()
-        NSPasteboard.general.setString(leftover, forType: .string)
+        Paster.copy(leftoverValue ?? leftover, secret: leftoverSecret)
         leftoverCopied = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) { [weak self] in
             guard self?.leftover == leftover else { return }
@@ -372,10 +395,13 @@ final class AppModel {
         if micLevel != dictation.level { micLevel = dictation.level }
         if dictationHandsFree != dictation.handsFree {
             dictationHandsFree = dictation.handsFree
-            // Esc cancels, and the capsule takes clicks for Done and Cancel, only while hands-free.
-            dictationEscape = dictationHandsFree
-                ? HotKey(keyCode: Keys.escape, modifiers: 0) { [weak self] in self?.cancelDictation() } : nil
+            // The capsule takes clicks for Done and Cancel only while hands-free.
             dictationBar.ignoresMouseEvents = !dictationHandsFree
+        }
+        // Esc cancels while hands-free, and while a saved item is about to be pasted.
+        let escapes = dictation.handsFree || dictation.phase == .confirming
+        if escapes != (dictationEscape != nil) {
+            dictationEscape = escapes ? HotKey(keyCode: Keys.escape, modifiers: 0) { [weak self] in self?.cancelDictation() } : nil
         }
         if dictation.phase != .idle, leftover != nil {
             // A new dictation replaces the words waiting to be copied.

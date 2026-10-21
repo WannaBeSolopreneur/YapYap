@@ -130,6 +130,7 @@ struct DictationBarView: View {
         case .starting: return "Getting ready…"
         case .finishing: return model.dictationText.isEmpty ? "Finishing…" : model.dictationText
         case .polishing: return "Tidying up…"
+        case .confirming: return model.dictationText + "  Esc to cancel"
         case .idle, .listening:
             guard model.dictationText.isEmpty else { return model.dictationText }
             if model.dictationHandsFree {
@@ -146,7 +147,11 @@ struct DictationBarView: View {
                 .fill(.red.opacity(0.18))
                 .scaleEffect(0.75 + 0.6 * CGFloat(model.micLevel))
                 .animation(.easeOut(duration: 0.08), value: model.micLevel)
-            if model.dictationPhase == .polishing {
+            if model.dictationPhase == .confirming {
+                Image(systemName: "doc.on.clipboard")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(.tint)
+            } else if model.dictationPhase == .polishing {
                 Image(systemName: "sparkles")
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundStyle(.tint)
