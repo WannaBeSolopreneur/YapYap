@@ -29,6 +29,8 @@ enum Snapshots {
                 SavedItem(name: "", value: ""),
             ]))).frame(width: 560))),
             ("dictation-saved", AnyView(DictationBarView().environment(confirmingModel()))),
+            ("save-selection-key", AnyView(SaveSelectionView(text: "sk-ant-api03-AbCdEf0123456789xyz", name: "Anthropic key", secret: true) { _ in })),
+            ("save-selection-text", AnyView(SaveSelectionView(text: "sam@example.com", name: "Email address", secret: false) { _ in })),
             ("welcome-1", AnyView(WelcomeView(initialStep: 0))),
             ("welcome-2", AnyView(WelcomeView(initialStep: 1))),
             ("welcome-3", AnyView(WelcomeView(initialStep: 2))),

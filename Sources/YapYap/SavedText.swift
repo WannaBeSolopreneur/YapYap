@@ -32,6 +32,23 @@ final class SavedText {
         items = storage.load()
     }
 
+    /// The saved item with this name, ignoring case and spaces at the ends.
+    func named(_ name: String) -> SavedItem? {
+        let name = name.trimmingCharacters(in: .whitespaces)
+        return items.first { $0.name.trimmingCharacters(in: .whitespaces).caseInsensitiveCompare(name) == .orderedSame }
+    }
+
+    /// Adds an item, or replaces the value of the one with the same name.
+    func save(name: String, value: String, secret: Bool) {
+        let name = name.trimmingCharacters(in: .whitespaces)
+        if let existing = named(name), let index = items.firstIndex(where: { $0.id == existing.id }) {
+            items[index].value = value
+            items[index].secret = secret
+        } else {
+            items.append(SavedItem(name: name, value: value, secret: secret))
+        }
+    }
+
     /// The item a whole dictation asks for, if any.
     func match(_ said: String) -> SavedItem? {
         let items = self.items.filter { !$0.name.isEmpty && !$0.value.isEmpty }

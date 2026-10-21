@@ -57,6 +57,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         Updates.shared.start()
         model.downloadVoicesIfNeeded()
         if model.settings.dictationEngine == .parakeet { ParakeetEngine.prepare() }
+        // "Save to YapYap" in other apps' right-click menus.
+        NSApp.servicesProvider = SaveSelectionService.shared
+        NSUpdateDynamicServices()
 
         // Remember the last app the user was in, in case one of our windows is frontmost.
         NSWorkspace.shared.notificationCenter.addObserver(forName: NSWorkspace.didActivateApplicationNotification, object: nil, queue: .main) { note in
