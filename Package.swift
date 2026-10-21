@@ -15,6 +15,8 @@ let package = Package(
         .package(url: "https://github.com/TelemetryDeck/SwiftSDK.git", exact: "2.14.2"),
         // Automatic updates, from https://yapyap.cc/appcast.xml. See Updates.swift.
         .package(url: "https://github.com/sparkle-project/Sparkle", exact: "2.10.0"),
+        // NVIDIA Parakeet speech to text on the Neural Engine, when chosen as the dictation engine.
+        .package(url: "https://github.com/FluidInference/FluidAudio.git", exact: "0.17.7"),
     ],
     targets: [
         .target(name: "YapYapCore"),
@@ -26,6 +28,7 @@ let package = Package(
             .product(name: "ZIPFoundation", package: "ZIPFoundation"),
             .product(name: "TelemetryDeck", package: "SwiftSDK"),
             .product(name: "Sparkle", package: "Sparkle"),
+            .product(name: "FluidAudio", package: "FluidAudio"),
         ]),
         .testTarget(name: "YapYapCoreTests", dependencies: ["YapYapCore"]),
         .testTarget(name: "YapYapTests", dependencies: ["YapYap", "YapYapCore"]),

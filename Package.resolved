@@ -1,6 +1,15 @@
 {
-  "originHash" : "b3e193fbce7796338f0ae32eab7fdd2012d492be77d8414a395f541ec244f49a",
+  "originHash" : "eb1ec60517a9cbc7d812153ad8b96251b4e25b8dc1ee60bd23d6479508a897fc",
   "pins" : [
+    {
+      "identity" : "fluidaudio",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/FluidInference/FluidAudio.git",
+      "state" : {
+        "revision" : "503b4bd1bbf7220882de39fe8ae6716aae4132da",
+        "version" : "0.17.7"
+      }
+    },
     {
       "identity" : "kokoro-ios",
       "kind" : "remoteSourceControl",

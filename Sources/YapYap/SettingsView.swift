@@ -177,6 +177,21 @@ struct DictationSettings: View {
             }
 
             Section {
+                Picker("Speech model", selection: $settings.dictationEngine) {
+                    Text("Apple").tag(DictationEngine.apple)
+                    Text("Parakeet (trial)").tag(DictationEngine.parakeet)
+                }
+                .onChange(of: settings.dictationEngine) { _, engine in
+                    // Have it ready before the next dictation.
+                    if engine == .parakeet { Task { try? await ParakeetEngine.shared.load() } }
+                }
+            } footer: {
+                footnote(settings.dictationEngine == .apple
+                    ? "Apple's dictation model, built into macOS."
+                    : "NVIDIA's Parakeet, run by YapYap on your Mac. Downloads about 700 MB once and uses about 450 MB of memory while YapYap is open.")
+            }
+
+            Section {
                 Toggle("Tidy up with Apple Intelligence", isOn: $settings.polishDictation)
                     .disabled(!settings.removeFillers || aiStatus != nil)
             } footer: {

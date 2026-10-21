@@ -142,13 +142,30 @@ if args.count >= 4, args[1] == "--vo" {
 
 // `YapYap --transcribe speech.wav` streams the file through dictation as if spoken and prints the text.
 // `YapYap --transcribe talk.wav "Name One,Name Two"` also gives those words as screen context.
-if (3...4).contains(args.count), args[1] == "--transcribe" {
-    guard #available(macOS 26, *) else {
+// `--transcribe-parakeet` does the same with Parakeet (YAPYAP_PARAKEET_MODEL picks which), loading it
+// first, and reports YapYap's memory.
+if (3...4).contains(args.count), args[1] == "--transcribe" || args[1] == "--transcribe-parakeet" {
+    let source = try FileAudioSource(url: URL(fileURLWithPath: args[2]))
+    let transcriber: Transcriber
+    if args[1] == "--transcribe-parakeet" {
+        let loading = Date()
+        let semaphore = DispatchSemaphore(value: 0)
+        Task {
+            do { try await ParakeetEngine.shared.load() } catch {
+                FileHandle.standardError.write("Failed to load Parakeet: \(error)\n".data(using: .utf8)!)
+                exit(1)
+            }
+            semaphore.signal()
+        }
+        semaphore.wait()
+        FileHandle.standardError.write(String(format: "[Parakeet %@ loaded in %.1f s, %.0f MB]\n", "\(ParakeetEngine.version)", Date().timeIntervalSince(loading), Diagnostics.memoryMB()).data(using: .utf8)!)
+        transcriber = ParakeetTranscriber(source: source)
+    } else if #available(macOS 26, *) {
+        transcriber = AnalyzerTranscriber(source: source)
+    } else {
         FileHandle.standardError.write("--transcribe needs macOS 26\n".data(using: .utf8)!)
         exit(1)
     }
-    let source = try FileAudioSource(url: URL(fileURLWithPath: args[2]))
-    let transcriber = AnalyzerTranscriber(source: source)
     if args.count == 4 { transcriber.setContext(args[3].split(separator: ",").map(String.init)) }
     let started = Date()
     transcriber.onText = { FileHandle.standardError.write(String(format: "%6.2fs  %@\n", Date().timeIntervalSince(started), $0).data(using: .utf8)!) }
@@ -163,7 +180,7 @@ if (3...4).contains(args.count), args[1] == "--transcribe" {
             let released = Date()
             transcriber.finish { text in
                 print(text)
-                FileHandle.standardError.write(String(format: "[final text %.0f ms after release]\n", Date().timeIntervalSince(released) * 1000).data(using: .utf8)!)
+                FileHandle.standardError.write(String(format: "[final text %.0f ms after release; YapYap memory now %.0f MB, peak %.0f MB]\n", Date().timeIntervalSince(released) * 1000, Diagnostics.memoryMB(), Diagnostics.peakMemoryMB()).data(using: .utf8)!)
                 exit(0)
             }
         }

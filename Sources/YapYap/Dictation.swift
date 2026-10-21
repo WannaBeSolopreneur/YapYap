@@ -85,6 +85,10 @@ final class Dictation {
     }
 
     static func systemTranscriber() -> Transcriber {
+        if Settings.shared.dictationEngine == .parakeet {
+            if let file = Demo.dictationAudio, let source = try? FileAudioSource(url: file) { return ParakeetTranscriber(source: source) }
+            return ParakeetTranscriber()
+        }
         if #available(macOS 26, *), let file = Demo.dictationAudio, let source = try? FileAudioSource(url: file) {
             return AnalyzerTranscriber(source: source)
         }
