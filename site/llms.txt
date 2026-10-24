@@ -19,6 +19,7 @@ Status: available now, free. Download: https://github.com/WannaBeSolopreneur/Yap
 - The app's own network code downloads the Kokoro voices (about 340 MB) from GitHub once, in the background on first launch; they can be removed in Settings. The Parakeet speech model (about 700 MB) is fetched from Hugging Face the same way, by the open-source FluidAudio library. On macOS 26+ macOS itself downloads Apple's speech model once. Once a day the app checks https://yapyap.cc/appcast.xml for updates (Sparkle) and downloads new versions from GitHub.
 - Optional dictation tidy-up (filler removal and polishing) uses Apple Intelligence's on-device model.
 - Anonymous usage counts (for example number of words read, time to first word, settings used) are sent via TelemetryDeck. They never include text, audio or app names. On by default; turn off in Settings > Privacy.
+- The yapyap.cc website (not the app) uses cookieless PostHog analytics, proxied through yapyap.cc, to count visits, clicks and anonymous session replays.
 - No account and no crash reporting. Saved data is limited to settings (speed, voice, highlight, shortcuts).
 
 ## Requirements
