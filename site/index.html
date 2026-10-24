@@ -531,6 +531,18 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
 
 @media (prefers-reduced-motion: reduce) { .pill, [data-read] .w { transition: none; } }
 </style>
+<!-- Site analytics: PostHog, cookieless (kept in memory only), proxied through yapyap.cc/e so it stays first-party. -->
+<script>
+!function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset identify".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+posthog.init("phc_wdSEAusQixEvhgmGNgmLuSfLgZtytPdzLffFwWgWJ92S", {
+  api_host: "/e",
+  ui_host: "https://us.posthog.com",
+  persistence: "memory",
+  person_profiles: "identified_only",
+  disable_surveys: true,
+  session_recording: { maskAllInputs: true }
+});
+</script>
 </head>
 <body>
 
@@ -548,7 +560,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
       <li><a href="https://github.com/WannaBeSolopreneur/YapYap">GitHub</a></li>
       <li><a href="#faq">FAQ</a></li>
     </ul>
-    <a class="btn sm" href="https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg">Download</a>
+    <a class="btn sm" href="https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg" data-attr="download-nav">Download</a>
   </div>
 </nav>
 
@@ -561,7 +573,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
       <p><span class="duo-k"><kbd>⌥</kbd><kbd>A</kbd></span>Press, then draw a box around any text to hear it read aloud.</p>
     </div>
     <div class="cta">
-      <a class="btn lg" href="https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg">Download for Mac</a>
+      <a class="btn lg" href="https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg" data-attr="download-hero">Download for Mac</a>
       <a class="plain link-arrow" href="https://github.com/WannaBeSolopreneur/YapYap">View on GitHub</a>
     </div>
     <p class="req">Free and open source · Your words stay on your Mac · macOS 15+ · Apple silicon</p>
@@ -759,6 +771,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
           <h3>Check it yourself.</h3>
           <ul>
             <li><b><a href="https://github.com/WannaBeSolopreneur/YapYap">Search the code.</a></b> YapYap’s own network code fits on three lines; the open-source FluidAudio library fetches the speech model from Hugging Face. The only other connections are TelemetryDeck’s anonymous stats and a daily check of yapyap.cc for updates.</li>
+            <li><b>About this website.</b> yapyap.cc itself counts visits, clicks and anonymous replays of how the page is used with PostHog, without cookies and through yapyap.cc. That’s the website only: the app never talks to PostHog.</li>
             <li><b>Turn off Wi‑Fi.</b> Once the voices and speech models are installed, reading and dictation work exactly the same.</li>
             <li><b>Watch the traffic.</b> Run a network monitor such as LuLu while YapYap reads or listens. Turn stats off and the only other request is the daily update check.</li>
           </ul>
@@ -809,7 +822,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
       </details>
       <details id="faq-private">
         <summary><h3>Does YapYap send my voice or screen anywhere?</h3></summary>
-        <p>No. Text on screen is recognised with Apple’s Vision framework, dictation runs NVIDIA’s Parakeet model on your Mac, and the voices run locally. YapYap only sends anonymous usage counts, never content, and you can turn that off in Settings.</p>
+        <p>No. Text on screen is recognised with Apple’s Vision framework, dictation runs NVIDIA’s Parakeet model on your Mac, and the voices run locally. YapYap only sends anonymous usage counts, never content, and you can turn that off in Settings. (This website, separately, uses cookieless PostHog analytics to see how the page is used.)</p>
       </details>
       <details id="faq-offline">
         <summary><h3>Does YapYap work offline?</h3></summary>
@@ -829,7 +842,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
       </details>
       <details id="availability">
         <summary><h3>How do I install YapYap?</h3></summary>
-        <p><a href="https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg">Download YapYap</a>, open the file, and drag YapYap onto Applications. It’s signed and notarized by Apple, and it keeps itself up to date. You can also <a href="https://github.com/WannaBeSolopreneur/YapYap">build it from the source on GitHub</a>.</p>
+        <p><a href="https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg" data-attr="download-faq">Download YapYap</a>, open the file, and drag YapYap onto Applications. It’s signed and notarized by Apple, and it keeps itself up to date. You can also <a href="https://github.com/WannaBeSolopreneur/YapYap">build it from the source on GitHub</a>.</p>
       </details>
     </div>
   </section>
@@ -838,7 +851,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
     <img src="icon.png" alt="YapYap app icon">
     <h2>Start yapping.</h2>
     <p>Free for Mac. macOS 15+, Apple silicon.</p>
-    <div class="cta"><a class="btn lg" href="https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg">Download for Mac</a></div>
+    <div class="cta"><a class="btn lg" href="https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg" data-attr="download-bottom">Download for Mac</a></div>
   </div>
 </main>
 
@@ -851,13 +864,23 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wr
 
 <script>
 
+// Site analytics (PostHog, set up in <head>): which downloads, links and demos people use.
+const track = (event, props) => window.posthog?.capture(event, props);
+document.addEventListener("click", e => {
+  const a = e.target.closest("a[href]");
+  if (!a) return;
+  if (a.href.endsWith(".dmg")) track("download_clicked", { location: (a.dataset.attr || "").replace("download-", "") || "other" });
+  else if (a.hostname === "github.com") track("github_clicked", { path: a.pathname });
+});
+document.querySelectorAll("details[id]").forEach(d => d.addEventListener("toggle", () => { if (d.open) track("faq_opened", { question: d.id }); }));
+
 // Hero demo: show the video only once it can actually play.
 (() => {
   const v = document.getElementById("demo-video"), ph = document.getElementById("demo-placeholder"), snd = document.getElementById("demo-sound");
   v.addEventListener("loadeddata", () => { v.hidden = false; ph.hidden = true; snd.hidden = false; });
   snd.addEventListener("click", () => {
     v.muted = !v.muted;
-    if (!v.muted) { v.currentTime = 0; v.play().catch(() => {}); }
+    if (!v.muted) { v.currentTime = 0; v.play().catch(() => {}); track("demo_sound_played"); }
     snd.textContent = v.muted ? "Play with sound" : "Mute";
   });
   v.load();
@@ -1014,6 +1037,7 @@ document.querySelectorAll("[data-read]:not([data-read=region])").forEach((el, n)
     const t = target();
     box(t.x, t.y, t.w, t.h);
     go(0); r.show(true); reading(true);
+    track("read_demo_played");
     audio.currentTime = 0;
     audio.play().catch(() => stop());
     const f = () => {
@@ -1079,6 +1103,7 @@ document.querySelectorAll("[data-read]:not([data-read=region])").forEach((el, n)
   btn.addEventListener("click", () => {
     if (mode === "sound") return toLoop();
     mode = "sound"; setBtn(true); endedAt = performance.now(); out.textContent = "";
+    track("dictate_demo_played");
     audio.currentTime = 0;
     audio.play().catch(toLoop);
   });
