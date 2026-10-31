@@ -187,11 +187,14 @@ kbd { font-family: var(--ui); font-size: 19px; min-width: 34px; height: 34px; pa
 /* Them vs us: what subscription AI apps cost you, and what YapYap does instead */
 .beat { padding-block: 72px; }
 .beat .head h2 { margin-top: 28px; color: var(--yellow); }
-.road { list-style: none; padding: 0; margin: 48px auto 0; max-width: 980px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-.road li { min-width: 0; display: flex; flex-direction: column; gap: 6px; padding: 16px 18px 18px; background: #fff; border: 3px solid var(--ink); box-shadow: 5px 5px 0 var(--ink); }
-.road li:not(.now) { background: transparent; border-style: dashed; box-shadow: none; }
-.road .tag { align-self: flex-start; font-family: var(--pixel); font-size: 16px; line-height: 1; letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 8px; background: var(--teal); color: var(--ink); border: 2px solid var(--ink); }
-.road li:not(.now) .tag { background: var(--pale); }
+.road { list-style: none; padding: 0; margin: 22px auto 0; max-width: 1180px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.road li { min-width: 0; display: flex; flex-direction: column; gap: 6px; padding: 16px 18px 18px; border: 3px dashed var(--ink); }
+.road .tag, .act .tag { align-self: flex-start; font-family: var(--pixel); font-size: 16px; line-height: 1; letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 8px; background: var(--teal); color: var(--ink); border: 2px solid var(--ink); }
+.road li .tag { background: var(--pale); }
+#roadmap .act { background: #fff; color: var(--ink); box-shadow: 5px 5px 0 var(--ink); }
+#roadmap .act h2 { color: var(--ink); text-shadow: none; }
+#roadmap .what { color: var(--s-muted); }
+#roadmap .more { color: var(--slate); }
 .road b { font-family: var(--pixel); font-size: 26px; line-height: 1.1; margin-top: 4px; }
 .road li > span:last-child { color: var(--s-muted); font-size: 17px; line-height: 1.4; }
 .road-end { max-width: 640px; margin: 40px auto 0; text-align: center; font-size: clamp(18px, 2vw, 21px); color: var(--s-muted); }
@@ -206,7 +209,7 @@ kbd { font-family: var(--ui); font-size: 19px; min-width: 34px; height: 34px; pa
 .act .k { display: flex; gap: 5px; }
 .scene { display: flex; flex-direction: column; gap: 12px; padding: 12px; border: 3px solid var(--ink); color: var(--ink);
   background: repeating-linear-gradient(90deg, #a9c6e8 0 70px, var(--pale) 70px 73px); }
-.act .who, .local .who { display: flex; align-items: flex-end; gap: 12px; min-height: 84px; }
+.act .who { display: flex; align-items: flex-end; gap: 12px; min-height: 84px; }
 .spr { position: relative; width: 60px; height: 80px; flex-shrink: 0; }
 .spr img { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; }
 .spr img:first-child, .spr.talk .f-talk_open, .spr.shock .f-shock { opacity: 1; }
@@ -239,11 +242,6 @@ kbd { font-family: var(--ui); font-size: 19px; min-width: 34px; height: 34px; pa
 .what { font-size: 17px; line-height: 1.4; color: var(--pale); flex: 1; }
 .more { font-family: var(--pixel); font-size: 20px; color: var(--yellow); text-decoration: none; }
 .more:hover { text-decoration: underline; }
-.local { display: flex; align-items: center; justify-content: center; gap: 22px; flex-wrap: wrap; max-width: 900px; margin: 30px auto 0; text-align: left; }
-.local .who { min-height: 0; }
-.local .say { margin-bottom: 26px; flex: none; max-width: 300px; }
-.local .yes { font-size: 19px; color: var(--cream); max-width: 32ch; }
-.local .yes b { font-family: var(--pixel); font-weight: 400; font-size: 30px; color: var(--teal); margin-right: 4px; }
 @media (max-width: 980px) { .acts { grid-template-columns: 1fr; max-width: 480px; } }
 
 /* The read-along highlight: one square block slides from word to word, as the app does. */
@@ -525,8 +523,7 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
   <div class="wrap">
     <a class="brand" href="#top"><img class="px" src="mark.png" alt="" width="16" height="16">YAPYAP</a>
     <ul>
-      <li><a href="#tools">Tools</a></li>
-      <li><a href="#vision">Vision</a></li>
+      <li><a href="#roadmap">Roadmap</a></li>
       <li><a href="#show">The show</a></li>
       <li><a href="#speak">Talk</a></li>
       <li><a href="#examples">Listen</a></li>
@@ -548,7 +545,7 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
       <p class="sub">Free, on-device AI for your Mac. Talk instead of typing, listen instead of reading. No cloud, no account.</p>
       <div class="cta">
         <a class="btn lg" href="https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg" data-attr="download-hero">Download for Mac</a>
-        <a class="plain link-arrow" href="#tools">See what it does</a>
+        <a class="plain link-arrow" href="#roadmap">See what it does</a>
       </div>
       <p class="req">Free · Open source · macOS 15+ · Apple silicon</p>
     </div>
@@ -562,11 +559,12 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
     </div>
   </div></section>
 
-  <section id="tools" class="night"><div class="wrap">
-    <div class="head"><p class="kicker">Today</p><h2>Your Mac is already enough.</h2>
+  <section id="roadmap" class="paper"><div class="wrap">
+    <div class="head"><p class="kicker">The roadmap</p><h2>Your Mac is already enough.</h2>
       <p>It has the hardware, and open models keep getting better. So we’re proving it, one everyday task at a time.</p></div>
       <div class="acts" aria-label="The tools">
         <article class="act" data-act="dictate">
+          <span class="tag">Today</span>
           <header><h2>Dictation</h2><span class="k"><kbd>⌥</kbd><kbd>S</kbd></span></header>
           <div class="scene" aria-hidden="true">
             <div class="who"><span class="spr"><img class="px f-idle0" src="art/cast/zoe-idle0.png" alt="" width="24" height="32"><img class="px f-talk_open" src="art/cast/zoe-talk_open.png" alt="" width="24" height="32"></span><p class="say off"><small>ZOE</small><span class="said"></span></p></div>
@@ -577,6 +575,7 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
           <a class="more" href="#speak">See it work →</a>
         </article>
         <article class="act" data-act="read">
+          <span class="tag">Today</span>
           <header><h2>Read aloud</h2><span class="k"><kbd>⌥</kbd><kbd>A</kbd></span></header>
           <div class="scene" aria-hidden="true">
             <div class="who"><span class="spr"><img class="px f-idle0" src="art/cast/bob-idle0.png" alt="" width="24" height="32"><img class="px f-talk_open" src="art/cast/bob-talk_open.png" alt="" width="24" height="32"><img class="px f-shock" src="art/cast/bob-shock.png" alt="" width="24" height="32"></span><p class="say"><small>BOB</small><span class="said">I don’t need to read it. I wrote it.</span></p></div>
@@ -587,6 +586,7 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
           <a class="more" href="#examples">See it work →</a>
         </article>
         <article class="act" data-act="saved">
+          <span class="tag">Today</span>
           <header><h2>Saved text</h2><span class="k"><kbd>⌥</kbd><kbd>S</kbd></span></header>
           <div class="scene" aria-hidden="true">
             <div class="who"><span class="spr"><img class="px f-phone0" src="art/cast/jessy-phone0.png" alt="" width="24" height="32"><img class="px f-talk_open" src="art/cast/jessy-talk_open.png" alt="" width="24" height="32"></span><p class="say off"><small>JESSY</small><span class="said"></span></p></div>
@@ -597,19 +597,7 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
           <a class="more" href="#saved">See it work →</a>
         </article>
       </div>
-      <div class="local">
-        <div class="who"><span class="spr"><img class="px f-idle0" src="art/cast/lenny-idle0.png" alt="" width="24" height="32"></span><p class="say"><small>LENNY · IT AND SECURITY</small><span>Before I say yes: does it run locally?</span></p></div>
-        <p class="yes"><b>Yes.</b> All three run on your Mac. Nothing you say or read is uploaded.</p>
-      </div>
-  </div></section>
-
-  <section id="vision" class="paper"><div class="wrap">
-    <div class="head"><p class="kicker">Where we’re going</p><h2>The hard part is making it useful.</h2>
-      <p>AI on a laptop has to understand what you want and get it done, without eating your memory or your battery. Here’s the plan.</p></div>
-    <ol class="road" aria-label="The roadmap">
-      <li class="now"><span class="tag">Today</span><b>Speak instead of typing</b><span>Dictation into any app.</span></li>
-      <li class="now"><span class="tag">Today</span><b>Listen instead of reading</b><span>Any text on screen, read aloud.</span></li>
-      <li class="now"><span class="tag">Today</span><b>Recall what you repeat</b><span>Say a name, get it pasted.</span></li>
+    <ol class="road" aria-label="What comes next">
       <li><span class="tag">Next</span><b>Understand your files</b><span>Ask about your documents without uploading them.</span></li>
       <li><span class="tag">Later</span><b>Organize your work</b><span>Sort, tidy and find things for you.</span></li>
       <li><span class="tag">Later</span><b>Act across your Mac</b><span>An assistant that gets real tasks done.</span></li>
