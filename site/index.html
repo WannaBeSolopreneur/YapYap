@@ -541,7 +541,7 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
       <li><a href="#show">The show</a></li>
       <li><a href="#privacy">Privacy</a></li>
       <li><a href="#faq">FAQ</a></li>
-      <li><a href="https://github.com/WannaBeSolopreneur/YapYap">GitHub</a></li>
+      <li><a href="https://github.com/WannaBeSolopreneur/YapYap" target="_blank" rel="noopener">GitHub</a></li>
     </ul>
     <a class="btn sm" href="https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg" data-attr="download-nav"><svg class="mac" aria-hidden="true"><use href="#i-apple"/></svg>Download</a>
   </div>
@@ -687,8 +687,8 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
     <div class="wrap wide">
       <div class="head">
         <div class="socials"><p class="kicker">Our socials</p>
-          <a class="soc ig" data-social="instagram" data-attr="instagram-show" aria-label="YapYap on Instagram"><svg aria-hidden="true"><use href="#i-ig"/></svg></a>
-          <a class="soc tt" data-social="tiktok" data-attr="tiktok-show" aria-label="YapYap on TikTok"><svg aria-hidden="true"><use href="#i-tt"/></svg></a>
+          <a class="soc ig" data-social="instagram" data-attr="instagram-show" aria-label="YapYap on Instagram" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-ig"/></svg></a>
+          <a class="soc tt" data-social="tiktok" data-attr="tiktok-show" aria-label="YapYap on TikTok" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-tt"/></svg></a>
         </div>
         <h2>Why I’m building YapYap.</h2>
       </div>
@@ -696,7 +696,7 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
         <div class="tv"><video id="show-video" class="px" controls preload="none" playsinline poster="show-poster.jpg" aria-label="The YapYap office theme song: the office lights come on at night, then the cast is introduced one by one">
           <source src="show-intro.mp4" type="video/mp4"></video></div>
         <div class="show-copy">
-          <p>Hi, I’m <a href="https://www.linkedin.com/in/asad-moulvi-aaa278175/" data-attr="linkedin-show">Asad</a>. I think the AI you use every day should run on the computer you own, not on someone else’s servers. YapYap is me finding out how far a Mac can go on its own: dictation and read-aloud first, then your files, then an assistant that gets real work done.</p>
+          <p>Hi, I’m <a href="https://www.linkedin.com/in/asad-moulvi-aaa278175/" data-attr="linkedin-show" target="_blank" rel="noopener">Asad</a>. I think the AI you use every day should run on the computer you own, not on someone else’s servers. YapYap is me finding out how far a Mac can go on its own: dictation and read-aloud first, then your files, then an assistant that gets real work done.</p>
           <p>To explore ideas, and because I’ve always wanted a TV show, I made a little TV show about this mission. It’s fun. We rarely talk about the product; we’re usually goofing around. Find us on our socials.</p>
           <div class="cta">
             <a class="plain link-arrow" href="https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg" data-attr="download-show">Get the app they don’t use</a>
@@ -727,29 +727,29 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
         <article>
           <h3>One-time downloads.</h3>
           <p>The natural Kokoro voices, about 340 MB from GitHub, and NVIDIA’s Parakeet speech model, about 700 MB from Hugging Face, both fetched in the background the first time you open YapYap (you can remove them in Settings). And on macOS 26 or later, Apple’s speech model, which macOS fetches itself. Text, audio and screenshots are never uploaded.</p>
-          <a class="src" href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/Kokoro.swift#L253-L254">Kokoro.swift</a>
+          <a class="src" href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/Kokoro.swift#L253-L254" target="_blank" rel="noopener">Kokoro.swift</a>
         </article>
         <article>
           <h3>Screenshots stay in memory.</h3>
           <p>Each read takes one still image of the window or box you chose. macOS’s Vision framework turns it into text, then the image is thrown away. When you dictate, YapYap does the same with the window you’re typing in, only to spell the names in it right (you can turn this off).</p>
-          <a class="src" href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/Capture.swift">Capture.swift</a>
+          <a class="src" href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/Capture.swift" target="_blank" rel="noopener">Capture.swift</a>
         </article>
         <article>
           <h3>Your voice stays on your Mac.</h3>
           <p>Dictation runs NVIDIA’s Parakeet speech model on your Mac (or Apple’s on-device speech recognition, if you prefer it or until Parakeet has downloaded), and the optional tidy-up uses Apple Intelligence on your Mac. The mic is on only while you dictate: while you hold the shortcut, or in hands-free mode until you stop it. Audio is never saved.</p>
-          <a class="src" href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/Parakeet.swift">Parakeet.swift</a>
+          <a class="src" href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/Parakeet.swift" target="_blank" rel="noopener">Parakeet.swift</a>
         </article>
         <article>
           <h3>No account. Anonymous stats you can switch off.</h3>
           <p>YapYap sends anonymous counts, like how many words were read, through TelemetryDeck. Never what you read or say, or which app it was in. Turn it off in Settings → Privacy.</p>
-          <a class="src" href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/Telemetry.swift">Telemetry.swift</a>
+          <a class="src" href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/Telemetry.swift" target="_blank" rel="noopener">Telemetry.swift</a>
         </article>
       </div>
       <div class="verify">
         <div>
           <h3>Check it yourself.</h3>
           <ul>
-            <li><b><a href="https://github.com/WannaBeSolopreneur/YapYap">Search the code.</a></b> YapYap’s own network code fits on three lines; the open-source FluidAudio library fetches the speech model from Hugging Face. The only other connections are TelemetryDeck’s anonymous stats and a daily check of yapyap.cc for updates.</li>
+            <li><b><a href="https://github.com/WannaBeSolopreneur/YapYap" target="_blank" rel="noopener">Search the code.</a></b> YapYap’s own network code fits on three lines; the open-source FluidAudio library fetches the speech model from Hugging Face. The only other connections are TelemetryDeck’s anonymous stats and a daily check of yapyap.cc for updates.</li>
             <li><b>About this website.</b> yapyap.cc itself counts visits, clicks and anonymous replays of how the page is used with PostHog, without cookies and through yapyap.cc. That’s the website only: the app never talks to PostHog.</li>
             <li><b>Turn off Wi‑Fi.</b> Once the voices and speech models are installed, reading and dictation work exactly the same.</li>
             <li><b>Watch the traffic.</b> Run a network monitor such as LuLu while YapYap reads or listens. Turn stats off and the only other request is the daily update check.</li>
@@ -758,9 +758,9 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
         <div class="term" aria-label="YapYap’s own network code">
           <div class="bar-t"><i></i><i></i><i></i><b>Terminal — yapyap</b></div>
           <pre><span>$ </span>grep -rnE 'URLSession\(|https://' Sources
-<a href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/AppModel.swift#L476"><em>AppModel.swift:476</em></a>  session = URLSession(configuration: …)
-<a href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/Kokoro.swift#L253"><em>Kokoro.swift:253</em></a>    "https://media.githubusercontent.com/…/kokoro-v1_0.safetensors"
-<a href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/Kokoro.swift#L254"><em>Kokoro.swift:254</em></a>    "https://raw.githubusercontent.com/…/voices.npz"</pre>
+<a href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/AppModel.swift#L476" target="_blank" rel="noopener"><em>AppModel.swift:476</em></a>  session = URLSession(configuration: …)
+<a href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/Kokoro.swift#L253" target="_blank" rel="noopener"><em>Kokoro.swift:253</em></a>    "https://media.githubusercontent.com/…/kokoro-v1_0.safetensors"
+<a href="https://github.com/WannaBeSolopreneur/YapYap/blob/main/Sources/YapYap/Kokoro.swift#L254" target="_blank" rel="noopener"><em>Kokoro.swift:254</em></a>    "https://raw.githubusercontent.com/…/voices.npz"</pre>
         </div>
       </div>
     </div>
@@ -772,7 +772,7 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
         <p class="kicker">Open source</p>
         <h2>Free, and every line is on GitHub.</h2>
         <p class="soon">Read it, build it yourself, or help make it better. Licensed under the AGPL, so it stays free.</p>
-        <div class="cta"><a class="btn lg" href="https://github.com/WannaBeSolopreneur/YapYap">View on GitHub</a></div>
+        <div class="cta"><a class="btn lg" href="https://github.com/WannaBeSolopreneur/YapYap" target="_blank" rel="noopener">View on GitHub</a></div>
         <ul class="stack" aria-label="Built with"><li>Swift &amp; SwiftUI</li><li>Vision</li><li>Speech</li><li>MLX</li><li>Kokoro-82M</li><li>Parakeet</li></ul>
       </div>
       <div class="term" aria-label="Build from source">
@@ -822,7 +822,7 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
       </details>
       <details id="availability">
         <summary><h3>How do I install YapYap?</h3></summary>
-        <p><a href="https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg" data-attr="download-faq">Download YapYap</a>, open the file, and drag YapYap onto Applications. It’s signed and notarized by Apple, and it keeps itself up to date. You can also <a href="https://github.com/WannaBeSolopreneur/YapYap">build it from the source on GitHub</a>.</p>
+        <p><a href="https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg" data-attr="download-faq">Download YapYap</a>, open the file, and drag YapYap onto Applications. It’s signed and notarized by Apple, and it keeps itself up to date. You can also <a href="https://github.com/WannaBeSolopreneur/YapYap" target="_blank" rel="noopener">build it from the source on GitHub</a>.</p>
       </details>
     </div>
   </div></section>
@@ -840,7 +840,7 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
 
 <footer>
   <div class="wrap">
-    <span>© 2026 YapYap · <a href="https://github.com/WannaBeSolopreneur/YapYap">Source on GitHub</a><span data-tiktok hidden> · <a href="" data-tiktok data-attr="tiktok-footer">TikTok</a></span> · <a href="" data-social="instagram" data-attr="instagram-footer">Instagram</a></span>
+    <span>© 2026 YapYap · <a href="https://github.com/WannaBeSolopreneur/YapYap" target="_blank" rel="noopener">Source on GitHub</a><span data-tiktok hidden> · <a href="" data-tiktok data-attr="tiktok-footer" target="_blank" rel="noopener">TikTok</a></span> · <a href="" data-social="instagram" data-attr="instagram-footer" target="_blank" rel="noopener">Instagram</a></span>
     <span>Mac and macOS are trademarks of Apple Inc. YapYap is not made by Apple. The YapYap office and its cast are original characters.</span>
   </div>
 </footer>
