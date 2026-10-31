@@ -13,14 +13,14 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:url" content="https://yapyap.cc/">
 <meta property="og:title" content="YapYap – On-device AI productivity tools for Mac">
-<meta property="og:description" content="Your computer should run its own intelligence. Dictation, read-aloud and saved passwords that run on your Mac: no subscription, no account, nothing uploaded.">
+<meta property="og:description" content="Own your AI. Dictation, read-aloud and saved passwords that run on your Mac: no subscription, no account, nothing uploaded.">
 <meta property="og:image" content="https://yapyap.cc/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="The YapYap logo, a pixel speech bubble, above the line On-device AI productivity tools, with the six pixel-art characters from the YapYap office show and yapyap.cc">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="YapYap – On-device AI productivity tools for Mac">
-<meta name="twitter:description" content="Your computer should run its own intelligence. Dictation, read-aloud and saved passwords that run on your Mac: no subscription, no account, nothing uploaded.">
+<meta name="twitter:description" content="Own your AI. Dictation, read-aloud and saved passwords that run on your Mac: no subscription, no account, nothing uploaded.">
 <meta name="twitter:image" content="https://yapyap.cc/og.png">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
@@ -185,12 +185,8 @@ kbd { font-family: var(--ui); font-size: 19px; min-width: 34px; height: 34px; pa
 
 
 /* Them vs us: what subscription AI apps cost you, and what YapYap does instead */
-.acts-h { font-family: var(--pixel); font-size: clamp(28px, 3.4vw, 40px); line-height: 1.1; margin-top: 64px; color: var(--cream); text-shadow: 3px 3px 0 var(--ink); }
-.acts-h + .acts, .acts-sub + .acts { margin-top: 26px; }
-.acts-sub { font-size: clamp(18px, 2vw, 21px); color: var(--powder); max-width: 46ch; margin: 12px auto 0; }
-.tenets { list-style: none; padding: 0; margin: 30px auto 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
-.tenets li { font-family: var(--pixel); font-size: 21px; line-height: 1; padding: 10px 14px; background: var(--cream); color: var(--ink); border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--ink); }
-.tenets li::before { content: "✓ "; color: #058a68; }
+.beat { padding-block: 72px; }
+.beat .head h2 { margin-top: 28px; color: var(--yellow); }
 .road { list-style: none; padding: 0; margin: 48px auto 0; max-width: 980px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
 .road li { min-width: 0; display: flex; flex-direction: column; gap: 6px; padding: 16px 18px 18px; background: #fff; border: 3px solid var(--ink); box-shadow: 5px 5px 0 var(--ink); }
 .road li:not(.now) { background: transparent; border-style: dashed; box-shadow: none; }
@@ -529,6 +525,7 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
   <div class="wrap">
     <a class="brand" href="#top"><img class="px" src="mark.png" alt="" width="16" height="16">YAPYAP</a>
     <ul>
+      <li><a href="#tools">Tools</a></li>
       <li><a href="#vision">Vision</a></li>
       <li><a href="#show">The show</a></li>
       <li><a href="#speak">Talk</a></li>
@@ -547,13 +544,27 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
     <div class="wrap">
       <div class="lockup"><img class="px" src="mark.png" alt="" width="16" height="16"><b>YAPYAP</b></div>
       <p class="kicker">On-device AI productivity tools</p>
-      <h1>Your computer should run its own intelligence.</h1>
-      <p class="sub">We’ve gotten used to sending our words, documents and conversations to someone else’s servers whenever we want help from AI. But our computers already have capable hardware, and open models keep improving. More of the intelligence we use every day should run on the devices we own.</p>
-      <ul class="tenets" aria-label="What that means">
-        <li>Works without a connection</li><li>Personal information stays on your Mac</li><li>Under your control</li>
-      </ul>
-      <h2 class="acts-h">We’re starting with everyday tasks.</h2>
-      <p class="acts-sub">Speaking instead of typing, listening instead of reading, and recalling what you use over and over.</p>
+      <h1>Own your AI.</h1>
+      <p class="sub">Free AI that runs on your Mac. Talk instead of typing, listen instead of reading. No cloud, no account.</p>
+      <div class="cta">
+        <a class="btn lg" href="https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg" data-attr="download-hero">Download for Mac</a>
+        <a class="plain link-arrow" href="#tools">See what it does</a>
+      </div>
+      <p class="req">Free · Open source · macOS 15+ · Apple silicon</p>
+    </div>
+  </header>
+
+  <section id="problem" class="beat ink"><div class="wrap">
+    <div class="head">
+      <figure class="host center"><span class="sprite s1"><img class="px" src="art/cast/gail-idle0.png" alt="" width="24" height="32"><img class="px" src="art/cast/gail-blink.png" alt="" width="24" height="32"></span><blockquote class="bubble"><b>GAIL · OFFICE MANAGER</b>When I ask the AI to fix my email, where does my email go?</blockquote></figure>
+      <h2>Somewhere else.</h2>
+      <p>Most AI apps send your words, documents and conversations to their servers. We got used to it. We didn’t have to.</p>
+    </div>
+  </div></section>
+
+  <section id="tools" class="night"><div class="wrap">
+    <div class="head"><p class="kicker">Today</p><h2>Your Mac is already enough.</h2>
+      <p>It has the hardware, and open models keep getting better. So we’re proving it, one everyday task at a time.</p></div>
       <div class="acts" aria-label="The tools">
         <article class="act" data-act="dictate">
           <header><h2>Dictation</h2><span class="k"><kbd>⌥</kbd><kbd>S</kbd></span></header>
@@ -590,17 +601,11 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
         <div class="who"><span class="spr"><img class="px f-idle0" src="art/cast/lenny-idle0.png" alt="" width="24" height="32"></span><p class="say"><small>LENNY · IT AND SECURITY</small><span>Before I say yes: does it run locally?</span></p></div>
         <p class="yes"><b>Yes.</b> All three run on your Mac. Nothing you say or read is uploaded.</p>
       </div>
-      <div class="cta">
-        <a class="btn lg" href="https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg" data-attr="download-hero">Download for Mac</a>
-        <a class="plain link-arrow" href="https://github.com/WannaBeSolopreneur/YapYap">View on GitHub</a>
-      </div>
-      <p class="req">Free · Open source · Runs on your Mac · macOS 15+ · Apple silicon</p>
-    </div>
-  </header>
+  </div></section>
 
   <section id="vision" class="paper"><div class="wrap">
     <div class="head"><p class="kicker">Where we’re going</p><h2>The hard part is making it useful.</h2>
-      <p>A model that runs on a laptop still has to understand a request, use the right tools and finish the job, without eating all the memory or draining the battery. That’s what we’re working on.</p></div>
+      <p>AI on a laptop has to understand what you want and get it done, without eating your memory or your battery. Here’s the plan.</p></div>
     <ol class="road" aria-label="The roadmap">
       <li class="now"><span class="tag">Today</span><b>Speak instead of typing</b><span>Dictation into any app.</span></li>
       <li class="now"><span class="tag">Today</span><b>Listen instead of reading</b><span>Any text on screen, read aloud.</span></li>
@@ -609,7 +614,7 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
       <li><span class="tag">Later</span><b>Organize your work</b><span>Sort, tidy and find things for you.</span></li>
       <li><span class="tag">Later</span><b>Act across your Mac</b><span>An assistant that gets real tasks done.</span></li>
     </ol>
-    <p class="road-end">Each one is another test of how much we can do locally, on hardware people already own. The goal is to keep closing the distance between what AI can do and what your own computer can do for you.</p>
+    <p class="road-end">Each step tests how much your own computer can do, until it can do what the cloud does.</p>
   </div></section>
 
   <section id="show" class="wall">
@@ -861,7 +866,7 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
 
   <section class="final night">
     <div class="wrap">
-      <h2>Start yapping.</h2>
+      <h2>Own your AI.</h2>
       <p>Free for Mac. macOS 15+, Apple silicon.</p>
       <div class="cta"><a class="btn lg" href="https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg" data-attr="download-bottom">Download for Mac</a></div>
     </div>
@@ -991,7 +996,7 @@ document.querySelectorAll("[data-read]:not([data-read=region])").forEach((el, n)
 })();
 
 
-// The tools, acted out in the hero. Each panel loops its own little scene while it's on screen.
+// The tools, acted out in the Today section. Each panel loops its own little scene while it's on screen.
 (() => {
   const sleep = ms => new Promise(r => setTimeout(r, ms));
   const flash = el => { el.classList.add("flash"); requestAnimationFrame(() => requestAnimationFrame(() => el.classList.remove("flash"))); };
