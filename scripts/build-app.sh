@@ -30,6 +30,7 @@ ditto "$PRODUCTS/Sparkle.framework" "$APP/Contents/Frameworks/Sparkle.framework"
 cp -R "$PRODUCTS"/*.bundle "$APP/Contents/Resources/"
 cp Resources/AppIcon.icns "$APP/Contents/Resources/"
 cp Resources/welcome-demo.mp4 "$APP/Contents/Resources/"
+cp -R Resources/Fonts "$APP/Contents/Resources/"
 install_name_tool -add_rpath @executable_path/../Frameworks "$APP/Contents/MacOS/YapYap" 2>/dev/null || true
 
 cat > "$APP/Contents/Info.plist" <<PLIST
@@ -43,6 +44,7 @@ cat > "$APP/Contents/Info.plist" <<PLIST
     <key>CFBundleExecutable</key><string>YapYap</string>
     <key>CFBundlePackageType</key><string>APPL</string>
     <key>CFBundleIconFile</key><string>AppIcon</string>
+    <key>ATSApplicationFontsPath</key><string>Fonts</string>
     <key>CFBundleShortVersionString</key><string>$VERSION</string>
     <key>CFBundleVersion</key><string>$BUILD</string>
     <key>LSMinimumSystemVersion</key><string>15.0</string>

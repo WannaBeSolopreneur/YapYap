@@ -16,12 +16,15 @@ enum Theme {
     static let ready = Color.green
     static let attention = Color.orange
 
-    /// The brand navy from the icon and the website (#1f3560); a lighter blue in dark mode.
-    static let navy = dynamic(light: (0.122, 0.208, 0.376), dark: (0.55, 0.68, 0.92))
+    /// The brand navy from the icon and the website (#1b2a41); the show's powder blue (#a7c7e7) in dark mode.
+    static let navy = dynamic(light: (0.106, 0.165, 0.255), dark: (0.655, 0.780, 0.906))
     /// Window and sidebar: a warm paper grey. The pages sit on `canvas`, a sheet above it.
     static let sidebar = dynamic(light: (0.949, 0.945, 0.933), dark: (0.110, 0.110, 0.118))
     static let canvas = dynamic(light: (0.988, 0.984, 0.976), dark: (0.149, 0.149, 0.157))
     static let hairline = Color.primary.opacity(0.08)
+
+    /// The brand's pixel type, Press Start 2P (bundled in Resources/Fonts); for the wordmark only.
+    static func pixel(_ size: CGFloat) -> Font { .custom("PressStart2P-Regular", size: size) }
 
     /// Display type for headlines and big numbers: New York, Apple's serif.
     static func display(_ size: CGFloat, weight: Font.Weight = .regular) -> Font {
@@ -36,18 +39,19 @@ enum Theme {
     }
 }
 
-/// YapYap's mark (the icon's lines with one highlighted) and name, top of the sidebar.
+/// YapYap's pixel mark and name, top of the sidebar, as on the website and in the TikTok show.
 struct Wordmark: View {
+    private static let mark = Logo.mark(points: 1.5)
+
     var body: some View {
         HStack(spacing: 8) {
-            Image(nsImage: Logo.menuBar)
-                .renderingMode(.template)
-                .resizable()
-                .frame(width: 22, height: 20)
+            Image(nsImage: Self.mark)
+                .interpolation(.none)
+                .frame(width: 24, height: 24)
+            Text("YAPYAP")
+                .font(Theme.pixel(13))
                 .foregroundStyle(Theme.navy)
-            Text("YapYap")
-                .font(.system(size: 19, weight: .semibold))
-                .tracking(-0.4)
+                .padding(.top, 2)
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("YapYap")
