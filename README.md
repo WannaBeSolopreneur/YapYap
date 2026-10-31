@@ -4,7 +4,7 @@
 
 # YapYap
 
-**You talk. It types. It talks. You listen.**
+**On-device AI productivity tools.** You talk, it types. It talks, you listen.
 
 A free Mac app that reads any text on your screen aloud, highlighting each word as it's spoken,
 and types what you say into any app. Everything runs on your Mac.

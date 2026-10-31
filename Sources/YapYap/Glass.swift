@@ -74,20 +74,63 @@ enum Shortcuts {
     ]
 }
 
-/// YapYap's logo: the app icon, or a monochrome template version for the menu bar.
+/// YapYap's logo: the app icon, the pixel mark, or a monochrome template version for the menu bar.
 enum Logo {
     static var appIcon: Image { Image(nsImage: NSApp.applicationIconImage) }
 
-    /// Three text lines with the highlighted one in the middle, as in the app icon.
-    static let menuBar: NSImage = {
-        let image = NSImage(size: NSSize(width: 18, height: 16), flipped: true) { _ in
-            NSColor.black.withAlphaComponent(0.55).setFill()
-            for (y, w) in [(1.5, 13.0), (5.0, 11.0), (12.5, 13.0)] {
-                NSBezierPath(roundedRect: NSRect(x: 3, y: y, width: w, height: 1.6), xRadius: 0.8, yRadius: 0.8).fill()
+    /// The mark from the website and the TikTok show: a pixel speech bubble with the yellow highlight across it.
+    /// Same 16x16 grid as web/brand/make_brand.py. # ink, w/p/s bubble light/fill/shade, t text, y highlight.
+    static let grid = [
+        "................",
+        "...##########...",
+        "..#wwwwwwwwww#..",
+        ".#ppttttttttpp#.",
+        ".#pppppppppppp#.",
+        "#yyyyyyyyyyyyyy#",
+        "#yyyyyyyyyyyyyy#",
+        ".#pppppppppppp#.",
+        ".#ppttttttttpp#.",
+        ".#pppppppppppp#.",
+        ".#pptttttppppp#.",
+        "..#ssssssssss#..",
+        "...#ss#######...",
+        "...#s#..........",
+        "....#...........",
+        "................",
+    ]
+
+    private static func draw(points: CGFloat, color: (Character) -> NSColor?) -> NSImage {
+        var cells: [(NSRect, NSColor)] = []
+        for (y, row) in grid.enumerated() {
+            for (x, c) in row.enumerated() {
+                if let fill = color(c) { cells.append((NSRect(x: CGFloat(x) * points, y: CGFloat(y) * points, width: points, height: points), fill)) }
             }
-            NSColor.black.setFill()
-            NSBezierPath(roundedRect: NSRect(x: 1, y: 7.6, width: 16, height: 3.6), xRadius: 1.8, yRadius: 1.8).fill()
+        }
+        return NSImage(size: NSSize(width: 16 * points, height: 16 * points), flipped: true) { _ in
+            for (rect, fill) in cells { fill.setFill(); rect.fill() }
             return true
+        }
+    }
+
+    private static func hex(_ v: Int) -> NSColor {
+        NSColor(srgbRed: CGFloat(v >> 16 & 255) / 255, green: CGFloat(v >> 8 & 255) / 255, blue: CGFloat(v & 255) / 255, alpha: 1)
+    }
+
+    /// The full-colour mark, `points` per pixel (1.5 draws it 24 pt wide, crisp on Retina).
+    static func mark(points: CGFloat) -> NSImage {
+        let palette: [Character: NSColor] = ["#": hex(0x0f1828), "w": hex(0xdcebf7), "p": hex(0xa7c7e7),
+                                             "s": hex(0x5b7db1), "t": hex(0x3e5c84), "y": hex(0xffd166)]
+        return draw(points: points) { palette[$0] }
+    }
+
+    /// Menu bar: the bubble's outline and the highlight solid, the text lines faint, the inside clear.
+    static let menuBar: NSImage = {
+        let image = draw(points: 1) { c in
+            switch c {
+            case "#", "y": .black
+            case "t": .black.withAlphaComponent(0.5)
+            default: nil
+            }
         }
         image.isTemplate = true
         return image
