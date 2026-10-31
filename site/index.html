@@ -794,7 +794,7 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
         <figure class="ex sx" data-sx="email" data-paste="sam@example.com">
           <div class="win app-mail"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><span class="sp"></span><span class="title"><b>New Message</b></span><span class="sp"></span><svg><use href="#i-send"/></svg></div>
             <div class="wb form"><div class="fr"><span>To:</span><b><span data-out></span><i class="caret"></i></b></div><div class="fr"><span>Subject:</span>Saturday</div><p class="fb">Count me in. Send the details to the address above.</p><div class="mcap off" aria-hidden="true"><span class="dx-mic"><i></i><svg viewBox="0 0 16 16" fill="currentColor"><rect x="5.5" y="1.5" width="5" height="8.5" rx="2.5"/><path d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span><span class="mcap-t">Listening… let go to type</span><span class="mcap-k"><kbd>⌥</kbd><kbd>S</kbd></span></div></div></div>
-          <figcaption><h3>“Email address”</h3><p>Fill in forms without spelling it out.</p></figcaption>
+          <figcaption><h3>“Type email address”</h3><p>Fill in forms without spelling it out.</p></figcaption>
         </figure>
         <figure class="ex sx" data-sx="home" data-paste="1 Main Street, Springfield">
           <div class="win app-safari"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><svg><use href="#i-back"/></svg><span class="addr"><svg><use href="#i-lock"/></svg>shop.example</span><svg><use href="#i-share"/></svg></div>
@@ -1315,7 +1315,7 @@ document.querySelectorAll("[data-read]:not([data-read=region])").forEach((el, n)
 (() => {
   const PARTS = {"msg": [[1.89, "Running"], [2.86, "Running 10 minutes late"], [3.85, "Running 10 minutes late, save me a seat"], [4.49, "Running 10 minutes late, save me a seat."]], "note": [[1.19, "Ideas"], [2.16, "Ideas for the launch"], [3.19, "Ideas for the launch. A short dem"], [4.11, "Ideas for the launch. A short demo video, a priv"], [5.18, "Ideas for the launch. A short demo video, a privacy page, and a"], [6.16, "Ideas for the launch. A short demo video, a privacy page, and a student discount"], [6.69, "Ideas for the launch. A short demo video, a privacy page, and a student discount."]], "chat": [[1.5, "The lo"], [2.45, "The login bug is fixed"], [3.43, "The login bug is fixed."], [3.65, "The login bug is fixed. Can someone"], [4.42, "The login bug is fixed. Can someone check it on staging"], [5.2, "The login bug is fixed. Can someone check it on staging?"]], "doc": [[1.2, "Thank you"], [2.16, "Thank you for meeting with me on"], [3.14, "Thank you for meeting with me on Tuesday."], [4.12, "Thank you for meeting with me on Tuesday. I have attached the notes"], [5.18, "Thank you for meeting with me on Tuesday. I have attached the notes we discussed"], [5.8, "Thank you for meeting with me on Tuesday. I have attached the notes we discussed."]], "rem": [[1.18, "B"], [1.37, "Book the"], [2.14, "Book the dentist for next Thursday"], [3.27, "Book the dentist for next Thursday."]], "commit": [[1.18, "Fixed"], [2.16, "Fixed crash when the window"], [3.14, "Fixed crash when the window closes during a read"], [3.93, "Fixed crash when the window closes during a read."], [3.99, "Fix crash when the window closes during a read."]],
     // Saved text: the spoken name, then (data-paste) the saved value is what gets pasted.
-    "email": [[1.1, "Email"], [1.6, "Email address"]], "home": [[1.1, "Home"], [1.6, "Home address"]],
+    "email": [[0.9, "Type"], [1.3, "Type email"], [1.8, "Type email address"]], "home": [[1.1, "Home"], [1.6, "Home address"]],
     "key": [[1.1, "Paste my"], [1.9, "Paste my ElevenLabs"], [2.4, "Paste my ElevenLabs key"]]};
   const cards = [...document.querySelectorAll("[data-sx]")].map((el, n) => {
     const parts = PARTS[el.dataset.sx], end = parts[parts.length - 1][0];
@@ -1397,7 +1397,7 @@ document.querySelectorAll("[data-read]:not([data-read=region])").forEach((el, n)
       a.out.textContent = ""; a.say.classList.add("off"); a.cap.classList.remove("on");
       await sleep(1300);
       a.cap.classList.add("on");
-      await say(a, ["Email", "address."], 380);
+      await say(a, ["Type", "email", "address."], 340);
       await sleep(250); a.cap.classList.remove("on");
       a.out.textContent = "sam@example.com"; flash(a.out);
       await sleep(3400);
@@ -1405,7 +1405,7 @@ document.querySelectorAll("[data-read]:not([data-read=region])").forEach((el, n)
   };
   if (reduce) {
     acts.dictate.say.classList.remove("off"); acts.dictate.said.textContent = "Um, so, like, the meeting is, um, moved to three."; acts.dictate.out.textContent = "The meeting is moved to 3.";
-    acts.saved.say.classList.remove("off"); acts.saved.said.textContent = "Email address."; acts.saved.out.textContent = "sam@example.com";
+    acts.saved.say.classList.remove("off"); acts.saved.said.textContent = "Type email address."; acts.saved.out.textContent = "sam@example.com";
     return;
   }
   Object.entries(acts).forEach(async ([name, a]) => {
