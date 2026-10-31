@@ -1,14 +1,16 @@
 # YapYap brand
 
-The look comes from the YapYap office show on TikTok: pixel art in the show's palette, Press Start 2P titles,
-Atkinson Hyperlegible for reading, Pixelify Sans for keys and labels (all SIL OFL, licences in `fonts/`).
+The look comes from the YapYap office show on TikTok: pixel art in the show's palette and its cast. Type (all SIL OFL,
+licences in `fonts/`): Press Start 2P for the YAPYAP logo only, since it's hard to read in anything longer; Jersey 15 for
+headings, labels and buttons; Atkinson Hyperlegible for reading.
 
 | | |
 |---|---|
 | Ink `#0f1828` · Night `#19283e` · Navy `#1b2a41` · Slate `#3e5c84` | Powder `#a7c7e7` · Pale `#dcebf7` · Cream `#f4f1ea` |
 | Yellow `#ffd166` (the read-along highlight) · Teal `#06d6a0` · Red `#e63946` · Orange `#f28c28` | |
 
-Tagline: **On-device AI productivity tools.** Page titles and search text keep "text to speech and dictation for Mac".
+Tagline: **On-device AI productivity tools.** It leads the hero, titles and descriptions. The tools today are Dictation,
+Read aloud and Saved text; unreleased tools stay off the site until they ship.
 
 ## The mark
 
