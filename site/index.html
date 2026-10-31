@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>YapYap – On-Device AI Productivity Tools for Mac: Dictation &amp; Text to Speech</title>
-<meta name="description" content="On-device AI productivity tools for Mac, free and open source: dictation into any app, text to speech with word-by-word highlighting, and saved text you paste by saying its name.">
+<meta name="description" content="On-device AI productivity tools for Mac: dictation, text to speech and saved passwords without a subscription, an account or the cloud. Free and open source, and it works offline.">
 <link rel="canonical" href="https://yapyap.cc/">
 <meta name="robots" content="index, follow, max-image-preview:large, max-video-preview:-1">
 <meta name="theme-color" content="#0f1828">
@@ -13,14 +13,14 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:url" content="https://yapyap.cc/">
 <meta property="og:title" content="YapYap – On-device AI productivity tools for Mac">
-<meta property="og:description" content="Dictation, read aloud and saved text: free AI tools that run on your Mac. Open source, and your words never leave it.">
+<meta property="og:description" content="Stop renting your AI. Dictation, read-aloud and saved passwords that run on your Mac: no subscription, no account, nothing uploaded.">
 <meta property="og:image" content="https://yapyap.cc/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="The YapYap logo, a pixel speech bubble, above the line On-device AI productivity tools, with the six pixel-art characters from the YapYap office show and yapyap.cc">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="YapYap – On-device AI productivity tools for Mac">
-<meta name="twitter:description" content="Dictation, read aloud and saved text: free AI tools that run on your Mac. Open source, and your words never leave it.">
+<meta name="twitter:description" content="Stop renting your AI. Dictation, read-aloud and saved passwords that run on your Mac: no subscription, no account, nothing uploaded.">
 <meta name="twitter:image" content="https://yapyap.cc/og.png">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
@@ -183,6 +183,23 @@ kbd { font-family: var(--ui); font-size: 19px; min-width: 34px; height: 34px; pa
 .req { font-size: 15px; color: var(--powder); margin-top: 18px; }
 
 
+
+/* Them vs us: what subscription AI apps cost you, and what YapYap does instead */
+.vs { display: grid; grid-template-columns: 1fr 1fr; max-width: 860px; margin: 40px auto 0; text-align: left; border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); }
+.vs-col { min-width: 0; padding: 18px 22px 20px; }
+.vs-col h2 { font-family: var(--pixel); font-size: 28px; line-height: 1.1; }
+.vs-col ul { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 9px; font-size: 18px; line-height: 1.35; }
+.vs-col li { display: flex; gap: 10px; }
+.vs-col li::before { flex-shrink: 0; width: 22px; height: 22px; display: grid; place-items: center; font: 400 18px/1 var(--pixel); color: var(--ink); margin-top: 1px; }
+.vs .them { background: #2a2f3d; color: #b9c0cc; }
+.vs .them h2 { color: #c9ced8; }
+.vs .them li::before { content: "×"; background: #8d93a1; }
+.vs .us { background: var(--cream); color: var(--ink); }
+.vs .us h2 { color: var(--ink); }
+.vs .us li::before { content: "✓"; background: var(--teal); }
+.acts-h { font-family: var(--pixel); font-size: clamp(28px, 3.4vw, 40px); line-height: 1.1; margin-top: 64px; color: var(--cream); text-shadow: 3px 3px 0 var(--ink); }
+.acts-h + .acts { margin-top: 26px; }
+@media (max-width: 640px) { .vs { grid-template-columns: 1fr; } }
 
 /* The tools, acted out: each panel is one tool, used by the cast member who needs it, with the result happening live. */
 .acts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; max-width: 1180px; margin: 44px auto 0; text-align: left; }
@@ -528,8 +545,15 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
     <div class="wrap">
       <div class="lockup"><img class="px" src="mark.png" alt="" width="16" height="16"><b>YAPYAP</b></div>
       <p class="kicker">On-device AI productivity tools</p>
-      <h1>Your Mac’s new helpers.</h1>
-      <p class="sub">Free tools that do the boring typing and reading for you. Talk and it types. Point at text and it reads it out. Say “email address” and it fills it in. Nothing leaves your Mac.</p>
+      <h1>Stop renting your AI.</h1>
+      <p class="sub">Dictation, read-aloud and saved passwords: the tools other apps charge you for every month and run on their servers. YapYap runs them on your Mac. Free, no account, nothing uploaded, works offline.</p>
+      <div class="vs" aria-label="Subscription apps compared with YapYap">
+        <div class="vs-col them"><h2>Subscription apps</h2><ul>
+          <li>A monthly bill</li><li>An account to sign in to</li><li>Your voice and words go to their servers</li><li>Stop working when you’re offline</li><li>Your passwords sit in their cloud</li></ul></div>
+        <div class="vs-col us"><h2>YapYap</h2><ul>
+          <li>Free and open source</li><li>No account</li><li>Everything stays on your Mac</li><li>Works with Wi‑Fi off</li><li>Passwords stay in your Mac’s Keychain</li></ul></div>
+      </div>
+      <h2 class="acts-h">Three tools today. More on the way.</h2>
       <div class="acts" aria-label="The tools">
         <article class="act" data-act="dictate">
           <header><h2>Dictation</h2><span class="k"><kbd>⌥</kbd><kbd>S</kbd></span></header>
