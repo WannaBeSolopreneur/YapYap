@@ -191,43 +191,61 @@ kbd { font-family: var(--ui); font-size: 19px; min-width: 34px; height: 34px; pa
 .lockup b { font-family: var(--logo); font-weight: 400; font-size: clamp(30px, 6vw, 60px); line-height: 1; color: var(--powder); text-shadow: 5px 5px 0 var(--ink); letter-spacing: 0.02em; }
 .hero .kicker { margin-top: 26px; font-size: clamp(18px, 2.2vw, 22px); color: var(--cream); text-shadow: 2px 2px 0 var(--ink); }
 .hero h1 { font-family: var(--pixel); font-size: clamp(44px, 7.6vw, 92px); line-height: 1.0; margin-top: 34px; color: var(--yellow); text-shadow: 3px 3px 0 var(--ink); font-weight: 700; letter-spacing: 0.01em; }
-.hero .sub { font-size: clamp(18px, 2.1vw, 22px); line-height: 1.45; color: var(--powder); max-width: 34ch; margin: 22px auto 0; }
-.tools { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; max-width: 980px; margin: 48px auto 0; padding: 0; list-style: none; text-align: left; }
-.tools li { min-width: 0; }
-.tools a { height: 100%; display: flex; flex-direction: column; gap: 10px; padding: 18px 18px 20px; background: var(--navy); color: var(--cream); text-decoration: none;
-  border: 3px solid var(--ink); box-shadow: 5px 5px 0 var(--ink); }
-.tools a:hover { background: #22344f; }
-.tools a:active { transform: translate(2px, 2px); box-shadow: 3px 3px 0 var(--ink); }
-.tools .tk { display: flex; align-items: center; gap: 6px; min-height: 34px; }
-.tools .tk i { font-style: normal; font-family: var(--ui); font-size: 20px; color: var(--yellow); margin-left: 4px; white-space: nowrap; }
-.tools b { font-family: var(--pixel); font-weight: 700; font-size: 28px; line-height: 1.1; color: var(--yellow); text-shadow: 2px 2px 0 var(--ink); }
-.tools a > span:last-child { font-size: 17px; line-height: 1.4; color: var(--pale); }
-@media (max-width: 760px) { .tools { grid-template-columns: 1fr; max-width: 440px; gap: 14px; } .tools a { padding: 14px 16px 16px; } }
+.hero .sub { font-size: clamp(18px, 2.1vw, 22px); line-height: 1.45; color: var(--powder); max-width: 40ch; margin: 20px auto 0; }
 .cta { display: flex; justify-content: center; align-items: center; gap: 28px; flex-wrap: wrap; margin-top: 30px; }
 .req { font-size: 15px; color: var(--powder); margin-top: 18px; }
 .building { width: 100%; margin-top: 30px; display: block; aspect-ratio: 16 / 9; height: auto; object-fit: cover; object-position: 50% 100%; }
 @media (max-width: 640px) { .building { aspect-ratio: 4 / 3; } }
 
 
-/* The crew: the show's cast under the tagline. One talks at a time; click anyone to hear their line. */
-.crew { position: relative; display: flex; justify-content: center; align-items: flex-end; gap: clamp(4px, 2.2vw, 30px);
-  margin: 128px auto 0; max-width: 900px; padding-bottom: 12px; }
-.crew::after { content: ""; position: absolute; left: 4%; right: 4%; bottom: 0; height: 6px; background: var(--ink); }
-.mate { position: relative; width: clamp(48px, 10vw, 120px); aspect-ratio: 3 / 4; padding: 0; border: 0; background: none; cursor: pointer; }
-.mate img { position: absolute; inset: 0; width: 100%; height: 100%; }
-.mate .t, .mate .b { opacity: 0; }
-.mate.blink .b { opacity: 1; } .mate.blink .i { opacity: 0; }
-.mate.open .t { opacity: 1; } .mate.open .i, .mate.open .b { opacity: 0; }
-.mate:hover { transform: translateY(-4px); }
-.mate:focus-visible { outline-offset: 6px; }
-.crew-say { position: absolute; bottom: calc(100% + 4px); z-index: 2; width: max-content; max-width: min(360px, 92vw); text-align: left;
-  background: var(--cream); color: var(--ink); border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--ink); padding: 10px 14px 12px;
-  font-size: 17px; line-height: 1.35; transition: opacity 0.15s; }
-.crew-say b { display: block; font-family: var(--pixel); font-size: 18px; font-weight: 700; letter-spacing: 0.06em; color: var(--slate); margin-bottom: 3px; }
-.crew-say::after { content: ""; position: absolute; top: 100%; left: var(--tail, 50%); width: 18px; height: 14px; margin-left: -9px; background: var(--ink);
-  clip-path: polygon(0 0, 100% 0, 100% 25%, 75% 25%, 75% 50%, 50% 50%, 50% 75%, 25% 75%, 25% 100%, 0 100%); }
-.crew-say.off { opacity: 0; }
-@media (max-width: 640px) { .crew { margin-top: 130px; } .crew-say { font-size: 15px; } }
+
+/* The tools, acted out: each panel is one tool, used by the cast member who needs it, with the result happening live. */
+.acts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; max-width: 1180px; margin: 44px auto 0; text-align: left; }
+.act { min-width: 0; display: flex; flex-direction: column; gap: 12px; padding: 16px 16px 18px; background: var(--navy); border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); }
+.act header { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.act h2 { font-family: var(--pixel); font-size: 32px; line-height: 1; color: var(--yellow); text-shadow: 2px 2px 0 var(--ink); }
+.act .k { display: flex; gap: 5px; }
+.scene { display: flex; flex-direction: column; gap: 12px; padding: 12px; border: 3px solid var(--ink); color: var(--ink);
+  background: repeating-linear-gradient(90deg, #a9c6e8 0 70px, var(--pale) 70px 73px); }
+.who { display: flex; align-items: flex-end; gap: 12px; min-height: 84px; }
+.spr { position: relative; width: 60px; height: 80px; flex-shrink: 0; }
+.spr img { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; }
+.spr img:first-child, .spr.talk .f-talk_open, .spr.shock .f-shock { opacity: 1; }
+.spr.talk img:first-child, .spr.shock img:first-child { opacity: 0; }
+.say { position: relative; flex: 1; min-width: 0; margin-bottom: 30px; background: var(--cream); color: var(--ink); border: 2px solid var(--ink); box-shadow: 3px 3px 0 var(--ink);
+  padding: 6px 10px 8px; font-size: 15px; line-height: 1.3; min-height: 46px; transition: opacity 0.15s; }
+.say small { display: block; font-family: var(--pixel); font-size: 15px; line-height: 1; color: var(--slate); letter-spacing: 0.06em; margin-bottom: 3px; }
+.say::before { content: ""; position: absolute; left: -11px; bottom: 6px; width: 11px; height: 11px; background: var(--ink);
+  clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 70%, 30% 70%, 30% 40%, 60% 40%, 60% 10%, 100% 10%); }
+.say.off { opacity: 0; }
+.mini { position: relative; background: #fff; color: var(--win-ink); border: 2px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); min-height: 112px; font-size: 14px; }
+.mbar { display: flex; align-items: center; gap: 4px; height: 22px; padding-inline: 7px; background: var(--win-bar); border-bottom: 2px solid var(--ink); }
+.mbar i { width: 8px; height: 8px; background: #ff5f57; } .mbar i:nth-child(2) { background: #febc2e; } .mbar i:nth-child(3) { background: #28c840; }
+.mbar b { margin-left: 6px; font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mbody { padding: 10px 12px 44px; line-height: 1.45; }
+.mbody .lbl { display: block; font-size: 11px; color: var(--muted); margin-bottom: 3px; }
+.field.box { display: block; border: 2px solid var(--accent); padding: 4px 8px; min-height: 30px; }
+.out { transition: background 1.2s; } .out.flash { background: var(--yellow); transition: none; }
+.mcap2 { position: absolute; left: 8px; right: 8px; bottom: 8px; display: flex; align-items: center; gap: 6px; padding: 3px 6px; background: var(--cream);
+  border: 2px solid var(--ink); font-size: 12px; color: var(--muted); opacity: 0; transition: opacity 0.15s; }
+.mcap2 svg { width: 12px; height: 12px; color: var(--red); }
+.mcap2 span { flex: 1; }
+.mcap2 kbd { height: 18px; min-width: 18px; font-size: 13px; padding-inline: 3px; box-shadow: none; border-width: 1px; }
+.mcap2.on { opacity: 1; }
+.sel { display: inline; }
+.sel.box { outline: 2px dashed var(--ink); outline-offset: 4px; }
+.rw { transition: background 0.1s; } .rw.on { background: var(--yellow); }
+.spk { position: absolute; left: 12px; bottom: 9px; font-size: 12px; color: var(--muted); opacity: 0; transition: opacity 0.2s; }
+.spk.on { opacity: 1; }
+.what { font-size: 17px; line-height: 1.4; color: var(--pale); flex: 1; }
+.more { font-family: var(--pixel); font-size: 20px; color: var(--yellow); text-decoration: none; }
+.more:hover { text-decoration: underline; }
+.local { display: flex; align-items: center; justify-content: center; gap: 22px; flex-wrap: wrap; max-width: 900px; margin: 30px auto 0; text-align: left; }
+.local .who { min-height: 0; }
+.local .say { margin-bottom: 26px; flex: none; max-width: 300px; }
+.local .yes { font-size: 19px; color: var(--cream); max-width: 32ch; }
+.local .yes b { font-family: var(--pixel); font-weight: 400; font-size: 30px; color: var(--teal); margin-right: 4px; }
+@media (max-width: 980px) { .acts { grid-template-columns: 1fr; max-width: 480px; } }
 
 /* The read-along highlight: one square block slides from word to word, as the app does. */
 .read { display: inline; }
@@ -638,21 +656,48 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
     <div class="wrap">
       <div class="lockup"><img class="px" src="mark.png" alt="" width="16" height="16"><b>YAPYAP</b></div>
       <h1>On-device AI<br>productivity tools.</h1>
-      <div class="crew" id="crew" aria-label="The YapYap office">
-        <p class="crew-say off" id="crew-say" aria-live="polite"><b></b><span></span></p>
-        <button class="mate px" type="button" data-who="bob" aria-label="Bob"><img class="px i" src="art/cast/bob-idle0.png" alt="" width="24" height="32"><img class="px b" src="art/cast/bob-blink.png" alt="" width="24" height="32"><img class="px t" src="art/cast/bob-talk_open.png" alt="" width="24" height="32"></button><button class="mate px" type="button" data-who="walt" aria-label="Walt"><img class="px i" src="art/cast/walt-idle0.png" alt="" width="24" height="32"><img class="px b" src="art/cast/walt-blink.png" alt="" width="24" height="32"><img class="px t" src="art/cast/walt-talk_open.png" alt="" width="24" height="32"></button><button class="mate px" type="button" data-who="zoe" aria-label="Zoe"><img class="px i" src="art/cast/zoe-idle0.png" alt="" width="24" height="32"><img class="px b" src="art/cast/zoe-blink.png" alt="" width="24" height="32"><img class="px t" src="art/cast/zoe-talk_open.png" alt="" width="24" height="32"></button><button class="mate px" type="button" data-who="jessy" aria-label="Jessy"><img class="px i" src="art/cast/jessy-idle0.png" alt="" width="24" height="32"><img class="px b" src="art/cast/jessy-blink.png" alt="" width="24" height="32"><img class="px t" src="art/cast/jessy-talk_open.png" alt="" width="24" height="32"></button><button class="mate px" type="button" data-who="gail" aria-label="Gail"><img class="px i" src="art/cast/gail-idle0.png" alt="" width="24" height="32"><img class="px b" src="art/cast/gail-blink.png" alt="" width="24" height="32"><img class="px t" src="art/cast/gail-talk_open.png" alt="" width="24" height="32"></button><button class="mate px" type="button" data-who="lenny" aria-label="Lenny"><img class="px i" src="art/cast/lenny-idle0.png" alt="" width="24" height="32"><img class="px b" src="art/cast/lenny-blink.png" alt="" width="24" height="32"><img class="px t" src="art/cast/lenny-talk_open.png" alt="" width="24" height="32"></button>
+      <p class="sub">Three free tools that run entirely on your Mac, and the office that needs them most.</p>
+      <div class="acts" aria-label="The tools">
+        <article class="act" data-act="dictate">
+          <header><h2>Dictation</h2><span class="k"><kbd>⌥</kbd><kbd>S</kbd></span></header>
+          <div class="scene" aria-hidden="true">
+            <div class="who"><span class="spr"><img class="px f-idle0" src="art/cast/zoe-idle0.png" alt="" width="24" height="32"><img class="px f-talk_open" src="art/cast/zoe-talk_open.png" alt="" width="24" height="32"></span><p class="say off"><small>ZOE</small><span class="said"></span></p></div>
+            <div class="mini"><div class="mbar"><i></i><i></i><i></i><b>Messages · Walt</b></div>
+              <div class="mbody"><span class="field"><span class="out"></span><i class="caret"></i></span></div><div class="mcap2"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="5.5" y="1.5" width="5" height="8.5" rx="2.5"/><path d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><span>Listening…</span><kbd>⌥</kbd><kbd>S</kbd></div></div>
+          </div>
+          <p class="what">Hold ⌥S and talk. It’s typed into any app, with the ums taken out.</p>
+          <a class="more" href="#dictate">See it work →</a>
+        </article>
+        <article class="act" data-act="read">
+          <header><h2>Read aloud</h2><span class="k"><kbd>⌥</kbd><kbd>A</kbd></span></header>
+          <div class="scene" aria-hidden="true">
+            <div class="who"><span class="spr"><img class="px f-idle0" src="art/cast/bob-idle0.png" alt="" width="24" height="32"><img class="px f-talk_open" src="art/cast/bob-talk_open.png" alt="" width="24" height="32"><img class="px f-shock" src="art/cast/bob-shock.png" alt="" width="24" height="32"></span><p class="say"><small>BOB</small><span class="said">I don’t need to read it. I wrote it.</span></p></div>
+            <div class="mini"><div class="mbar"><i></i><i></i><i></i><b>Mail · Draft to Walt</b></div>
+              <div class="mbody"><span class="sel"><span class="rw">Hi</span> <span class="rw">Walt,</span> <span class="rw">the</span> <span class="rw">the</span> <span class="rw">deck</span> <span class="rw">is</span> <span class="rw">ready</span> <span class="rw">for</span> <span class="rw">Friday.</span></span></div><div class="spk">🔊 Reading aloud</div></div>
+          </div>
+          <p class="what">Press ⌥A and draw a box around any text. You hear it, word by word, and catch what your eyes skip.</p>
+          <a class="more" href="#region">See it work →</a>
+        </article>
+        <article class="act" data-act="saved">
+          <header><h2>Saved text</h2><span class="k"><kbd>⌥</kbd><kbd>S</kbd></span></header>
+          <div class="scene" aria-hidden="true">
+            <div class="who"><span class="spr"><img class="px f-phone0" src="art/cast/jessy-phone0.png" alt="" width="24" height="32"><img class="px f-talk_open" src="art/cast/jessy-talk_open.png" alt="" width="24" height="32"></span><p class="say off"><small>JESSY</small><span class="said"></span></p></div>
+            <div class="mini"><div class="mbar"><i></i><i></i><i></i><b>shop.example · Checkout</b></div>
+              <div class="mbody"><small class="lbl">Email</small><span class="field box"><span class="out"></span><i class="caret"></i></span></div><div class="mcap2"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="5.5" y="1.5" width="5" height="8.5" rx="2.5"/><path d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><span>Listening…</span><kbd>⌥</kbd><kbd>S</kbd></div></div>
+          </div>
+          <p class="what">Save your email, address or API keys. Say the name, and it’s pasted.</p>
+          <a class="more" href="#saved">See it work →</a>
+        </article>
       </div>
-      <p class="sub">Free AI tools that run entirely on your Mac. You talk, it types. It talks, you listen.</p>
+      <div class="local">
+        <div class="who"><span class="spr"><img class="px f-idle0" src="art/cast/lenny-idle0.png" alt="" width="24" height="32"></span><p class="say"><small>LENNY · IT AND SECURITY</small><span>Before I say yes: does it run locally?</span></p></div>
+        <p class="yes"><b>Yes.</b> All three run on your Mac. Nothing you say or read is uploaded.</p>
+      </div>
       <div class="cta">
         <a class="btn lg" href="https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg" data-attr="download-hero">Download for Mac</a>
         <a class="plain link-arrow" href="https://github.com/WannaBeSolopreneur/YapYap">View on GitHub</a>
       </div>
       <p class="req">Free · Open source · Runs on your Mac · macOS 15+ · Apple silicon</p>
-      <ul class="tools" aria-label="The tools">
-        <li><a href="#dictate"><span class="tk"><kbd>⌥</kbd><kbd>S</kbd></span><b>Dictation</b><span>Hold and talk. Your words are typed into any app.</span></a></li>
-        <li><a href="#region"><span class="tk"><kbd>⌥</kbd><kbd>A</kbd></span><b>Read aloud</b><span>Draw a box around any text and hear it, word by word.</span></a></li>
-        <li><a href="#saved"><span class="tk"><kbd>⌥</kbd><kbd>S</kbd><i>“email address”</i></span><b>Saved text</b><span>Say a saved item’s name to paste it: your email, an address, an API key.</span></a></li>
-      </ul>
     </div>
     <img class="building px" src="art/office-night.webp" width="1920" height="1080" alt="The YapYap office at night, pixel art: a lit-up building with a YAPYAP sign on the roof and a parking space reserved for Walt">
   </header>
@@ -1303,54 +1348,69 @@ document.querySelectorAll("[data-read]:not([data-read=region])").forEach((el, n)
   requestAnimationFrame(frame);
 })();
 
-// The crew in the hero: each takes a turn pitching a tool in their own voice; clicking someone makes them talk.
-(() => {
-  const LINES = {
-    zoe: ["ZOE · SUMMER INTERN", "I just hold ⌥S and, um, talk. It types it, and it takes out the ums."],
-    bob: ["BOB · SUPPORT LEAD", "I don’t need to read my emails again. I wrote them. I was there."],
-    gail: ["GAIL · OFFICE MANAGER", "Bob. Press ⌥A. It reads it out loud. You’ll hear the typo."],
-    lenny: ["LENNY · IT AND SECURITY", "Before I say yes: does it run locally?"],
-    walt: ["WALT · FOUNDER AND CEO", "Yes, Lenny. It runs on the Mac. Like I said. In the meeting."],
-    jessy: ["JESSY · HEAD OF SALES", "I say “email address” and it pastes it. Can you hear me? Great."],
-  };
-  const ORDER = ["zoe", "bob", "gail", "lenny", "walt", "jessy"];
-  const crew = document.getElementById("crew"), say = document.getElementById("crew-say");
-  const mates = Object.fromEntries([...crew.querySelectorAll(".mate")].map(m => [m.dataset.who, m]));
-  let turn = 0, timer = 0, flap = 0, visible = true;
-  new IntersectionObserver(([e]) => visible = e.isIntersecting).observe(crew);
 
-  const speak = who => {
-    const m = mates[who], [label, line] = LINES[who];
-    say.querySelector("b").textContent = label;
-    say.querySelector("span").textContent = line;
-    say.classList.remove("off");
-    // Centre the bubble over the speaker, kept inside the row; the tail points at them.
-    const cw = crew.clientWidth, bw = say.offsetWidth, mid = m.offsetLeft + m.offsetWidth / 2;
-    const left = Math.max(0, Math.min(cw - bw, mid - bw / 2));
-    say.style.left = left + "px";
-    say.style.setProperty("--tail", (mid - left) + "px");
-    Object.values(mates).forEach(x => x.classList.remove("open"));
-    clearInterval(flap);
-    if (reduce) return;
-    let n = 0;
-    flap = setInterval(() => { m.classList.toggle("open", n % 2 === 0 && n < Math.min(16, line.length / 4)); n++; }, 140);
-  };
-  const next = () => {
-    if (visible) { speak(ORDER[turn % ORDER.length]); turn++; }
-    timer = setTimeout(next, 4600);
-  };
-  Object.entries(mates).forEach(([who, m]) => m.addEventListener("click", () => {
-    clearTimeout(timer); speak(who); turn = ORDER.indexOf(who) + 1; timer = setTimeout(next, 6500);
-    track("cast_clicked", { who });
+// The tools, acted out in the hero. Each panel loops its own little scene while it's on screen.
+(() => {
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  const flash = el => { el.classList.add("flash"); requestAnimationFrame(() => requestAnimationFrame(() => el.classList.remove("flash"))); };
+  const acts = Object.fromEntries([...document.querySelectorAll("[data-act]")].map(el => {
+    const a = { el, visible: false, spr: el.querySelector(".spr"), say: el.querySelector(".say"), said: el.querySelector(".said"),
+      out: el.querySelector(".out"), cap: el.querySelector(".mcap2") };
+    new IntersectionObserver(([e]) => a.visible = e.isIntersecting).observe(el);
+    return [el.dataset.act, a];
   }));
-  // Background blinks, like the show's idles.
-  if (!reduce) setInterval(() => {
-    const m = Object.values(mates)[Math.floor(Math.random() * 6)];
-    if (m.classList.contains("open")) return;
-    m.classList.add("blink"); setTimeout(() => m.classList.remove("blink"), 160);
-  }, 900);
-  document.fonts ? document.fonts.ready.then(next) : next();
-  addEventListener("resize", () => { const w = ORDER[(turn - 1 + ORDER.length) % ORDER.length]; if (!say.classList.contains("off")) speak(w); });
+  let flapping = null;
+  const talk = (a, on) => {
+    clearInterval(flapping); a.spr.classList.remove("talk");
+    if (on) { let n = 0; flapping = setInterval(() => a.spr.classList.toggle("talk", n++ % 2 === 0), 130); }
+  };
+  const say = async (a, words, ms) => {
+    a.say.classList.remove("off"); a.said.textContent = ""; talk(a, true);
+    for (const w of words) { a.said.textContent += (a.said.textContent ? " " : "") + w; await sleep(ms + (/[,.]$/.test(w) ? 160 : 0)); }
+    talk(a, false);
+  };
+  const scenes = {
+    async dictate(a) {
+      a.out.textContent = ""; a.say.classList.add("off"); a.cap.classList.remove("on");
+      await sleep(800);
+      a.cap.classList.add("on");
+      await say(a, "Um, so, like, the meeting is, um, moved to three.".split(" "), 230);
+      await sleep(250); a.cap.classList.remove("on");
+      a.out.textContent = "The meeting is moved to 3."; flash(a.out);
+      await sleep(3200);
+    },
+    async read(a) {
+      const words = [...a.el.querySelectorAll(".rw")], sel = a.el.querySelector(".sel"), spk = a.el.querySelector(".spk");
+      words.forEach(w => w.classList.remove("on")); sel.classList.remove("box"); spk.classList.remove("on");
+      a.spr.classList.remove("shock"); a.said.textContent = "I don’t need to read it. I wrote it.";
+      await sleep(1900);
+      sel.classList.add("box"); await sleep(600); spk.classList.add("on");
+      for (let i = 0; i < words.length; i++) {
+        words.forEach(w => w.classList.toggle("on", w === words[i]));
+        if (i === 3) { a.spr.classList.add("shock"); a.said.textContent = "Wait. “The the”?"; }
+        await sleep(i === 3 ? 900 : 380);
+      }
+      words.forEach(w => w.classList.remove("on")); spk.classList.remove("on");
+      await sleep(2600);
+    },
+    async saved(a) {
+      a.out.textContent = ""; a.say.classList.add("off"); a.cap.classList.remove("on");
+      await sleep(1300);
+      a.cap.classList.add("on");
+      await say(a, ["Email", "address."], 380);
+      await sleep(250); a.cap.classList.remove("on");
+      a.out.textContent = "sam@example.com"; flash(a.out);
+      await sleep(3400);
+    },
+  };
+  if (reduce) {
+    acts.dictate.say.classList.remove("off"); acts.dictate.said.textContent = "Um, so, like, the meeting is, um, moved to three."; acts.dictate.out.textContent = "The meeting is moved to 3.";
+    acts.saved.say.classList.remove("off"); acts.saved.said.textContent = "Email address."; acts.saved.out.textContent = "sam@example.com";
+    return;
+  }
+  Object.entries(acts).forEach(async ([name, a]) => {
+    for (;;) { if (!a.visible) { await sleep(400); continue; } await scenes[name](a); }
+  });
 })();
 // Phone demo row: the Talk | Listen switch scrolls the row, and follows it when you swipe.
 (() => {
