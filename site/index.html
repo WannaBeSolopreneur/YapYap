@@ -639,11 +639,11 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
   <div class="wrap">
     <a class="brand" href="#top"><img class="px" src="mark.png" alt="" width="16" height="16">YAPYAP</a>
     <ul>
+      <li><a href="#show">The show</a></li>
       <li><a href="#dictate">Talk</a></li>
       <li><a href="#region">Listen</a></li>
       <li><a href="#saved">Saved text</a></li>
       <li><a href="#privacy">Privacy</a></li>
-      <li><a href="#show">The show</a></li>
       <li><a href="#faq">FAQ</a></li>
       <li><a href="https://github.com/WannaBeSolopreneur/YapYap">GitHub</a></li>
     </ul>
@@ -701,6 +701,35 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
     </div>
     <img class="building px" src="art/office-night.webp" width="1920" height="1080" alt="The YapYap office at night, pixel art: a lit-up building with a YAPYAP sign on the roof and a parking space reserved for Walt">
   </header>
+
+  <section id="show" class="night">
+    <div class="wrap wide">
+      <div class="head">
+        <p class="kicker">Now showing on TikTok</p>
+        <h2>Meet the YapYap office.</h2>
+      </div>
+      <div class="show-grid">
+        <div class="tv"><video id="show-video" class="px" controls preload="none" playsinline poster="show-poster.jpg" aria-label="The YapYap office theme song: the office lights come on at night, then the cast is introduced one by one">
+          <source src="show-intro.mp4" type="video/mp4"></video></div>
+        <div class="show-copy">
+          <p>The YapYap office is a pixel-art mockumentary about the tiny company behind YapYap. Nobody there actually uses the app, so every week someone sends something terrible, and the camera catches it.</p>
+          <p>It’s also where we post what’s new in YapYap, so you can follow along as it grows.</p>
+          <div class="cta">
+            <a class="btn" style="font-size:12px;padding:14px 18px" href="" data-tiktok data-attr="tiktok-show" hidden>Follow on TikTok</a>
+            <a class="plain link-arrow" href="https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg" data-attr="download-show">Get the app they don’t use</a>
+          </div>
+        </div>
+      </div>
+      <ul class="cast" aria-label="The cast">
+      <li><span class="sprite s1"><img class="px" src="art/cast/bob-idle0.png" alt="" width="24" height="32"><img class="px" src="art/cast/bob-blink.png" alt="" width="24" height="32"></span><b>Bob</b><span class="role">Support Lead</span><q>Typos are just the email being creative.</q></li>
+      <li><span class="sprite s2"><img class="px" src="art/cast/walt-idle0.png" alt="" width="24" height="32"><img class="px" src="art/cast/walt-blink.png" alt="" width="24" height="32"></span><b>Walt</b><span class="role">Founder and CEO</span><q>I’m not mad. I’m just printing this out so I can be mad on paper.</q></li>
+      <li><span class="sprite s3"><img class="px" src="art/cast/zoe-idle0.png" alt="" width="24" height="32"><img class="px" src="art/cast/zoe-blink.png" alt="" width="24" height="32"></span><b>Zoe</b><span class="role">Summer intern</span><q>Hold on, I’ll just say it to you. Um, like, the meeting is moved. Sent.</q></li>
+      <li><span class="sprite s4"><img class="px" src="art/cast/lenny-idle0.png" alt="" width="24" height="32"><img class="px" src="art/cast/lenny-blink.png" alt="" width="24" height="32"></span><b>Lenny</b><span class="role">IT and Security</span><q>I unplugged the printer. It knew too much.</q></li>
+      <li><span class="sprite s1"><img class="px" src="art/cast/gail-idle0.png" alt="" width="24" height="32"><img class="px" src="art/cast/gail-blink.png" alt="" width="24" height="32"></span><b>Gail</b><span class="role">Office Manager</span><q>We had a good run. Four minutes.</q></li>
+      <li><span class="sprite s2"><img class="px" src="art/cast/jessy-phone0.png" alt="" width="24" height="32"><img class="px" src="art/cast/jessy-phone1.png" alt="" width="24" height="32"></span><b>Jessy</b><span class="role">Head of Sales</span><q>Mute button? I don’t believe in it.</q></li>
+      </ul>
+    </div>
+  </section>
 
 
   <!-- Film: site/demo.mp4 (+ demo-poster.jpg). Plays muted on a loop; "Play with sound" restarts it with narration. -->
@@ -940,34 +969,6 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
     </div>
   </section>
 
-  <section id="show" class="night">
-    <div class="wrap wide">
-      <div class="head">
-        <p class="kicker">Now showing on TikTok</p>
-        <h2>Meet the YapYap office.</h2>
-      </div>
-      <div class="show-grid">
-        <div class="tv"><video id="show-video" class="px" controls preload="none" playsinline poster="show-poster.jpg" aria-label="The YapYap office theme song: the office lights come on at night, then the cast is introduced one by one">
-          <source src="show-intro.mp4" type="video/mp4"></video></div>
-        <div class="show-copy">
-          <p>The YapYap office is a pixel-art mockumentary about the tiny company behind YapYap. Nobody there actually uses the app, so every week someone sends something terrible, and the camera catches it.</p>
-          <p>It’s also where we post what’s new in YapYap, so you can follow along as it grows.</p>
-          <div class="cta">
-            <a class="btn" style="font-size:12px;padding:14px 18px" href="" data-tiktok data-attr="tiktok-show" hidden>Follow on TikTok</a>
-            <a class="plain link-arrow" href="https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg" data-attr="download-show">Get the app they don’t use</a>
-          </div>
-        </div>
-      </div>
-      <ul class="cast" aria-label="The cast">
-      <li><span class="sprite s1"><img class="px" src="art/cast/bob-idle0.png" alt="" width="24" height="32"><img class="px" src="art/cast/bob-blink.png" alt="" width="24" height="32"></span><b>Bob</b><span class="role">Support Lead</span><q>Typos are just the email being creative.</q></li>
-      <li><span class="sprite s2"><img class="px" src="art/cast/walt-idle0.png" alt="" width="24" height="32"><img class="px" src="art/cast/walt-blink.png" alt="" width="24" height="32"></span><b>Walt</b><span class="role">Founder and CEO</span><q>I’m not mad. I’m just printing this out so I can be mad on paper.</q></li>
-      <li><span class="sprite s3"><img class="px" src="art/cast/zoe-idle0.png" alt="" width="24" height="32"><img class="px" src="art/cast/zoe-blink.png" alt="" width="24" height="32"></span><b>Zoe</b><span class="role">Summer intern</span><q>Hold on, I’ll just say it to you. Um, like, the meeting is moved. Sent.</q></li>
-      <li><span class="sprite s4"><img class="px" src="art/cast/lenny-idle0.png" alt="" width="24" height="32"><img class="px" src="art/cast/lenny-blink.png" alt="" width="24" height="32"></span><b>Lenny</b><span class="role">IT and Security</span><q>I unplugged the printer. It knew too much.</q></li>
-      <li><span class="sprite s1"><img class="px" src="art/cast/gail-idle0.png" alt="" width="24" height="32"><img class="px" src="art/cast/gail-blink.png" alt="" width="24" height="32"></span><b>Gail</b><span class="role">Office Manager</span><q>We had a good run. Four minutes.</q></li>
-      <li><span class="sprite s2"><img class="px" src="art/cast/jessy-phone0.png" alt="" width="24" height="32"><img class="px" src="art/cast/jessy-phone1.png" alt="" width="24" height="32"></span><b>Jessy</b><span class="role">Head of Sales</span><q>Mute button? I don’t believe in it.</q></li>
-      </ul>
-    </div>
-  </section>
 
   <section id="open-source" class="wall"><div class="wrap">
     <div class="oss">
