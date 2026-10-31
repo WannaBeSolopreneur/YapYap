@@ -5,22 +5,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Page not found – YapYap</title>
 <meta name="robots" content="noindex">
+<meta name="theme-color" content="#0f1828">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
 <style>
-:root { --bg: #fff; --fg: #1d1d1f; --muted: #6e6e73; --accent: #0071e3; }
-@media (prefers-color-scheme: dark) { :root { --bg: #000; --fg: #f5f5f7; --muted: #86868b; --accent: #2997ff; color-scheme: dark; } }
-body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: var(--bg); color: var(--fg); text-align: center; padding: 24px 16px;
-  font: 17px/1.47 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif; }
-img { width: 96px; height: 96px; } h1 { font-size: 40px; margin: 18px 0 6px; } p { color: var(--muted); margin: 0 0 22px; }
-a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
+@font-face { font-family: "Press Start 2P"; src: url(/fonts/PressStart2P.woff2) format("woff2"); font-display: swap; }
+@font-face { font-family: "Atkinson Hyperlegible"; src: url(/fonts/AtkinsonHyperlegible-Regular.woff2) format("woff2"); font-display: swap; }
+body { margin: 0; min-height: 100vh; display: grid; place-items: center; text-align: center; padding: 24px 16px; color-scheme: dark;
+  background: #19283e; color: #f4f1ea; font: 18px/1.5 "Atkinson Hyperlegible", -apple-system, BlinkMacSystemFont, Arial, sans-serif; }
+.px { image-rendering: pixelated; image-rendering: crisp-edges; }
+main { display: grid; justify-items: center; }
+.cast { display: flex; gap: 18px; align-items: flex-end; }
+.cast img { width: 72px; height: 96px; }
+h1 { font: 400 clamp(16px, 4vw, 24px)/1.6 "Press Start 2P", monospace; color: #ffd166; text-shadow: 3px 3px 0 #0f1828; margin: 28px 0 10px; }
+p { color: #a7c7e7; margin: 0 0 28px; }
+a { display: inline-block; background: #ffd166; color: #0f1828; border: 3px solid #0f1828; box-shadow: 4px 4px 0 #0f1828; padding: 14px 18px;
+  font: 400 12px/1 "Press Start 2P", monospace; text-transform: uppercase; text-decoration: none; }
+a:hover { background: #ffe08f; }
 </style>
 </head>
 <body>
 <main>
-  <img src="/icon.png" alt="YapYap app icon">
+  <div class="cast" aria-hidden="true"><img class="px" src="/art/cast/bob-shock.png" alt=""><img class="px" src="/art/cast/gail-idle0.png" alt=""></div>
   <h1>Nothing to read here.</h1>
-  <p>That page doesn’t exist.</p>
-  <a href="/">Go to YapYap ›</a>
+  <p>That page doesn’t exist. Bob probably sent you the link.</p>
+  <a href="/">Back to YapYap</a>
 </main>
 </body>
 </html>
