@@ -183,8 +183,6 @@ kbd { font-family: var(--ui); font-size: 19px; min-width: 34px; height: 34px; pa
 .cta { display: flex; justify-content: center; align-items: center; gap: 28px; flex-wrap: wrap; margin-top: 30px; }
 .req { font-size: 15px; color: var(--powder); margin-top: 18px; }
 
-
-
 /* Them vs us: what subscription AI apps cost you, and what YapYap does instead */
 .road { list-style: none; padding: 0; margin: 22px auto 0; max-width: 1180px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
 .road li { min-width: 0; display: flex; flex-direction: column; gap: 6px; padding: 16px 18px 18px; border: 3px dashed var(--ink); }
@@ -198,7 +196,6 @@ kbd { font-family: var(--ui); font-size: 19px; min-width: 34px; height: 34px; pa
 .road li > span:last-child { color: var(--s-muted); font-size: 17px; line-height: 1.4; }
 .road-end { max-width: 640px; margin: 40px auto 0; text-align: center; font-size: clamp(18px, 2vw, 21px); color: var(--s-muted); }
 @media (max-width: 760px) { .road { grid-template-columns: 1fr; } }
-
 
 /* The tools, acted out: each panel is one tool, used by the cast member who needs it, with the result happening live. */
 .acts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; max-width: 1180px; margin: 44px auto 0; text-align: left; }
@@ -283,6 +280,16 @@ kbd { font-family: var(--ui); font-size: 19px; min-width: 34px; height: 34px; pa
 
 /* Example cards: mini app windows on office noticeboards */
 .examples { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; margin-top: 56px; }
+/* Demos: one swipeable deck, a panel per tool, tabs to jump between them. */
+.tabs { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
+.tabs button { font-family: var(--pixel); font-size: 21px; line-height: 1; padding: 10px 14px; cursor: pointer; background: transparent; color: var(--cream); border: 3px solid var(--cream); }
+.tabs button[aria-selected="true"] { background: var(--yellow); color: var(--ink); border-color: var(--ink); box-shadow: 4px 4px 0 var(--ink); }
+.deck { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-top: 26px; padding-bottom: 10px; }
+.deck::-webkit-scrollbar { display: none; }
+.panel { flex: 0 0 100%; min-width: 0; scroll-snap-align: start; padding-right: 10px; box-sizing: border-box; }
+.panel-h { text-align: center; color: var(--s-muted); font-size: 19px; max-width: 640px; margin: 0 auto; }
+.panel-h b { display: block; font-family: var(--pixel); font-size: 32px; line-height: 1.1; color: var(--cream); margin-bottom: 4px; }
+.panel .examples { margin-top: 26px; }
 .ex { margin: 0; min-width: 0; background: var(--slate); border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); padding: 18px 18px 22px; display: flex; flex-direction: column; gap: 18px; color: var(--cream); }
 .paper .ex { background: var(--navy); }
 .win { background: var(--win); color: var(--win-ink); overflow: hidden; box-shadow: 4px 4px 0 var(--ink); border-width: 2px; }
@@ -410,7 +417,6 @@ kbd { font-family: var(--ui); font-size: 19px; min-width: 34px; height: 34px; pa
 .form .fld { margin: 8px 16px 0; padding: 6px 10px; border: 1px solid var(--line); font-size: 12.5px; min-height: 44px; }
 .form .fld.on { border: 2px solid var(--accent); }
 .form .fld small { display: block; font-size: 10px; color: var(--muted); }
-#saved .ex { background: var(--slate); }
 #saved .term-b { overflow-wrap: anywhere; }
 
 /* The typing caret and the dictation mic, shared by the example windows */
@@ -524,10 +530,8 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
     <a class="brand" href="#top"><img class="px" src="mark.png" alt="" width="16" height="16">YAPYAP</a>
     <ul>
       <li><a href="#roadmap">Roadmap</a></li>
+      <li><a href="#demos">Demos</a></li>
       <li><a href="#show">The show</a></li>
-      <li><a href="#speak">Talk</a></li>
-      <li><a href="#examples">Listen</a></li>
-      <li><a href="#saved">Spoken shortcuts</a></li>
       <li><a href="#privacy">Privacy</a></li>
       <li><a href="#faq">FAQ</a></li>
       <li><a href="https://github.com/WannaBeSolopreneur/YapYap">GitHub</a></li>
@@ -597,6 +601,81 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
     <p class="road-end">Each step tests how much your own computer can do, until it can do what the cloud does.</p>
   </div></section>
 
+  <section id="demos" class="night"><div class="wrap">
+    <div class="head"><p class="kicker">Demos</p><h2>See it work.</h2></div>
+    <div class="tabs" role="tablist" aria-label="Tools">
+      <button role="tab" aria-selected="true" aria-controls="speak">Dictation</button>
+      <button role="tab" aria-selected="false" aria-controls="examples">Read aloud</button>
+      <button role="tab" aria-selected="false" aria-controls="saved">Spoken shortcuts</button>
+    </div>
+    <div class="deck">
+      <div class="panel" id="speak" role="tabpanel" aria-label="Dictation">
+        <p class="panel-h"><b>Speak anywhere.</b> Hold ⌥S and talk. Every example is a real transcript.</p>
+        <div class="examples">
+        <figure class="ex sx" data-sx="msg">
+        <div class="win app-messages"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><span class="sp"></span><span class="who"><span class="av sm">S</span><b>Sam</b></span><span class="sp"></span><svg><use href="#i-video"/></svg><svg><use href="#i-info"/></svg></div>
+          <div class="wb"><div class="thread"><span class="ts">Today 6:52 PM</span><p class="in">Where are you? We’re about to start.</p>
+            <div class="imsg"><span class="plus"><svg><use href="#i-plus"/></svg></span><span class="field"><span data-out data-ph="iMessage"></span><i class="caret"></i></span></div></div><div class="mcap off" aria-hidden="true"><span class="dx-mic"><i></i><svg viewBox="0 0 16 16" fill="currentColor"><rect x="5.5" y="1.5" width="5" height="8.5" rx="2.5"/><path d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span><span class="mcap-t">Listening… let go to type</span><span class="mcap-k"><kbd>⌥</kbd><kbd>S</kbd></span></div></div></div>
+        <figcaption><h3>Messages</h3><p>Reply without typing.</p></figcaption>
+      </figure>
+        <figure class="ex sx" data-sx="chat">
+        <div class="win app-team"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><span class="sp"></span><b class="chan"># engineering</b><span class="sp"></span><svg><use href="#i-search"/></svg></div>
+          <div class="wb team"><div class="tm-msg"><span class="av sm2">D</span><div><b>Dana</b> <time>10:14</time><p>Login is broken for some people on staging.</p></div></div>
+            <div class="tm-comp"><span data-out data-ph="Message #engineering"></span><i class="caret"></i></div><div class="mcap off" aria-hidden="true"><span class="dx-mic"><i></i><svg viewBox="0 0 16 16" fill="currentColor"><rect x="5.5" y="1.5" width="5" height="8.5" rx="2.5"/><path d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span><span class="mcap-t">Listening… let go to type</span><span class="mcap-k"><kbd>⌥</kbd><kbd>S</kbd></span></div></div></div>
+        <figcaption><h3>Team chat</h3><p>Post an update without leaving your code.</p></figcaption>
+      </figure>
+        <figure class="ex sx" data-sx="doc">
+        <div class="win app-pages"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><svg><use href="#i-sidebar"/></svg><span class="sp"></span><span class="title"><b>Letter to Dr. Lee</b></span><span class="sp"></span><svg><use href="#i-share"/></svg></div>
+          <div class="wb"><div class="canvas"><div class="sheet letter"><p>Dear Dr. Lee,</p><p><span data-out></span><i class="caret"></i></p></div></div><div class="mcap off" aria-hidden="true"><span class="dx-mic"><i></i><svg viewBox="0 0 16 16" fill="currentColor"><rect x="5.5" y="1.5" width="5" height="8.5" rx="2.5"/><path d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span><span class="mcap-t">Listening… let go to type</span><span class="mcap-k"><kbd>⌥</kbd><kbd>S</kbd></span></div></div></div>
+        <figcaption><h3>Documents</h3><p>Write letters and reports out loud.</p></figcaption>
+      </figure>
+        </div>
+      </div>
+      <div class="panel" id="examples" role="tabpanel" aria-label="Read aloud">
+        <p class="panel-h"><b>Reads every app.</b> Press ⌥A and draw a box around any text. You hear it word by word.</p>
+        <div class="examples">
+        <figure class="ex">
+        <div class="win app-mail"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><svg><use href="#i-sidebar"/></svg><span class="sp"></span><svg><use href="#i-archive"/></svg><svg><use href="#i-trash"/></svg><svg><use href="#i-reply"/></svg><svg><use href="#i-compose"/></svg></div>
+          <div class="wb"><div class="mail-h"><span class="av">PS</span><b>Priya Shah</b><time>9:41 AM</time><span class="subj">Thursday offsite</span><span class="to">To: Design Team</span></div>
+            <div class="mail-b" data-read>Hi all, the offsite has moved to the fourth floor. Bring a laptop and your third quarter numbers. Lunch is at noon, and we should wrap up by four.</div></div></div>
+        <figcaption><h3>Email</h3><p>Listen while you do something else.</p></figcaption>
+      </figure>
+        <figure class="ex">
+        <div class="win app-preview"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><svg><use href="#i-sidebar"/></svg><span class="title"><b>recall-study.pdf</b><span>Page 1 of 8</span></span><span class="sp"></span><svg><use href="#i-zoomin"/></svg><svg><use href="#i-share"/></svg></div>
+          <div class="wb"><div class="canvas"><div class="sheet"><h4>Sleep and Recall in Adult Learners</h4>
+            <div class="cols" data-read>Adults who slept within three hours of a study session recalled more of the material a week later. The effect was largest for new vocabulary. Participants who stayed awake showed no gain from extra review time. We discuss what this means for evening classes and for learners who work night shifts.</div></div></div></div></div>
+        <figcaption><h3>PDFs</h3><p>Columns read in the right order.</p></figcaption>
+      </figure>
+        <figure class="ex">
+        <div class="win app-photos"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><svg><use href="#i-back"/></svg><span class="title"><b>IMG_2041</b><span>12 Oct 2026</span></span><span class="sp"></span><svg><use href="#i-info"/></svg><svg><use href="#i-heart"/></svg><svg><use href="#i-share"/></svg></div>
+          <div class="wb photo"><div class="paper" data-read><b>4.2 Photosynthesis</b>Plants use energy from light to turn water and carbon dioxide into sugar. Oxygen is released as a by-product.</div></div></div>
+        <figcaption><h3>Photos</h3><p>Even text inside images.</p></figcaption>
+      </figure>
+        </div>
+      </div>
+      <div class="panel" id="saved" role="tabpanel" aria-label="Spoken shortcuts">
+        <p class="panel-h"><b>Say the name. It’s pasted.</b> Save your email, address or API keys, then hold ⌥S and say its name.</p>
+        <div class="examples">
+        <figure class="ex sx" data-sx="email" data-paste="sam@example.com">
+          <div class="win app-mail"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><span class="sp"></span><span class="title"><b>New Message</b></span><span class="sp"></span><svg><use href="#i-send"/></svg></div>
+            <div class="wb form"><div class="fr"><span>To:</span><b><span data-out></span><i class="caret"></i></b></div><div class="fr"><span>Subject:</span>Saturday</div><p class="fb">Count me in. Send the details to the address above.</p><div class="mcap off" aria-hidden="true"><span class="dx-mic"><i></i><svg viewBox="0 0 16 16" fill="currentColor"><rect x="5.5" y="1.5" width="5" height="8.5" rx="2.5"/><path d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span><span class="mcap-t">Listening… let go to type</span><span class="mcap-k"><kbd>⌥</kbd><kbd>S</kbd></span></div></div></div>
+          <figcaption><h3>“Type email address”</h3><p>Fill in forms without spelling it out.</p></figcaption>
+        </figure>
+        <figure class="ex sx" data-sx="home" data-paste="1 Main Street, Springfield">
+          <div class="win app-safari"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><svg><use href="#i-back"/></svg><span class="addr"><svg><use href="#i-lock"/></svg>shop.example</span><svg><use href="#i-share"/></svg></div>
+            <div class="wb form"><div class="ship">Shipping address</div><div class="fld"><small>Full name</small>Sam Rivera</div><div class="fld on"><small>Street address</small><span data-out></span><i class="caret"></i></div><div class="mcap off" aria-hidden="true"><span class="dx-mic"><i></i><svg viewBox="0 0 16 16" fill="currentColor"><rect x="5.5" y="1.5" width="5" height="8.5" rx="2.5"/><path d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span><span class="mcap-t">Listening… let go to type</span><span class="mcap-k"><kbd>⌥</kbd><kbd>S</kbd></span></div></div></div>
+          <figcaption><h3>“Home address”</h3><p>Check out in seconds.</p></figcaption>
+        </figure>
+        <figure class="ex sx" data-sx="key" data-paste="sk_demo_4f9c2a7e1b80">
+          <div class="win app-term"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><span class="sp"></span><span class="title"><b>yapyap — zsh</b></span><span class="sp"></span></div>
+            <div class="wb term-b"><div><span class="pr">~/yapyap %</span> export ELEVENLABS_API_KEY="<span data-out></span><i class="caret"></i>"</div><div class="mcap off" aria-hidden="true"><span class="dx-mic"><i></i><svg viewBox="0 0 16 16" fill="currentColor"><rect x="5.5" y="1.5" width="5" height="8.5" rx="2.5"/><path d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span><span class="mcap-t">Listening… let go to type</span><span class="mcap-k"><kbd>⌥</kbd><kbd>S</kbd></span></div></div></div>
+          <figcaption><h3>“Paste my ElevenLabs key”</h3><p>Kept in your Keychain, never in history. Touch ID if you want it.</p></figcaption>
+        </figure>
+        </div>
+      </div>
+    </div>
+  </div></section>
+
   <section id="show" class="wall">
     <div class="wrap wide">
       <div class="head">
@@ -627,109 +706,6 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
     </div>
   </section>
 
-
-  <section id="saved" class="night">
-    <div class="wrap">
-      <div class="head"><p class="kicker">Spoken shortcuts</p><h2>Say the name. It’s pasted.</h2>
-        <p>Save the things you type over and over, like your email address, your home address or an API key. Then hold ⌥S and say its name, and YapYap pastes it wherever your cursor is.</p></div>
-      <div class="examples">
-        <figure class="ex sx" data-sx="email" data-paste="sam@example.com">
-          <div class="win app-mail"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><span class="sp"></span><span class="title"><b>New Message</b></span><span class="sp"></span><svg><use href="#i-send"/></svg></div>
-            <div class="wb form"><div class="fr"><span>To:</span><b><span data-out></span><i class="caret"></i></b></div><div class="fr"><span>Subject:</span>Saturday</div><p class="fb">Count me in. Send the details to the address above.</p><div class="mcap off" aria-hidden="true"><span class="dx-mic"><i></i><svg viewBox="0 0 16 16" fill="currentColor"><rect x="5.5" y="1.5" width="5" height="8.5" rx="2.5"/><path d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span><span class="mcap-t">Listening… let go to type</span><span class="mcap-k"><kbd>⌥</kbd><kbd>S</kbd></span></div></div></div>
-          <figcaption><h3>“Type email address”</h3><p>Fill in forms without spelling it out.</p></figcaption>
-        </figure>
-        <figure class="ex sx" data-sx="home" data-paste="1 Main Street, Springfield">
-          <div class="win app-safari"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><svg><use href="#i-back"/></svg><span class="addr"><svg><use href="#i-lock"/></svg>shop.example</span><svg><use href="#i-share"/></svg></div>
-            <div class="wb form"><div class="ship">Shipping address</div><div class="fld"><small>Full name</small>Sam Rivera</div><div class="fld on"><small>Street address</small><span data-out></span><i class="caret"></i></div><div class="mcap off" aria-hidden="true"><span class="dx-mic"><i></i><svg viewBox="0 0 16 16" fill="currentColor"><rect x="5.5" y="1.5" width="5" height="8.5" rx="2.5"/><path d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span><span class="mcap-t">Listening… let go to type</span><span class="mcap-k"><kbd>⌥</kbd><kbd>S</kbd></span></div></div></div>
-          <figcaption><h3>“Home address”</h3><p>Check out in seconds.</p></figcaption>
-        </figure>
-        <figure class="ex sx" data-sx="key" data-paste="sk_demo_4f9c2a7e1b80">
-          <div class="win app-term"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><span class="sp"></span><span class="title"><b>yapyap — zsh</b></span><span class="sp"></span></div>
-            <div class="wb term-b"><div><span class="pr">~/yapyap %</span> export ELEVENLABS_API_KEY="<span data-out></span><i class="caret"></i>"</div><div class="mcap off" aria-hidden="true"><span class="dx-mic"><i></i><svg viewBox="0 0 16 16" fill="currentColor"><rect x="5.5" y="1.5" width="5" height="8.5" rx="2.5"/><path d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span><span class="mcap-t">Listening… let go to type</span><span class="mcap-k"><kbd>⌥</kbd><kbd>S</kbd></span></div></div></div>
-          <figcaption><h3>“Paste my ElevenLabs key”</h3><p>Kept in your Keychain, never in history. Touch ID if you want it.</p></figcaption>
-        </figure>
-      </div>
-    </div>
-  </section>
-
-  <section id="speak" class="paper"><div class="wrap">
-    <div class="head"><p class="kicker">Dictation</p><h2>Speak anywhere.</h2><p>Every example is a real transcript from YapYap’s dictation.</p></div>
-    <div class="examples">
-      <figure class="ex sx" data-sx="msg">
-        <div class="win app-messages"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><span class="sp"></span><span class="who"><span class="av sm">S</span><b>Sam</b></span><span class="sp"></span><svg><use href="#i-video"/></svg><svg><use href="#i-info"/></svg></div>
-          <div class="wb"><div class="thread"><span class="ts">Today 6:52 PM</span><p class="in">Where are you? We’re about to start.</p>
-            <div class="imsg"><span class="plus"><svg><use href="#i-plus"/></svg></span><span class="field"><span data-out data-ph="iMessage"></span><i class="caret"></i></span></div></div><div class="mcap off" aria-hidden="true"><span class="dx-mic"><i></i><svg viewBox="0 0 16 16" fill="currentColor"><rect x="5.5" y="1.5" width="5" height="8.5" rx="2.5"/><path d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span><span class="mcap-t">Listening… let go to type</span><span class="mcap-k"><kbd>⌥</kbd><kbd>S</kbd></span></div></div></div>
-        <figcaption><h3>Messages</h3><p>Reply without typing.</p></figcaption>
-      </figure>
-      <figure class="ex sx" data-sx="note">
-        <div class="win app-notes"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><svg><use href="#i-sidebar"/></svg><span class="sp"></span><svg><use href="#i-list"/></svg><svg><use href="#i-compose"/></svg><svg><use href="#i-search"/></svg></div>
-          <div class="wb notes"><div class="n-date">13 October 2026 at 4:20 PM</div><div class="n-title">Launch</div><div class="n-body"><span data-out></span><i class="caret"></i></div><div class="mcap off" aria-hidden="true"><span class="dx-mic"><i></i><svg viewBox="0 0 16 16" fill="currentColor"><rect x="5.5" y="1.5" width="5" height="8.5" rx="2.5"/><path d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span><span class="mcap-t">Listening… let go to type</span><span class="mcap-k"><kbd>⌥</kbd><kbd>S</kbd></span></div></div></div>
-        <figcaption><h3>Notes</h3><p>Get ideas down as fast as you have them.</p></figcaption>
-      </figure>
-      <figure class="ex sx" data-sx="chat">
-        <div class="win app-team"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><span class="sp"></span><b class="chan"># engineering</b><span class="sp"></span><svg><use href="#i-search"/></svg></div>
-          <div class="wb team"><div class="tm-msg"><span class="av sm2">D</span><div><b>Dana</b> <time>10:14</time><p>Login is broken for some people on staging.</p></div></div>
-            <div class="tm-comp"><span data-out data-ph="Message #engineering"></span><i class="caret"></i></div><div class="mcap off" aria-hidden="true"><span class="dx-mic"><i></i><svg viewBox="0 0 16 16" fill="currentColor"><rect x="5.5" y="1.5" width="5" height="8.5" rx="2.5"/><path d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span><span class="mcap-t">Listening… let go to type</span><span class="mcap-k"><kbd>⌥</kbd><kbd>S</kbd></span></div></div></div>
-        <figcaption><h3>Team chat</h3><p>Post an update without leaving your code.</p></figcaption>
-      </figure>
-      <figure class="ex sx" data-sx="doc">
-        <div class="win app-pages"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><svg><use href="#i-sidebar"/></svg><span class="sp"></span><span class="title"><b>Letter to Dr. Lee</b></span><span class="sp"></span><svg><use href="#i-share"/></svg></div>
-          <div class="wb"><div class="canvas"><div class="sheet letter"><p>Dear Dr. Lee,</p><p><span data-out></span><i class="caret"></i></p></div></div><div class="mcap off" aria-hidden="true"><span class="dx-mic"><i></i><svg viewBox="0 0 16 16" fill="currentColor"><rect x="5.5" y="1.5" width="5" height="8.5" rx="2.5"/><path d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span><span class="mcap-t">Listening… let go to type</span><span class="mcap-k"><kbd>⌥</kbd><kbd>S</kbd></span></div></div></div>
-        <figcaption><h3>Documents</h3><p>Write letters and reports out loud.</p></figcaption>
-      </figure>
-      <figure class="ex sx" data-sx="rem">
-        <div class="win app-rem"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><svg><use href="#i-sidebar"/></svg><span class="sp"></span><svg><use href="#i-plus"/></svg></div>
-          <div class="wb rem"><div class="r-h">Today</div><div class="r-row"><i></i>Pick up dry cleaning</div><div class="r-row"><i></i>Renew passport</div><div class="r-row new"><i></i><span><span data-out></span><i class="caret"></i></span></div><div class="mcap off" aria-hidden="true"><span class="dx-mic"><i></i><svg viewBox="0 0 16 16" fill="currentColor"><rect x="5.5" y="1.5" width="5" height="8.5" rx="2.5"/><path d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span><span class="mcap-t">Listening… let go to type</span><span class="mcap-k"><kbd>⌥</kbd><kbd>S</kbd></span></div></div></div>
-        <figcaption><h3>Reminders</h3><p>Add a to-do in a second.</p></figcaption>
-      </figure>
-      <figure class="ex sx" data-sx="commit">
-        <div class="win app-term"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><span class="sp"></span><span class="title"><b>yapyap — zsh</b></span><span class="sp"></span></div>
-          <div class="wb term-b"><div><span class="pr">~/yapyap %</span> git add Sources</div><div><span class="pr">~/yapyap %</span> git commit -m "<span data-out></span><i class="caret"></i>"</div><div class="mcap off" aria-hidden="true"><span class="dx-mic"><i></i><svg viewBox="0 0 16 16" fill="currentColor"><rect x="5.5" y="1.5" width="5" height="8.5" rx="2.5"/><path d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span><span class="mcap-t">Listening… let go to type</span><span class="mcap-k"><kbd>⌥</kbd><kbd>S</kbd></span></div></div></div>
-        <figcaption><h3>Terminal</h3><p>Even commit messages.</p></figcaption>
-      </figure>
-    </div>
-  </div></section>
-
-  <section id="examples" class="wall"><div class="wrap">
-    <div class="head"><figure class="host center"><span class="sprite s2"><img class="px" src="art/cast/walt-idle0.png" alt="" width="24" height="32"><img class="px" src="art/cast/walt-blink.png" alt="" width="24" height="32"></span><blockquote class="bubble"><b>WALT · FOUNDER AND CEO</b>Let’s all take a moment to read this email together. Out loud. Slowly.</blockquote></figure><p class="kicker" style="margin-top:34px">Read aloud</p><h2>Reads every app.</h2></div>
-    <div class="examples">
-      <figure class="ex">
-        <div class="win app-mail"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><svg><use href="#i-sidebar"/></svg><span class="sp"></span><svg><use href="#i-archive"/></svg><svg><use href="#i-trash"/></svg><svg><use href="#i-reply"/></svg><svg><use href="#i-compose"/></svg></div>
-          <div class="wb"><div class="mail-h"><span class="av">PS</span><b>Priya Shah</b><time>9:41 AM</time><span class="subj">Thursday offsite</span><span class="to">To: Design Team</span></div>
-            <div class="mail-b" data-read>Hi all, the offsite has moved to the fourth floor. Bring a laptop and your third quarter numbers. Lunch is at noon, and we should wrap up by four.</div></div></div>
-        <figcaption><h3>Email</h3><p>Listen while you do something else.</p></figcaption>
-      </figure>
-      <figure class="ex">
-        <div class="win app-preview"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><svg><use href="#i-sidebar"/></svg><span class="title"><b>recall-study.pdf</b><span>Page 1 of 8</span></span><span class="sp"></span><svg><use href="#i-zoomin"/></svg><svg><use href="#i-share"/></svg></div>
-          <div class="wb"><div class="canvas"><div class="sheet"><h4>Sleep and Recall in Adult Learners</h4>
-            <div class="cols" data-read>Adults who slept within three hours of a study session recalled more of the material a week later. The effect was largest for new vocabulary. Participants who stayed awake showed no gain from extra review time. We discuss what this means for evening classes and for learners who work night shifts.</div></div></div></div></div>
-        <figcaption><h3>PDFs</h3><p>Columns read in the right order.</p></figcaption>
-      </figure>
-      <figure class="ex">
-        <div class="win app-messages"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><span class="sp"></span><span class="who"><span class="av sm">S</span><b>Sam</b></span><span class="sp"></span><svg><use href="#i-video"/></svg><svg><use href="#i-info"/></svg></div>
-          <div class="wb"><div class="thread" data-read><span class="ts skip">Today 4:12 PM</span><p class="in">Can someone check the launch notes before five?</p><p class="out">On it. The draft is here:</p><div class="lp skip"><span class="th"></span><span class="lp-t"><b>Launch notes</b>docs.example.com</span></div><p class="in">Thanks, reading it now.</p>
-            <div class="imsg skip"><span class="plus"><svg><use href="#i-plus"/></svg></span><span class="field">iMessage</span></div></div></div></div>
-        <figcaption><h3>Chats</h3><p>In order, with links skipped.</p></figcaption>
-      </figure>
-      <figure class="ex">
-        <div class="win app-safari"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><svg><use href="#i-back"/></svg><span class="addr"><svg><use href="#i-lock"/></svg>weekly.example</span><svg><use href="#i-share"/></svg><svg><use href="#i-tabs"/></svg></div>
-          <div class="wb"><div class="site-h"><b>The Weekly</b><span>News · Culture · Opinion · Sport</span></div>
-            <div class="site-b"><div class="kick">Culture</div><h4>The quiet return of the public library</h4>
-            <p data-read>Visits are up for the third year in a row. People come for the free rooms, the fast internet and, more and more, the books.</p></div></div></div>
-        <figcaption><h3>Web pages</h3><p>The article, not the ads.</p></figcaption>
-      </figure>
-      <figure class="ex">
-        <div class="win app-photos"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><svg><use href="#i-back"/></svg><span class="title"><b>IMG_2041</b><span>12 Oct 2026</span></span><span class="sp"></span><svg><use href="#i-info"/></svg><svg><use href="#i-heart"/></svg><svg><use href="#i-share"/></svg></div>
-          <div class="wb photo"><div class="paper" data-read><b>4.2 Photosynthesis</b>Plants use energy from light to turn water and carbon dioxide into sugar. Oxygen is released as a by-product.</div></div></div>
-        <figcaption><h3>Photos</h3><p>Even text inside images.</p></figcaption>
-      </figure>
-      <figure class="ex">
-        <div class="win app-books"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><svg><use href="#i-library"/></svg><span class="sp"></span><span class="btitle">Pride and Prejudice</span><span class="sp"></span><span class="aa">Aa</span><svg><use href="#i-bookmark"/></svg></div>
-          <div class="wb book"><div class="chap">Chapter 1</div><p data-read>It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife.</p><div class="pg">1 of 312</div></div></div>
-        <figcaption><h3>Books</h3><p>Follow along at your own pace.</p></figcaption>
-      </figure>
-    </div>
-  </div></section>
 
   <section class="band ink" id="privacy">
     <div class="wrap">
@@ -781,7 +757,6 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
       </div>
     </div>
   </section>
-
 
   <section id="open-source" class="wall"><div class="wrap">
     <div class="oss">
@@ -938,9 +913,23 @@ document.querySelectorAll("[data-read]:not([data-read=region])").forEach((el, n)
   setTimeout(step, 1200 + n * 170);
 });
 
+// Demos: tabs scroll the deck; swiping the deck moves the tab. Links to a panel (#speak, #examples, #saved) open it.
+(() => {
+  const deck = document.querySelector(".deck"), tabs = [...document.querySelectorAll(".tabs [role=tab]")];
+  const panels = tabs.map(t => document.getElementById(t.getAttribute("aria-controls")));
+  const select = i => tabs.forEach((t, n) => t.setAttribute("aria-selected", n === i));
+  const show = (i, smooth) => { deck.scrollTo({ left: panels[i].offsetLeft - deck.offsetLeft, behavior: smooth ? "smooth" : "instant" }); select(i); };
+  tabs.forEach((t, i) => t.addEventListener("click", () => show(i, true)));
+  deck.addEventListener("scroll", () => select(Math.round(deck.scrollLeft / deck.clientWidth)), { passive: true });
+  const open = id => { const i = panels.findIndex(p => p.id === id); if (i < 0) return false;
+    document.getElementById("demos").scrollIntoView({ behavior: "smooth" }); show(i, false); return true; };
+  document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener("click", e => { if (open(a.getAttribute("href").slice(1))) e.preventDefault(); }));
+  if (location.hash) open(location.hash.slice(1));
+})();
+
 // Speak anywhere: each card replays what SpeechAnalyzer reported for that phrase (`YapYap --transcribe`), on its real timing.
 (() => {
-  const PARTS = {"msg": [[1.89, "Running"], [2.86, "Running 10 minutes late"], [3.85, "Running 10 minutes late, save me a seat"], [4.49, "Running 10 minutes late, save me a seat."]], "note": [[1.19, "Ideas"], [2.16, "Ideas for the launch"], [3.19, "Ideas for the launch. A short dem"], [4.11, "Ideas for the launch. A short demo video, a priv"], [5.18, "Ideas for the launch. A short demo video, a privacy page, and a"], [6.16, "Ideas for the launch. A short demo video, a privacy page, and a student discount"], [6.69, "Ideas for the launch. A short demo video, a privacy page, and a student discount."]], "chat": [[1.5, "The lo"], [2.45, "The login bug is fixed"], [3.43, "The login bug is fixed."], [3.65, "The login bug is fixed. Can someone"], [4.42, "The login bug is fixed. Can someone check it on staging"], [5.2, "The login bug is fixed. Can someone check it on staging?"]], "doc": [[1.2, "Thank you"], [2.16, "Thank you for meeting with me on"], [3.14, "Thank you for meeting with me on Tuesday."], [4.12, "Thank you for meeting with me on Tuesday. I have attached the notes"], [5.18, "Thank you for meeting with me on Tuesday. I have attached the notes we discussed"], [5.8, "Thank you for meeting with me on Tuesday. I have attached the notes we discussed."]], "rem": [[1.18, "B"], [1.37, "Book the"], [2.14, "Book the dentist for next Thursday"], [3.27, "Book the dentist for next Thursday."]], "commit": [[1.18, "Fixed"], [2.16, "Fixed crash when the window"], [3.14, "Fixed crash when the window closes during a read"], [3.93, "Fixed crash when the window closes during a read."], [3.99, "Fix crash when the window closes during a read."]],
+  const PARTS = {"msg": [[1.89, "Running"], [2.86, "Running 10 minutes late"], [3.85, "Running 10 minutes late, save me a seat"], [4.49, "Running 10 minutes late, save me a seat."]], "chat": [[1.5, "The lo"], [2.45, "The login bug is fixed"], [3.43, "The login bug is fixed."], [3.65, "The login bug is fixed. Can someone"], [4.42, "The login bug is fixed. Can someone check it on staging"], [5.2, "The login bug is fixed. Can someone check it on staging?"]], "doc": [[1.2, "Thank you"], [2.16, "Thank you for meeting with me on"], [3.14, "Thank you for meeting with me on Tuesday."], [4.12, "Thank you for meeting with me on Tuesday. I have attached the notes"], [5.18, "Thank you for meeting with me on Tuesday. I have attached the notes we discussed"], [5.8, "Thank you for meeting with me on Tuesday. I have attached the notes we discussed."]],
     // Spoken shortcuts: the spoken name, then (data-paste) the saved value is what gets pasted.
     "email": [[0.9, "Type"], [1.3, "Type email"], [1.8, "Type email address"]], "home": [[1.1, "Home"], [1.6, "Home address"]],
     "key": [[1.1, "Paste my"], [1.9, "Paste my ElevenLabs"], [2.4, "Paste my ElevenLabs key"]]};
@@ -974,7 +963,6 @@ document.querySelectorAll("[data-read]:not([data-read=region])").forEach((el, n)
   };
   requestAnimationFrame(frame);
 })();
-
 
 // The tools, acted out in the Today section. Each panel loops its own little scene while it's on screen.
 (() => {
