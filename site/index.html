@@ -53,7 +53,7 @@
   "Read any text on screen aloud: press Option-A and draw a box",
   "Word-by-word highlight and optional reading ruler on the original app",
   "Hold Option-S to dictate into any app, or tap it for hands-free dictation",
-  "Paste saved text by voice: say \"email address\" or \"paste my API key\"",
+  "Spoken shortcuts: paste saved text by saying \"email address\" or \"paste my API key\"",
   "Natural Kokoro voices running on the Mac",
   "Reads text inside images, PDFs and screenshots",
   "Reading speed from 0.5x to 2.5x",
@@ -205,8 +205,9 @@ kbd { font-family: var(--ui); font-size: 19px; min-width: 34px; height: 34px; pa
 .acts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; max-width: 1180px; margin: 44px auto 0; text-align: left; }
 .act { min-width: 0; display: flex; flex-direction: column; gap: 12px; padding: 16px 16px 18px; background: var(--navy); border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); }
 .act header { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.act h2 { font-family: var(--pixel); font-size: 32px; line-height: 1; color: var(--yellow); text-shadow: 2px 2px 0 var(--ink); }
-.act .k { display: flex; gap: 5px; }
+.act h2 { font-family: var(--pixel); font-size: 28px; white-space: nowrap; line-height: 1; color: var(--yellow); text-shadow: 2px 2px 0 var(--ink); }
+.act .k { display: flex; gap: 4px; }
+.act .k kbd { min-width: 28px; height: 28px; font-size: 16px; padding-inline: 6px; }
 .scene { display: flex; flex-direction: column; gap: 12px; padding: 12px; border: 3px solid var(--ink); color: var(--ink);
   background: repeating-linear-gradient(90deg, #a9c6e8 0 70px, var(--pale) 70px 73px); }
 .act .who { display: flex; align-items: flex-end; gap: 12px; min-height: 84px; }
@@ -400,7 +401,7 @@ kbd { font-family: var(--ui); font-size: 19px; min-width: 34px; height: 34px; pa
 .term-b .pr { color: #30d158; }
 .term-b .caret { background: #f5f5f7; }
 
-/* Saved text: forms the saved value is pasted into */
+/* Spoken shortcuts: forms the saved value is pasted into */
 .form { padding: 0 0 54px; }
 .form .fr { display: flex; gap: 8px; padding: 9px 14px; border-bottom: 1px solid color-mix(in srgb, var(--win-ink) 10%, transparent); font-size: 12.5px; }
 .form .fr > span { color: var(--muted); }
@@ -527,7 +528,7 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
       <li><a href="#show">The show</a></li>
       <li><a href="#speak">Talk</a></li>
       <li><a href="#examples">Listen</a></li>
-      <li><a href="#saved">Saved text</a></li>
+      <li><a href="#saved">Spoken shortcuts</a></li>
       <li><a href="#privacy">Privacy</a></li>
       <li><a href="#faq">FAQ</a></li>
       <li><a href="https://github.com/WannaBeSolopreneur/YapYap">GitHub</a></li>
@@ -587,7 +588,7 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
         </article>
         <article class="act" data-act="saved">
           <span class="tag">Today</span>
-          <header><h2>Saved text</h2><span class="k"><kbd>⌥</kbd><kbd>S</kbd></span></header>
+          <header><h2>Spoken shortcuts</h2><span class="k"><kbd>⌥</kbd><kbd>S</kbd></span></header>
           <div class="scene" aria-hidden="true">
             <div class="who"><span class="spr"><img class="px f-phone0" src="art/cast/jessy-phone0.png" alt="" width="24" height="32"><img class="px f-talk_open" src="art/cast/jessy-talk_open.png" alt="" width="24" height="32"></span><p class="say off"><small>JESSY</small><span class="said"></span></p></div>
             <div class="mini"><div class="mbar"><i></i><i></i><i></i><b>shop.example · Checkout</b></div>
@@ -638,7 +639,7 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
 
   <section id="saved" class="night">
     <div class="wrap">
-      <div class="head"><p class="kicker">Saved text</p><h2>Say the name. It’s pasted.</h2>
+      <div class="head"><p class="kicker">Spoken shortcuts</p><h2>Say the name. It’s pasted.</h2>
         <p>Save the things you type over and over, like your email address, your home address or an API key. Then hold ⌥S and say its name, and YapYap pastes it wherever your cursor is.</p></div>
       <div class="examples">
         <figure class="ex sx" data-sx="email" data-paste="sam@example.com">
@@ -949,7 +950,7 @@ document.querySelectorAll("[data-read]:not([data-read=region])").forEach((el, n)
 // Speak anywhere: each card replays what SpeechAnalyzer reported for that phrase (`YapYap --transcribe`), on its real timing.
 (() => {
   const PARTS = {"msg": [[1.89, "Running"], [2.86, "Running 10 minutes late"], [3.85, "Running 10 minutes late, save me a seat"], [4.49, "Running 10 minutes late, save me a seat."]], "note": [[1.19, "Ideas"], [2.16, "Ideas for the launch"], [3.19, "Ideas for the launch. A short dem"], [4.11, "Ideas for the launch. A short demo video, a priv"], [5.18, "Ideas for the launch. A short demo video, a privacy page, and a"], [6.16, "Ideas for the launch. A short demo video, a privacy page, and a student discount"], [6.69, "Ideas for the launch. A short demo video, a privacy page, and a student discount."]], "chat": [[1.5, "The lo"], [2.45, "The login bug is fixed"], [3.43, "The login bug is fixed."], [3.65, "The login bug is fixed. Can someone"], [4.42, "The login bug is fixed. Can someone check it on staging"], [5.2, "The login bug is fixed. Can someone check it on staging?"]], "doc": [[1.2, "Thank you"], [2.16, "Thank you for meeting with me on"], [3.14, "Thank you for meeting with me on Tuesday."], [4.12, "Thank you for meeting with me on Tuesday. I have attached the notes"], [5.18, "Thank you for meeting with me on Tuesday. I have attached the notes we discussed"], [5.8, "Thank you for meeting with me on Tuesday. I have attached the notes we discussed."]], "rem": [[1.18, "B"], [1.37, "Book the"], [2.14, "Book the dentist for next Thursday"], [3.27, "Book the dentist for next Thursday."]], "commit": [[1.18, "Fixed"], [2.16, "Fixed crash when the window"], [3.14, "Fixed crash when the window closes during a read"], [3.93, "Fixed crash when the window closes during a read."], [3.99, "Fix crash when the window closes during a read."]],
-    // Saved text: the spoken name, then (data-paste) the saved value is what gets pasted.
+    // Spoken shortcuts: the spoken name, then (data-paste) the saved value is what gets pasted.
     "email": [[0.9, "Type"], [1.3, "Type email"], [1.8, "Type email address"]], "home": [[1.1, "Home"], [1.6, "Home address"]],
     "key": [[1.1, "Paste my"], [1.9, "Paste my ElevenLabs"], [2.4, "Paste my ElevenLabs key"]]};
   const cards = [...document.querySelectorAll("[data-sx]")].map((el, n) => {
