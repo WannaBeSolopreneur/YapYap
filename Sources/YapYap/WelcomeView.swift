@@ -160,6 +160,11 @@ private struct IntroStep: View {
                 .shadow(color: .black.opacity(0.12), radius: 12, y: 4)
                 .accessibilityLabel("A web page being read aloud, each word highlighted as it's spoken")
             VStack(spacing: 8) {
+                Text("ON-DEVICE AI PRODUCTIVITY TOOLS")
+                    .font(.system(size: 11, weight: .semibold))
+                    .tracking(1.2)
+                    .foregroundStyle(Theme.navy)
+                    .padding(.bottom, 4)
                 Text("Listen to anything.\nDictate anywhere.")
                     .font(Theme.display(30))
                     .multilineTextAlignment(.center)

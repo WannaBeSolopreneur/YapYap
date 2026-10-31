@@ -3,26 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>YapYap – Free Text to Speech &amp; Dictation for Mac</title>
-<meta name="description" content="Free, private text to speech and dictation for Mac. Hear any text on screen read aloud with word-by-word highlighting, and type into any app by talking.">
+<title>YapYap – On-Device AI Productivity Tools for Mac: Dictation &amp; Text to Speech</title>
+<meta name="description" content="On-device AI productivity tools for Mac: dictation, text to speech and saved passwords without a subscription, an account or the cloud. Free and open source, and it works offline.">
 <link rel="canonical" href="https://yapyap.cc/">
 <meta name="robots" content="index, follow, max-image-preview:large, max-video-preview:-1">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#0f1828">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="YapYap">
 <meta property="og:locale" content="en_US">
 <meta property="og:url" content="https://yapyap.cc/">
-<meta property="og:title" content="YapYap – Free Text to Speech &amp; Dictation for Mac">
-<meta property="og:description" content="You talk. It types. It talks. You listen. Free, open source, and your words stay on your Mac.">
+<meta property="og:title" content="YapYap – On-device AI productivity tools for Mac">
+<meta property="og:description" content="Stop renting your AI. Dictation, read-aloud and saved passwords that run on your Mac: no subscription, no account, nothing uploaded.">
 <meta property="og:image" content="https://yapyap.cc/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="YapYap app icon with the line: You talk. It types. It talks. You listen.">
+<meta property="og:image:alt" content="The YapYap logo, a pixel speech bubble, above the line On-device AI productivity tools, with the six pixel-art characters from the YapYap office show and yapyap.cc">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="YapYap – Free Text to Speech &amp; Dictation for Mac">
-<meta name="twitter:description" content="You talk. It types. It talks. You listen. Free, open source, and your words stay on your Mac.">
+<meta name="twitter:title" content="YapYap – On-device AI productivity tools for Mac">
+<meta name="twitter:description" content="Stop renting your AI. Dictation, read-aloud and saved passwords that run on your Mac: no subscription, no account, nothing uploaded.">
 <meta name="twitter:image" content="https://yapyap.cc/og.png">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="icon.png" sizes="256x256" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -31,6 +31,7 @@
  "@context": "https://schema.org",
  "@type": "SoftwareApplication",
  "name": "YapYap",
+ "slogan": "On-device AI productivity tools",
  "url": "https://yapyap.cc/",
  "description": "YapYap is a free, open-source Mac app that reads any text on screen aloud with word-by-word highlighting and types what you say into any app. Text recognition, voices and dictation all run on the Mac; only anonymous usage counts are sent, and they can be turned off.",
  "applicationCategory": "UtilitiesApplication",
@@ -48,7 +49,6 @@
   "priceCurrency": "USD"
  },
  "image": "https://yapyap.cc/icon.png",
- "screenshot": "https://yapyap.cc/demo-poster.jpg",
  "featureList": [
   "Read any text on screen aloud: press Option-A and draw a box",
   "Word-by-word highlight and optional reading ruler on the original app",
@@ -69,282 +69,254 @@
  "url": "https://yapyap.cc/"
 }
 </script>
-<script type="application/ld+json">
-{
- "@context": "https://schema.org",
- "@type": "VideoObject",
- "name": "YapYap: you talk, it types; it talks, you listen",
- "description": "YapYap reads a chat message aloud with each word highlighted, then a reply is dictated by holding Option-S and typed into the app.",
- "thumbnailUrl": "https://yapyap.cc/demo-poster.jpg",
- "contentUrl": "https://yapyap.cc/demo.mp4",
- "uploadDate": "2026-10-14",
- "duration": "PT38S"
-}
-</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="preload" href="fonts/Jersey15.woff2" as="font" type="font/woff2" crossorigin>
 <style>
-/* Layout: Apple product page. Frosted local nav, centered hero over the film, live demos, app-window examples,
-   a dark privacy band, numbered pipeline, specs, closing CTA. Signature: the app's Soft Yellow word highlight. */
+/* Layout: the YapYap office, after hours. The site lives in the TikTok show's world: a pixel night exterior for the hero,
+   the office's striped powder-blue walls for the demos, paper for reading, the show's cast hosting each section.
+   Palette and sprites come from the show; Press Start 2P only for the YAPYAP logo, Jersey 15 (a readable pixel face) for
+   headings, labels and keys, Atkinson Hyperlegible for reading. The cast stands under the tagline in the hero. Signature: the app's yellow word highlight, square like every pixel here. */
+@font-face { font-family: "Press Start 2P"; src: url(fonts/PressStart2P.woff2) format("woff2"); font-display: swap; }
+@font-face { font-family: "Jersey 15"; src: url(fonts/Jersey15.woff2) format("woff2"); font-display: swap; }
+@font-face { font-family: "Atkinson Hyperlegible"; src: url(fonts/AtkinsonHyperlegible-Regular.woff2) format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Atkinson Hyperlegible"; src: url(fonts/AtkinsonHyperlegible-Bold.woff2) format("woff2"); font-weight: 700; font-display: swap; }
 :root {
-  --bg: #ffffff;
-  --tile: #f5f5f7;
-  --fg: #1d1d1f;
-  --muted: #6e6e73;
-  --line: #d2d2d7;
-  --accent: #0071e3;
-  --accent-hover: #0077ed;
-  --navy: #1f3560;
-  --hl: #ffeb4d;
-  --hl-ink: #1d1d1f;
+  --ink: #0f1828;
+  --night: #19283e;
+  --navy: #1b2a41;
+  --slate: #3e5c84;
+  --powder: #a7c7e7;
+  --pale: #dcebf7;
+  --cream: #f4f1ea;
+  --yellow: #ffd166;
+  --teal: #06d6a0;
+  --red: #e63946;
+  --orange: #f28c28;
+  --hl: #ffd166;
+  --hl-ink: #0f1828;
   --win: #ffffff;
-  --win-bar: #ececee;
+  --win-bar: #e8edf4;
   --win-ink: #1d1d1f;
-  --nav: rgba(251, 251, 253, 0.8);
-  --band: #000000;
-  --band-fg: #f5f5f7;
-  --band-muted: #86868b;
-  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --muted: #5d6b80;
+  --line: #c9d3e0;
+  --accent: #2f6fd6;
+  --logo: "Press Start 2P", ui-monospace, monospace;
+  --pixel: "Jersey 15", "Atkinson Hyperlegible", system-ui, sans-serif;
+  --ui: "Jersey 15", "Atkinson Hyperlegible", system-ui, sans-serif;
+  --font: "Atkinson Hyperlegible", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
   --mono: ui-monospace, "SF Mono", Menlo, monospace;
   --gutter: max(16px, env(safe-area-inset-left, 0px));
-  --wide: 980px;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #000000; --win: #1e1e20; --win-bar: #2c2c2e; --win-ink: #f5f5f7; --tile: #161617; --fg: #f5f5f7; --muted: #86868b; --line: #424245;
-    --accent: #2997ff; --accent-hover: #47a6ff; --navy: #9fbcf0; --nav: rgba(22, 22, 23, 0.8);
-    --band: #161617; --band-fg: #f5f5f7; --band-muted: #86868b; color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #000000; --win: #1e1e20; --win-bar: #2c2c2e; --win-ink: #f5f5f7; --tile: #161617; --fg: #f5f5f7; --muted: #86868b; --line: #424245;
-  --accent: #2997ff; --accent-hover: #47a6ff; --navy: #9fbcf0; --nav: rgba(22, 22, 23, 0.8);
-  --band: #161617; --band-fg: #f5f5f7; --band-muted: #86868b; color-scheme: dark;
+  --wide: 1040px;
+  --stars: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='240' shape-rendering='crispEdges'%3E%3Cg fill='%23f4f1ea'%3E%3Crect x='22' y='30' width='3' height='3'/%3E%3Crect x='140' y='12' width='3' height='3'/%3E%3Crect x='300' y='60' width='3' height='3'/%3E%3Crect x='210' y='150' width='3' height='3'/%3E%3Crect x='70' y='190' width='3' height='3'/%3E%3Crect x='330' y='200' width='2' height='2'/%3E%3Crect x='110' y='100' width='2' height='2'/%3E%3C/g%3E%3C/svg%3E");
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
-html { -webkit-text-size-adjust: 100%; }
-body {
-  margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font);
-  font-size: 17px; line-height: 1.47; letter-spacing: -0.022em;
-  -webkit-font-smoothing: antialiased; overflow-x: hidden;
-}
+html { -webkit-text-size-adjust: 100%; background: var(--ink); font-synthesis-weight: none; }
+body { margin: 0; background: var(--night); color: var(--cream); font-family: var(--font); font-size: 18px; line-height: 1.5; overflow-x: hidden; }
 img, video { max-width: 100%; display: block; }
-a { color: var(--accent); text-decoration: none; }
-a:hover { text-decoration: underline; }
-:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
-h1, h2, h3 { margin: 0; text-wrap: balance; font-weight: 600; }
+.px { image-rendering: pixelated; image-rendering: crisp-edges; }
+a { color: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 2px; }
+a:hover { text-decoration-color: var(--yellow); }
+:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+h1, h2, h3 { margin: 0; text-wrap: balance; font-weight: 400; }
 p { margin: 0; }
 .wrap { max-width: var(--wide); margin-inline: auto; padding-inline: var(--gutter); }
+.wrap.wide { max-width: 1280px; }
 
-/* Local nav */
-.nav {
-  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10;
-  background: var(--nav); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px);
-  border-bottom: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
-}
-.nav .wrap { display: flex; align-items: center; gap: 24px; height: 52px; }
-.brand { display: flex; align-items: center; gap: 8px; font-size: 21px; font-weight: 600; color: var(--fg); letter-spacing: 0.011em; }
+/* Surfaces: night (outside), wall (the office), paper. Each sets the colours its text uses. */
+.night { --s-fg: var(--cream); --s-muted: var(--powder); --s-link: var(--yellow); background: var(--night) var(--stars); color: var(--s-fg); }
+.wall { --s-fg: var(--ink); --s-muted: #24395a; --s-link: var(--ink); color: var(--s-fg);
+  background: repeating-linear-gradient(90deg, #a9c6e8 0 172px, var(--pale) 172px 178px); }
+.paper { --s-fg: var(--ink); --s-muted: #45536a; --s-link: var(--ink); background: var(--cream); color: var(--s-fg); }
+.ink { --s-fg: var(--cream); --s-muted: var(--powder); --s-link: var(--yellow); background: var(--ink); color: var(--s-fg); }
+section, .band { padding-block: 96px; border-top: 6px solid var(--ink); }
+
+/* Type */
+.pxh { font-family: var(--pixel); letter-spacing: 0.02em; line-height: 1.45; }
+.night .pxh, .ink .pxh { text-shadow: 3px 3px 0 var(--ink); }
+.kicker { font-family: var(--pixel); font-size: 21px; line-height: 1.6; letter-spacing: 0.1em; text-transform: uppercase; color: var(--yellow); font-weight: 700; }
+.wall .kicker, .paper .kicker { color: var(--slate); }
+.head p.kicker { color: var(--yellow); margin-top: 0; font-size: 21px; }
+.wall .head p.kicker, .paper .head p.kicker { color: var(--slate); }
+.head { text-align: center; max-width: 820px; margin-inline: auto; }
+.head h2 { font-family: var(--pixel); font-size: clamp(38px, 5.6vw, 64px); line-height: 1.05; margin-top: 14px; font-weight: 700; letter-spacing: 0.01em; }
+.head h2:first-child { margin-top: 0; }
+.night .head h2, .ink .head h2 { text-shadow: 3px 3px 0 var(--ink); }
+.head p { font-size: clamp(18px, 2vw, 21px); line-height: 1.45; color: var(--s-muted); margin-top: 16px; }
+
+/* Buttons and keys */
+.btn { display: inline-flex; align-items: center; gap: 10px; background: var(--yellow); color: var(--ink); border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--ink);
+  font-family: var(--pixel); text-decoration: none; text-transform: uppercase; white-space: nowrap; cursor: pointer; line-height: 1; font-weight: 700; letter-spacing: 0.04em; }
+.btn:hover { background: #ffe08f; text-decoration: none; }
+.btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
+.btn.sm { font-size: 19px; padding: 9px 12px; }
+.btn.lg { font-size: 25px; padding: 16px 22px; }
+.btn.alt { background: var(--cream); }
+.btn.alt:hover { background: #fff; }
+.btn.teal { background: var(--teal); }
+.plain { color: var(--s-link); font-family: var(--pixel); font-size: 21px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.04em; }
+.link-arrow::after { content: " →"; }
+kbd { font-family: var(--ui); font-size: 19px; min-width: 34px; height: 34px; padding-inline: 8px; display: inline-grid; place-items: center;
+  background: var(--cream); color: var(--ink); border: 2px solid var(--ink); box-shadow: 0 3px 0 var(--ink); }
+
+/* Nav */
+.nav { position: sticky; top: 0; z-index: 10; background: var(--ink); border-bottom: 3px solid #000; }
+.nav .wrap { display: flex; align-items: center; gap: 24px; height: 58px; max-width: 1280px; }
+.brand { display: flex; align-items: center; gap: 10px; font-family: var(--logo); font-size: 16px; color: var(--powder); text-decoration: none; text-shadow: 2px 2px 0 #000; }
 .brand:hover { text-decoration: none; }
-.brand img { width: 26px; height: 26px; }
-.nav ul { display: flex; gap: 22px; margin: 0 0 0 auto; padding: 0; list-style: none; font-size: 12px; }
-.nav ul a { color: var(--fg); opacity: 0.8; }
-.nav ul a:hover { opacity: 1; text-decoration: none; }
-@media (max-width: 640px) { .nav ul { display: none; } .nav .btn { margin-left: auto; } }
+.brand img { width: 32px; height: 32px; }
+.nav ul { display: flex; gap: 22px; margin: 0 0 0 auto; padding: 0; list-style: none; font-family: var(--ui); font-size: 21px; }
+.nav ul a { color: var(--cream); text-decoration: none; }
+.nav ul a:hover { color: var(--yellow); }
+@media (max-width: 760px) { .nav ul { display: none; } .nav .btn { margin-left: auto; } }
 
-.btn {
-  display: inline-flex; align-items: center; gap: 6px; border-radius: 980px; background: var(--accent);
-  color: #fff; font-weight: 400; white-space: nowrap; border: 0; cursor: pointer; font-family: inherit;
-}
-.btn:hover { background: var(--accent-hover); text-decoration: none; }
-.btn.sm { font-size: 12px; padding: 4px 11px; }
-.btn.lg { font-size: 17px; padding: 12px 22px; }
-.link-arrow::after { content: " ›"; }
-
-/* Hero */
-.hero { text-align: center; padding-block: 56px 0; }
-.eyebrow { font-size: 21px; font-weight: 600; color: var(--navy); letter-spacing: 0.011em; display: inline-flex; align-items: center; gap: 10px; }
-.eyebrow img { width: 40px; height: 40px; }
-.hero h1 { font-size: clamp(44px, 7.5vw, 80px); line-height: 1.05; letter-spacing: -0.015em; font-weight: 700; margin-top: 14px; }
-.hero .sub { font-size: clamp(21px, 2.6vw, 28px); line-height: 1.25; color: var(--muted); max-width: 30ch; margin: 18px auto 0; font-weight: 500; }
-.duo { display: grid; grid-template-columns: 1fr 1fr; max-width: 760px; margin: 26px auto 0; text-align: left; }
-.duo p { min-width: 0; display: flex; flex-direction: column; gap: 10px; padding: 4px 32px; color: var(--muted); font-size: clamp(18px, 2vw, 21px); line-height: 1.35; font-weight: 500; }
-.duo p + p { border-left: 1px solid var(--line); }
-.duo-k { display: flex; gap: 5px; }
-.duo-k kbd { height: 30px; min-width: 30px; font-size: 14px; }
-@media (max-width: 640px) { .duo { display: none; } }
+/* Hero: the night sky over the office: logo, tagline, and the three tools acted out by the cast. */
+.hero { text-align: center; padding-top: 44px; padding-bottom: 88px; background: var(--night) var(--stars); }
+.lockup { display: inline-flex; align-items: center; gap: clamp(14px, 2.4vw, 26px); }
+.lockup img { width: clamp(48px, 7.2vw, 80px); height: auto; }
+.lockup b { font-family: var(--logo); font-weight: 400; font-size: clamp(30px, 6vw, 60px); line-height: 1; color: var(--powder); text-shadow: 5px 5px 0 var(--ink); letter-spacing: 0.02em; }
+.hero .kicker { margin-top: 26px; font-size: clamp(18px, 2.2vw, 22px); color: var(--cream); text-shadow: 2px 2px 0 var(--ink); }
+.hero h1 { font-family: var(--pixel); font-size: clamp(44px, 7.6vw, 92px); line-height: 1.0; margin-top: 34px; color: var(--yellow); text-shadow: 3px 3px 0 var(--ink); font-weight: 700; letter-spacing: 0.01em; }
+.hero .sub { font-size: clamp(19px, 2.2vw, 24px); line-height: 1.45; color: var(--cream); max-width: 46ch; margin: 22px auto 0; }
 .cta { display: flex; justify-content: center; align-items: center; gap: 28px; flex-wrap: wrap; margin-top: 30px; }
-.cta a.plain { font-size: 17px; }
-.req { font-size: 14px; color: var(--muted); margin-top: 14px; }
+.req { font-size: 15px; color: var(--powder); margin-top: 18px; }
 
-/* The read-along highlight */
+
+
+/* Them vs us: what subscription AI apps cost you, and what YapYap does instead */
+.vs { display: grid; grid-template-columns: 1fr 1fr; max-width: 860px; margin: 40px auto 0; text-align: left; border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); }
+.vs-col { min-width: 0; padding: 18px 22px 20px; }
+.vs-col h2 { font-family: var(--pixel); font-size: 28px; line-height: 1.1; }
+.vs-col ul { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 9px; font-size: 18px; line-height: 1.35; }
+.vs-col li { display: flex; gap: 10px; }
+.vs-col li::before { flex-shrink: 0; width: 22px; height: 22px; display: grid; place-items: center; font: 400 18px/1 var(--pixel); color: var(--ink); margin-top: 1px; }
+.vs .them { background: #2a2f3d; color: #b9c0cc; }
+.vs .them h2 { color: #c9ced8; }
+.vs .them li::before { content: "×"; background: #8d93a1; }
+.vs .us { background: var(--cream); color: var(--ink); }
+.vs .us h2 { color: var(--ink); }
+.vs .us li::before { content: "✓"; background: var(--teal); }
+.acts-h { font-family: var(--pixel); font-size: clamp(28px, 3.4vw, 40px); line-height: 1.1; margin-top: 64px; color: var(--cream); text-shadow: 3px 3px 0 var(--ink); }
+.acts-h + .acts { margin-top: 26px; }
+@media (max-width: 640px) { .vs { grid-template-columns: 1fr; } }
+
+/* The tools, acted out: each panel is one tool, used by the cast member who needs it, with the result happening live. */
+.acts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; max-width: 1180px; margin: 44px auto 0; text-align: left; }
+.act { min-width: 0; display: flex; flex-direction: column; gap: 12px; padding: 16px 16px 18px; background: var(--navy); border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); }
+.act header { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.act h2 { font-family: var(--pixel); font-size: 32px; line-height: 1; color: var(--yellow); text-shadow: 2px 2px 0 var(--ink); }
+.act .k { display: flex; gap: 5px; }
+.scene { display: flex; flex-direction: column; gap: 12px; padding: 12px; border: 3px solid var(--ink); color: var(--ink);
+  background: repeating-linear-gradient(90deg, #a9c6e8 0 70px, var(--pale) 70px 73px); }
+.act .who, .local .who { display: flex; align-items: flex-end; gap: 12px; min-height: 84px; }
+.spr { position: relative; width: 60px; height: 80px; flex-shrink: 0; }
+.spr img { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; }
+.spr img:first-child, .spr.talk .f-talk_open, .spr.shock .f-shock { opacity: 1; }
+.spr.talk img:first-child, .spr.shock img:first-child { opacity: 0; }
+.say { position: relative; flex: 1; min-width: 0; margin-bottom: 30px; background: var(--cream); color: var(--ink); border: 2px solid var(--ink); box-shadow: 3px 3px 0 var(--ink);
+  padding: 6px 10px 8px; font-size: 15px; line-height: 1.3; min-height: 46px; transition: opacity 0.15s; }
+.say small { display: block; font-family: var(--pixel); font-size: 15px; line-height: 1; color: var(--slate); letter-spacing: 0.06em; margin-bottom: 3px; }
+.say::before { content: ""; position: absolute; left: -11px; bottom: 6px; width: 11px; height: 11px; background: var(--ink);
+  clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 70%, 30% 70%, 30% 40%, 60% 40%, 60% 10%, 100% 10%); }
+.say.off { opacity: 0; }
+.mini { position: relative; background: #fff; color: var(--win-ink); border: 2px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); min-height: 112px; font-size: 14px; }
+.mbar { display: flex; align-items: center; gap: 4px; height: 22px; padding-inline: 7px; background: var(--win-bar); border-bottom: 2px solid var(--ink); }
+.mbar i { width: 8px; height: 8px; background: #ff5f57; } .mbar i:nth-child(2) { background: #febc2e; } .mbar i:nth-child(3) { background: #28c840; }
+.mbar b { margin-left: 6px; font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mbody { padding: 10px 12px 44px; line-height: 1.45; }
+.mbody .lbl { display: block; font-size: 11px; color: var(--muted); margin-bottom: 3px; }
+.field.box { display: block; border: 2px solid var(--accent); padding: 4px 8px; min-height: 30px; }
+.out { transition: background 1.2s; } .out.flash { background: var(--yellow); transition: none; }
+.mcap2 { position: absolute; left: 8px; right: 8px; bottom: 8px; display: flex; align-items: center; gap: 6px; padding: 3px 6px; background: var(--cream);
+  border: 2px solid var(--ink); font-size: 12px; color: var(--muted); opacity: 0; transition: opacity 0.15s; }
+.mcap2 svg { width: 12px; height: 12px; color: var(--red); }
+.mcap2 span { flex: 1; }
+.mcap2 kbd { height: 18px; min-width: 18px; font-size: 13px; padding-inline: 3px; box-shadow: none; border-width: 1px; }
+.mcap2.on { opacity: 1; }
+.sel { display: inline; }
+.sel.box { outline: 2px dashed var(--ink); outline-offset: 4px; }
+.rw { transition: background 0.1s; } .rw.on { background: var(--yellow); }
+.spk { position: absolute; left: 12px; bottom: 9px; font-size: 12px; color: var(--muted); opacity: 0; transition: opacity 0.2s; }
+.spk.on { opacity: 1; }
+.what { font-size: 17px; line-height: 1.4; color: var(--pale); flex: 1; }
+.more { font-family: var(--pixel); font-size: 20px; color: var(--yellow); text-decoration: none; }
+.more:hover { text-decoration: underline; }
+.local { display: flex; align-items: center; justify-content: center; gap: 22px; flex-wrap: wrap; max-width: 900px; margin: 30px auto 0; text-align: left; }
+.local .who { min-height: 0; }
+.local .say { margin-bottom: 26px; flex: none; max-width: 300px; }
+.local .yes { font-size: 19px; color: var(--cream); max-width: 32ch; }
+.local .yes b { font-family: var(--pixel); font-weight: 400; font-size: 30px; color: var(--teal); margin-right: 4px; }
+@media (max-width: 980px) { .acts { grid-template-columns: 1fr; max-width: 480px; } }
+
+/* The read-along highlight: one square block slides from word to word, as the app does. */
 .read { display: inline; }
 [data-read] .w { position: relative; z-index: 1; transition: color 0.18s; }
-[data-read] .w.on { color: var(--hl-ink); }
-.pill {
-  position: absolute; z-index: 0; border-radius: 0.22em; background: var(--hl); pointer-events: none;
-  transition: left 0.22s cubic-bezier(.3,.7,.2,1), top 0.22s cubic-bezier(.3,.7,.2,1), width 0.22s cubic-bezier(.3,.7,.2,1), height 0.22s;
-  box-shadow: 0 0 0 0.06em color-mix(in srgb, var(--hl) 70%, transparent);
-}
+[data-read] .w.on { color: var(--hl-ink); text-shadow: none; }
+.pill { position: absolute; z-index: 0; background: var(--hl); pointer-events: none;
+  transition: left 0.22s steps(4), top 0.22s steps(4), width 0.22s steps(4), height 0.22s; }
 
-/* Demo frame */
-.stage { margin-top: 56px; padding-inline: var(--gutter); }
-.frame {
-  position: relative; max-width: 1100px; margin-inline: auto; aspect-ratio: 16 / 9; max-width: min(1100px, 100%);
-  border-radius: 18px; overflow: hidden; background: #0b1426;
-  box-shadow: 0 30px 80px -30px rgba(15, 30, 60, 0.45), 0 0 0 1px color-mix(in srgb, var(--line) 50%, transparent);
-}
-.frame video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.placeholder {
-  position: absolute; inset: 0; display: grid; place-items: center; text-align: center; color: #c9d6ee;
-  background:
-    radial-gradient(120% 90% at 20% 0%, #3c5a8f 0%, transparent 55%),
-    radial-gradient(90% 80% at 100% 100%, #1b2c4f 0%, transparent 60%),
-    linear-gradient(160deg, #24395f, #0e1a31);
-}
-.placeholder .mock { width: min(62%, 560px); display: grid; gap: clamp(8px, 1.6vw, 16px); }
-.placeholder .bar { height: clamp(8px, 1.3vw, 14px); border-radius: 99px; background: rgba(160, 190, 235, 0.28); }
-.placeholder .bar.hl {
-  height: clamp(22px, 3.4vw, 40px); background: linear-gradient(#e4eefb, #8db3e3); box-shadow: 0 0 40px rgba(170, 205, 255, 0.55);
-  border: 2px solid rgba(255,255,255,0.85); width: 108%; margin-left: -4%;
-}
-.placeholder .note { position: absolute; bottom: 18px; left: 0; right: 0; font-size: 13px; letter-spacing: 0; color: #9db1d6; font-family: var(--mono); padding-inline: 16px; }
-@media (max-width: 520px) { .placeholder .mock { gap: 6px; width: 58%; } .placeholder .note { bottom: 8px; font-size: 11px; } }
-.sound {
-  position: absolute; right: 16px; bottom: 16px; z-index: 2; font-size: 13px; padding: 7px 14px; border-radius: 980px; border: 0;
-  background: rgba(30, 30, 32, 0.6); color: #f5f5f7; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); cursor: pointer; font-family: inherit;
-}
+/* The TV frame the theme song plays in */
+.tv { position: relative; max-width: 1100px; margin-inline: auto; padding: clamp(8px, 1.4vw, 16px); background: var(--slate); border: 4px solid var(--ink); box-shadow: 10px 10px 0 var(--ink); }
+.tv::after { content: ""; position: absolute; right: clamp(14px, 2vw, 26px); bottom: -14px; width: 60px; height: 10px; background: var(--ink); }
 
-/* Sections */
-section { padding-block: 100px 0; }
-.hero + .stage { margin-top: 44px; }
-.wrap.wide { max-width: 1280px; }
-.demos { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: stretch; }
-.demo { min-width: 0; display: flex; flex-direction: column; }
-.demo-h { font-size: clamp(30px, 3.4vw, 44px); line-height: 1.1; font-weight: 700; text-align: center; letter-spacing: -0.01em; }
-.demo .rs, .demo .dx { margin-top: 28px; flex: 1; }
-.demo .rs-steps { margin-top: 20px; gap: 12px; }
-.demo .rs-steps div { font-size: 14px; } .demo .rs-steps b { font-size: 16px; }
-/* Phones and small tablets: the two demos stay side by side in a swipeable row, with a Talk | Listen switch. */
-.demo-tabs { display: none; }
-@media (max-width: 900px) {
-  .demo-tabs { display: flex; width: max-content; margin: 0 auto 22px; padding: 3px; border-radius: 980px; background: var(--tile); }
-  .demo-tabs button { border: 0; background: none; font: 500 15px/1 var(--font); color: var(--muted); padding: 9px 22px; border-radius: 980px; cursor: pointer; }
-  .demo-tabs button[aria-selected="true"] { background: var(--bg); color: var(--fg); box-shadow: 0 1px 4px rgba(0,0,0,0.12); }
-  .demos { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: min(86%, 560px); gap: 14px;
-    overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none;
-    margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); }
-  .demos::-webkit-scrollbar { display: none; }
-  .demo { scroll-snap-align: start; }
-  .demo .rs-steps { display: none; }
-  .demo .dx { display: flex; flex-direction: column; }
-  .demo .dx-body { flex: 1; }
-}
-.head { text-align: center; max-width: 760px; margin-inline: auto; }
-.head h2 { font-size: clamp(40px, 6vw, 64px); line-height: 1.06; letter-spacing: -0.009em; font-weight: 700; }
-.head p { font-size: clamp(19px, 2.2vw, 24px); line-height: 1.33; color: var(--muted); margin-top: 16px; font-weight: 500; }
+/* Cast hosts: a sprite and a speech bubble, in the show's voice */
+.host { display: flex; align-items: flex-end; gap: 16px; margin: 0; }
+.host > img { width: 72px; height: 96px; flex-shrink: 0; }
+.host.big > img { width: 96px; height: 128px; }
+.bubble { position: relative; background: var(--cream); color: var(--ink); border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--ink);
+  padding: 10px 14px 12px; font-size: 17px; line-height: 1.4; margin-bottom: 40px; text-align: left; max-width: 34ch; }
+.bubble b { display: block; font-family: var(--pixel); font-weight: 700; font-size: 17px; color: var(--slate); margin-bottom: 6px; letter-spacing: 0.06em; }
+.bubble::before, .bubble::after { content: ""; position: absolute; left: -15px; bottom: 10px; width: 15px; height: 15px; background: var(--ink);
+  clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 80%, 20% 80%, 20% 60%, 40% 60%, 40% 40%, 60% 40%, 60% 20%, 80% 20%, 80% 0); }
+.bubble::after { left: -9px; bottom: 13px; width: 12px; height: 9px; background: var(--cream); }
+.host.center { justify-content: center; }
+.host.right { flex-direction: row-reverse; }
+.host.right .bubble::before { left: auto; right: -15px; transform: scaleX(-1); }
+.host.right .bubble::after { left: auto; right: -9px; transform: scaleX(-1); }
 
-kbd {
-  font-family: var(--font); font-size: 15px; min-width: 34px; height: 34px; padding-inline: 8px; display: inline-grid; place-items: center;
-  border-radius: 8px; background: var(--bg); color: var(--fg); border: 1px solid var(--line); box-shadow: 0 1px 0 var(--line);
-}
+/* Sprites idle like the show's background cast: they blink. */
+.sprite { position: relative; display: inline-block; flex-shrink: 0; }
+.sprite img { width: 100%; height: 100%; }
+.sprite img + img { position: absolute; inset: 0; opacity: 0; animation: blink 5.2s steps(1) infinite; }
+.sprite.s2 img + img { animation-delay: -1.7s; } .sprite.s3 img + img { animation-delay: -3.1s; } .sprite.s4 img + img { animation-delay: -0.6s; }
+@keyframes blink { 0%, 94% { opacity: 0; } 95%, 97% { opacity: 1; } }
+.host .sprite { width: 72px; height: 96px; }
 
-/* Read Region demo: mirrors RegionSelector (dim, white rounded box, corner handles, size pill, hint) */
-.rs { container-type: inline-size; display: flex; flex-direction: column; position: relative; margin-top: 56px; border-radius: 14px; overflow: hidden; background: var(--win); color: var(--win-ink); letter-spacing: 0; user-select: none;
-  box-shadow: 0 30px 70px -30px rgba(0,0,0,0.45), 0 0 0 1px color-mix(in srgb, var(--line) 70%, transparent); }
-.rs .bar-t { height: 34px; font-size: 12px; }
-.rs .url { margin-inline: auto; background: var(--bg); border-radius: 7px; padding: 3px 40px; font-size: 12px; color: var(--muted); max-width: calc(100% - 200px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-@container (max-width: 560px) { .rs .url { padding-inline: 12px; margin-left: 10px; margin-right: 96px; max-width: none; } }
-.np { padding: 22px 28px 0; font-size: 14px; flex: 1; display: flex; flex-direction: column; }
-.np-top { display: flex; align-items: baseline; gap: 22px; border-bottom: 2px solid var(--win-ink); padding-bottom: 10px; }
-.np-top b { font-family: Charter, Georgia, serif; font-size: 24px; }
-.np-top span { color: var(--muted); font-size: 13px; }
-.np-top span:last-child { margin-left: auto; }
-.ad { margin-top: 16px; height: 64px; border-radius: 6px; display: grid; place-items: center; font-weight: 700; font-size: 19px; color: #fff;
-  background: repeating-linear-gradient(135deg, #d9480f 0 14px, #e8590c 14px 28px); position: relative; }
-.ad small { position: absolute; top: 4px; right: 8px; font-size: 9px; font-weight: 500; opacity: 0.8; letter-spacing: 0.06em; text-transform: uppercase; }
-.np-body { margin-bottom: 22px; display: grid; grid-template-columns: 1fr 210px; gap: 30px; margin-top: 18px; }
-.np-body > * { min-width: 0; }
-.np h4 { font-family: Charter, Georgia, serif; font-size: 26px; line-height: 1.15; margin: 0; }
-.np .by { color: var(--muted); font-size: 12px; margin-top: 6px; }
-.np .art p { font-family: Charter, Georgia, serif; font-size: 16px; line-height: 1.6; margin-top: 14px; }
-.np .art p.dim-p { color: var(--muted); }
-.side { border-left: 1px solid var(--line); padding-left: 20px; font-size: 13px; }
-.side b { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
-.side ol { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 10px; }
-.side .box { margin-top: 18px; height: 92px; border-radius: 6px; background: var(--win-bar); display: grid; place-items: center; color: var(--muted); font-size: 11px; }
-.cookie { margin: auto -28px 0; padding: 12px 28px; background: var(--win-bar); display: flex; align-items: center; gap: 14px; font-size: 13px; }
-.cookie span { margin-left: auto; background: var(--win-ink); color: var(--win); border-radius: 980px; padding: 4px 12px; font-size: 12px; white-space: nowrap; }
-@container (max-width: 420px) { .ad { font-size: 15px; height: 56px; padding-inline: 12px; text-align: center; } .ad small { font-size: 8px; } }
-@container (max-width: 640px) { .np-body { grid-template-columns: 1fr; } .side { display: none; } .np-top span:not(:last-child) { display: none; } .np { padding-inline: 18px; } .cookie { margin-inline: -18px; padding-inline: 18px; } }
+/* Windows: real Mac apps, drawn with the show's square ink edges */
+.win { border: 3px solid var(--ink); }
 
-.rs-sel { position: absolute; z-index: 5; border-radius: 6px; pointer-events: none;
-  box-shadow: 0 0 0 1.5px #fff inset, 0 0 0 1px rgba(0,0,0,0.35), 0 0 0 200vmax rgba(0,0,0,0.32);
-  transition: box-shadow 0.25s, opacity 0.25s; }
-.rs-sel i { position: absolute; width: 8px; height: 8px; border-radius: 50%; background: #fff; box-shadow: 0 0.5px 2px rgba(0,0,0,0.35); transition: opacity 0.15s; }
-.rs-sel i:nth-child(1) { left: -4px; top: -4px; } .rs-sel i:nth-child(2) { right: -4px; top: -4px; }
-.rs-sel i:nth-child(3) { left: -4px; bottom: -4px; } .rs-sel i:nth-child(4) { right: -4px; bottom: -4px; }
-.rs-size { position: absolute; left: 50%; top: calc(100% + 8px); transform: translateX(-50%); background: rgba(0,0,0,0.72); color: #fff; border-radius: 980px;
-  padding: 3px 8px; font-size: 11px; font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; transition: opacity 0.15s; }
-.rs-sel.small i, .rs-sel.small .rs-size { opacity: 0; }
-.rs.done .rs-sel { opacity: 0; }
-.rs-hint { position: absolute; z-index: 6; top: 50px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 9px; white-space: nowrap;
-  padding: 9px 16px; border-radius: 980px; background: color-mix(in srgb, var(--win) 82%, transparent); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.25); font-size: 14px; font-weight: 500; transition: opacity 0.15s; }
-.rs-hint span { color: var(--muted); font-weight: 400; }
-.rs-hint kbd { height: 20px; min-width: 0; font-size: 11px; padding-inline: 5px; border-radius: 4px; box-shadow: none; }
-.rs-hint svg { width: 16px; height: 16px; color: var(--muted); }
-.rs-hint.off { opacity: 0; }
-.rs-cur { position: absolute; z-index: 7; width: 23px; height: 23px; margin: -11.5px 0 0 -11.5px; pointer-events: none; transition: opacity 0.2s; }
-.rs-cur.off { opacity: 0; }
-.rs-rule { position: absolute; left: 0; right: 0; z-index: 4; background: rgba(0,0,0,0.35); pointer-events: none; opacity: 0; transition: top 0.2s, height 0.2s, opacity 0.3s; }
-.rs-rule.top { top: 0; } .rs-rule.bot { bottom: 0; }
-.rs.reading .rs-rule { opacity: 1; }
-.rs-listen { position: absolute; right: 8px; top: 4px; z-index: 8; display: inline-flex; align-items: center; gap: 6px; padding: 5px 13px 5px 10px; height: 26px; border-radius: 980px; border: 0;
-  background: rgba(29, 29, 31, 0.72); color: #f5f5f7; font: 500 13px/1 var(--font); cursor: pointer; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.25); }
-.rs-listen:hover { background: rgba(29, 29, 31, 0.86); }
-.rs-listen svg { width: 16px; height: 16px; }
-.rs-listen .stop { display: none; } .rs-listen[aria-pressed="true"] .play { display: none; } .rs-listen[aria-pressed="true"] .stop { display: inline; }
-.rs-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 28px; text-align: center; }
-.rs-steps div { min-width: 0; color: var(--muted); font-size: 15px; }
-.rs-steps kbd { height: 26px; min-width: 26px; font-size: 13px; }
-.rs-steps b { display: block; color: var(--fg); font-size: 17px; margin-bottom: 2px; }
-@container (max-width: 480px) { .rs-hint { font-size: 12px; top: 44px; } .rs-hint span:last-child { display: none; } }
-@media (max-width: 640px) { .rs-steps { grid-template-columns: 1fr; gap: 14px; } }
-
-/* Examples: mini app windows, each read by the same highlight */
-.examples { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 56px; }
-.ex { margin: 0; min-width: 0; background: var(--tile); border-radius: 28px; padding: 22px 22px 28px; display: flex; flex-direction: column; gap: 20px; }
-.win { background: var(--win); color: var(--win-ink); border-radius: 12px; overflow: hidden; box-shadow: 0 12px 30px -14px rgba(0,0,0,0.35), 0 0 0 1px color-mix(in srgb, var(--line) 70%, transparent); letter-spacing: 0; }
-.bar-t { display: flex; align-items: center; gap: 6px; height: 28px; padding-inline: 10px; background: var(--win-bar); font-size: 11px; color: var(--muted); }
-.bar-t i { width: 10px; height: 10px; border-radius: 50%; background: #ff5f57; } .bar-t i:nth-child(2) { background: #febc2e; } .bar-t i:nth-child(3) { background: #28c840; }
-.bar-t b { font-weight: 500; margin-left: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.tb { display: flex; align-items: center; gap: 9px; height: 38px; padding-inline: 11px; background: var(--win-bar); border-bottom: 1px solid color-mix(in srgb, var(--win-ink) 10%, transparent);
+/* Example cards: mini app windows on office noticeboards */
+.examples { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; margin-top: 56px; }
+.ex { margin: 0; min-width: 0; background: var(--slate); border: 3px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); padding: 18px 18px 22px; display: flex; flex-direction: column; gap: 18px; color: var(--cream); }
+.paper .ex { background: var(--navy); }
+.win { background: var(--win); color: var(--win-ink); overflow: hidden; box-shadow: 4px 4px 0 var(--ink); border-width: 2px; }
+.bar-t { display: flex; align-items: center; gap: 6px; height: 28px; padding-inline: 10px; background: var(--win-bar); font-size: 11px; color: var(--muted); border-bottom: 2px solid var(--ink); }
+.bar-t i { width: 10px; height: 10px; background: #ff5f57; border: 1px solid rgba(0,0,0,0.25); } .bar-t i:nth-child(2) { background: #febc2e; } .bar-t i:nth-child(3) { background: #28c840; }
+.bar-t b { font-weight: 700; margin-left: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tb { display: flex; align-items: center; gap: 9px; height: 38px; padding-inline: 11px; background: var(--win-bar); border-bottom: 2px solid var(--ink);
   color: color-mix(in srgb, var(--win-ink) 55%, transparent); font-size: 11px; white-space: nowrap; }
 .tb svg { width: 15px; height: 15px; flex-shrink: 0; }
 .tb .lights { display: flex; gap: 6px; margin-right: 3px; }
-.tb .lights i { width: 11px; height: 11px; border-radius: 50%; background: #ff5f57; } .tb .lights i:nth-child(2) { background: #febc2e; } .tb .lights i:nth-child(3) { background: #28c840; }
+.tb .lights i { width: 11px; height: 11px; background: #ff5f57; border: 1px solid rgba(0,0,0,0.25); } .tb .lights i:nth-child(2) { background: #febc2e; } .tb .lights i:nth-child(3) { background: #28c840; }
 .tb .sp { flex: 1; }
 .tb .title { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; flex-shrink: 1; }
-.tb .title b { color: var(--win-ink); font-size: 11.5px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; }
+.tb .title b { color: var(--win-ink); font-size: 11.5px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; }
 .tb .title span { font-size: 9.5px; overflow: hidden; text-overflow: ellipsis; }
 .wb { height: 248px; font-size: 13px; line-height: 1.5; overflow: hidden; position: relative; }
-.wb .pill { border-radius: 4px; }
-.ex figcaption h3 { font-size: 21px; line-height: 1.2; }
-.ex figcaption p { color: var(--muted); font-size: 15px; margin-top: 4px; }
-.av { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(#a7b0bd, #7c8592); color: #fff; display: grid; place-items: center; font-size: 12px; font-weight: 600; }
+.ex figcaption h3 { font-family: var(--pixel); font-size: 27px; line-height: 1.1; color: var(--yellow); text-shadow: 2px 2px 0 var(--ink); font-weight: 700; }
+.ex figcaption p { color: var(--pale); font-size: 16px; margin-top: 6px; }
+.av { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(#a7b0bd, #7c8592); color: #fff; display: grid; place-items: center; font-size: 12px; font-weight: 700; }
 .av.sm { width: 18px; height: 18px; font-size: 9px; }
 
-/* Mail: message viewer */
+/* Mail */
 .mail-h { display: grid; grid-template-columns: 32px 1fr auto; column-gap: 10px; padding: 12px 14px 10px; border-bottom: 1px solid color-mix(in srgb, var(--win-ink) 12%, transparent); line-height: 1.35; }
 .mail-h .av { grid-row: span 3; }
 .mail-h b { font-size: 13px; } .mail-h time { font-size: 11px; color: var(--muted); }
-.mail-h .subj { grid-column: 2 / 4; font-size: 12px; font-weight: 500; } .mail-h .to { grid-column: 2 / 4; font-size: 11px; color: var(--muted); }
+.mail-h .subj { grid-column: 2 / 4; font-size: 12px; font-weight: 700; } .mail-h .to { grid-column: 2 / 4; font-size: 11px; color: var(--muted); }
 .mail-b { padding: 12px 14px; }
 
-/* Preview: a white page on the grey canvas */
+/* Preview */
 .canvas { height: 100%; padding: 14px 20px 0; background: color-mix(in srgb, var(--win-ink) 14%, var(--win)); }
 .sheet { height: calc(100% + 20px); background: #fff; color: #1d1d1f; padding: 16px 18px; box-shadow: 0 1px 4px rgba(0,0,0,0.28); font-family: Charter, "Iowan Old Style", Georgia, serif; font-size: 10.5px; line-height: 1.45; }
 .sheet h4 { margin: 0 0 8px; text-align: center; font-size: 12.5px; }
@@ -352,7 +324,7 @@ kbd {
 
 /* Messages */
 .tb .who { display: flex; flex-direction: column; align-items: center; gap: 1px; color: var(--win-ink); font-size: 10px; margin-top: 2px; }
-.tb .who b { font-weight: 500; }
+.tb .who b { font-weight: 400; }
 .thread { height: 100%; display: flex; flex-direction: column; gap: 4px; padding: 8px 12px 10px; font-size: 12.5px; line-height: 1.35; }
 .thread > * { flex-shrink: 0; }
 .thread .ts { align-self: center; font-size: 10px; color: var(--muted); margin-bottom: 2px; }
@@ -369,13 +341,13 @@ kbd {
 .imsg .field { flex: 1; height: 24px; border-radius: 12px; border: 1px solid color-mix(in srgb, var(--win-ink) 18%, transparent); padding-inline: 10px; display: flex; align-items: center; font-size: 11px; color: var(--muted); }
 
 /* Safari */
-.tb .addr { flex: 1; min-width: 0; height: 24px; border-radius: 7px; background: color-mix(in srgb, var(--win-ink) 8%, var(--win)); color: var(--win-ink); display: flex; align-items: center; justify-content: center; padding-inline: 5px; gap: 3px; font-size: 11px; overflow: hidden; }
+.tb .addr { flex: 1; min-width: 0; height: 24px; background: color-mix(in srgb, var(--win-ink) 8%, var(--win)); color: var(--win-ink); display: flex; align-items: center; justify-content: center; padding-inline: 5px; gap: 3px; font-size: 11px; overflow: hidden; }
 .tb .addr svg { width: 10px; height: 10px; color: var(--muted); }
 .site-h { text-align: center; padding: 10px 14px 6px; border-bottom: 2px solid var(--win-ink); margin-inline: 14px; }
 .site-h b { display: block; font-family: Charter, Georgia, serif; font-size: 18px; }
 .site-h span { font-size: 9px; color: var(--muted); letter-spacing: 0.04em; }
 .site-b { padding: 10px 14px; }
-.site-b .kick { font-size: 9px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #c2410c; }
+.site-b .kick { font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #c2410c; }
 .site-b h4 { margin: 2px 0 6px; font-family: Charter, Georgia, serif; font-size: 17px; line-height: 1.2; }
 .site-b p { font-family: Charter, Georgia, serif; font-size: 12.5px; }
 
@@ -384,8 +356,8 @@ kbd {
 .photo .paper { position: relative; background: #f4efe4; color: #2a2620; width: 88%; padding: 14px 16px; transform: rotate(-2.5deg); box-shadow: 0 10px 22px rgba(0,0,0,0.4); font-family: "Times New Roman", Times, serif; font-size: 11.5px; line-height: 1.45; }
 .photo .paper b { display: block; font-size: 13px; margin-bottom: 4px; }
 
-/* Books, sepia theme */
-.app-books .tb { background: #efe5d1; color: #8a7457; border-bottom-color: #e2d5bb; }
+/* Books */
+.app-books .tb { background: #efe5d1; color: #8a7457; }
 .app-books .btitle { font-size: 11px; color: #6b5843; }
 .app-books .aa { font-family: Georgia, serif; font-size: 12px; }
 .book { background: #f8f0e0; color: #4a3b2c; padding: 16px 26px; font-family: "Iowan Old Style", Charter, Georgia, serif; font-size: 14px; line-height: 1.65; }
@@ -395,41 +367,18 @@ kbd {
 @media (max-width: 900px) { .examples { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 640px) { .examples { grid-template-columns: 1fr; } }
 
-/* Open source */
-.oss { margin-top: 0; background: var(--tile); border-radius: 28px; padding: clamp(32px, 6vw, 64px); display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; align-items: center; }
-.oss > * { min-width: 0; }
-.oss .eyebrow { font-size: 17px; }
-.oss h2 { font-size: clamp(36px, 5vw, 56px); line-height: 1.07; font-weight: 700; margin-top: 8px; }
-.oss p { color: var(--muted); font-size: 19px; margin-top: 14px; }
-.oss .cta { justify-content: flex-start; margin-top: 24px; }
-.stack { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; padding: 0; list-style: none; }
-.stack li { font-size: 13px; padding: 5px 12px; border-radius: 980px; border: 1px solid var(--line); color: var(--fg); }
-.term { background: #1d1d1f; color: #f5f5f7; border-radius: 14px; overflow: hidden; }
-.term .bar-t { background: #2c2c2e; color: #a1a1a6; }
-.term pre { margin: 0; padding: 18px 20px; font-family: var(--mono); font-size: 13px; line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; letter-spacing: 0; }
-.term pre span { color: #8e8e93; user-select: none; }
-@media (max-width: 860px) { .oss { grid-template-columns: 1fr; } }
-/* The clone URL wraps only at its slashes (the <wbr>s), never mid-word. */
-.oss .term pre { overflow-wrap: normal; }
-
-/* Privacy band */
-.band { background: var(--band); color: var(--band-fg); margin-top: 100px; padding-block: 90px; }
-.band .head p { color: var(--band-muted); }
-.band .eyebrow { color: var(--hl); }
-
-/* Speak anywhere: mini windows with the dictation capsule */
+/* Speak anywhere: the dictation capsule in each window */
 .sx .wb { position: relative; }
-.mcap { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 3; display: flex; align-items: center; gap: 8px; padding: 4px 10px 4px 5px; border-radius: 980px;
-  background: color-mix(in srgb, var(--win) 80%, transparent); backdrop-filter: blur(18px) saturate(160%); -webkit-backdrop-filter: blur(18px) saturate(160%);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.22), 0 0 0 0.5px color-mix(in srgb, var(--win-ink) 18%, transparent); color: var(--win-ink); font-family: var(--font); transition: opacity 0.15s, transform 0.15s; width: calc(100% - 24px); }
+.mcap { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 3; display: flex; align-items: center; gap: 8px; padding: 4px 10px 4px 5px;
+  background: var(--cream); border: 2px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); color: var(--ink); font-family: var(--font); transition: opacity 0.15s, transform 0.15s; width: calc(100% - 24px); }
 .mcap.off { opacity: 0; transform: translateX(-50%) translateY(5px); }
 .mcap .dx-mic { width: 22px; height: 22px; } .mcap .dx-mic svg { width: 11px; height: 11px; }
-.mcap-t { flex: 1; min-width: 0; font-size: 11.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mcap-t { flex: 1; min-width: 0; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .mcap-t.empty { color: var(--muted); }
 .mcap-k { display: flex; gap: 3px; transition: opacity 0.15s; } .mcap-k.off { opacity: 0; }
-.mcap-k kbd { height: 17px; min-width: 17px; font-size: 10px; padding-inline: 4px; border-radius: 4px; box-shadow: none; }
-.sx [data-out] { border-radius: 3px; transition: background 1.2s; }
-.sx [data-out].flash { background: color-mix(in srgb, var(--accent) 24%, transparent); transition: none; }
+.mcap-k kbd { height: 17px; min-width: 17px; font-size: 11px; padding-inline: 4px; box-shadow: none; border-width: 1px; }
+.sx [data-out] { transition: background 1.2s; }
+.sx [data-out].flash { background: var(--yellow); transition: none; }
 .sx [data-out]:empty::before { content: attr(data-ph); color: var(--muted); }
 .sx .caret { height: 1.1em; }
 .app-messages .imsg .field { height: auto; min-height: 24px; padding-block: 3px; line-height: 1.35; color: var(--win-ink); }
@@ -451,86 +400,111 @@ kbd {
 .r-h { font-size: 20px; font-weight: 700; color: #0a84ff; margin-bottom: 8px; }
 .r-row { display: flex; align-items: flex-start; gap: 10px; padding: 7px 0; border-bottom: 1px solid color-mix(in srgb, var(--win-ink) 9%, transparent); line-height: 1.35; }
 .r-row > i { width: 15px; height: 15px; border-radius: 50%; border: 1.5px solid color-mix(in srgb, var(--win-ink) 35%, transparent); flex-shrink: 0; margin-top: 1px; }
-.app-term .tb { background: #2b2b2d; color: #a1a1a6; border-bottom-color: #1c1c1e; } .app-term .tb .title b { color: #d1d1d6; }
+.app-term .tb { background: #2b2b2d; color: #a1a1a6; } .app-term .tb .title b { color: #d1d1d6; }
 .term-b { background: #1c1c1e; color: #f5f5f7; padding: 12px 14px; font-family: var(--mono); font-size: 11.5px; line-height: 1.6; }
 .term-b .pr { color: #30d158; }
 .term-b .caret { background: #f5f5f7; }
 
-/* Dictation demo: a Mail reply and the DictationPanel capsule from DictationBar.swift */
-.dx { container-type: inline-size; position: relative; margin-top: 48px; border-radius: 14px; overflow: hidden; background: var(--win); color: var(--win-ink); letter-spacing: 0;
-  box-shadow: 0 30px 70px -30px rgba(0,0,0,0.45), 0 0 0 1px color-mix(in srgb, var(--line) 70%, transparent); padding-bottom: 92px; }
-.dx .tb { height: 38px; } .dx-gap { width: 92px; }
-.dx-title b { font-size: 12.5px; }
-.dx-listen { top: 6px; }
-.dx-f { display: flex; align-items: center; gap: 8px; padding: 9px 22px; border-bottom: 1px solid color-mix(in srgb, var(--win-ink) 10%, transparent); font-size: 14px; }
-.dx-f span { color: var(--muted); }
-.dx-f .chip { font-weight: 500; color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); border-radius: 6px; padding: 1px 7px; }
-.dx-body { padding: 20px 22px 6px; min-height: 64px; font-size: 16px; line-height: 1.5; }
-#dx-text { border-radius: 3px; transition: background 1.2s; }
-#dx-text.flash { background: color-mix(in srgb, var(--accent) 22%, transparent); transition: none; }
-.caret { display: inline-block; width: 1.5px; height: 1.15em; margin-left: 1px; vertical-align: -0.2em; background: var(--accent); animation: blink 1s steps(1) infinite; }
-@keyframes blink { 50% { opacity: 0; } }
-.dx-q { margin: 14px 22px 0; padding-left: 12px; border-left: 2px solid color-mix(in srgb, var(--accent) 60%, transparent); color: var(--muted); font-size: 14px; line-height: 1.5; }
-.dx-q span { display: block; margin-bottom: 4px; }
-.dx-panel { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 3; display: flex; align-items: center; gap: 12px; padding: 8px 14px 8px 10px;
-  border-radius: 980px; background: color-mix(in srgb, var(--win) 78%, transparent); backdrop-filter: blur(24px) saturate(160%); -webkit-backdrop-filter: blur(24px) saturate(160%);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.22), 0 0 0 0.5px color-mix(in srgb, var(--win-ink) 18%, transparent); transition: opacity 0.15s, transform 0.15s; max-width: calc(100% - 24px); }
-.dx-panel.off { opacity: 0; transform: translateX(-50%) translateY(6px); transition-duration: 0.2s; }
-.dx-mic { position: relative; width: 28px; height: 28px; display: grid; place-items: center; color: #ff3b30; flex-shrink: 0; }
-.dx-mic i { position: absolute; inset: 0; border-radius: 50%; background: rgba(255, 59, 48, 0.18); transition: transform 0.08s ease-out; }
-.dx-mic svg { position: relative; width: 14px; height: 14px; }
-.dx-cap { width: min(300px, 52vw); font-size: 14px; white-space: nowrap; overflow: hidden; }
-.dx-cap.empty { color: var(--muted); }
-.dx-keys { display: flex; gap: 4px; transition: opacity 0.15s; }
-.dx-keys kbd { height: 22px; min-width: 22px; font-size: 12px; padding-inline: 5px; border-radius: 5px; box-shadow: none; }
-.dx-keys.off { opacity: 0; }
-@container (max-width: 480px) { .dx-gap { width: 78px; } .dx-f, .dx-body { padding-inline: 16px; } .dx-q { margin-inline: 16px; } }
+/* Saved text: forms the saved value is pasted into */
+.form { padding: 0 0 54px; }
+.form .fr { display: flex; gap: 8px; padding: 9px 14px; border-bottom: 1px solid color-mix(in srgb, var(--win-ink) 10%, transparent); font-size: 12.5px; }
+.form .fr > span { color: var(--muted); }
+.form .fr b { font-weight: 700; color: var(--accent); }
+.form .fb { padding: 12px 14px; font-size: 12.5px; color: var(--muted); }
+.form .ship { padding: 14px 16px 6px; font-weight: 700; font-size: 14px; }
+.form .fld { margin: 8px 16px 0; padding: 6px 10px; border: 1px solid var(--line); font-size: 12.5px; min-height: 44px; }
+.form .fld.on { border: 2px solid var(--accent); }
+.form .fld small { display: block; font-size: 10px; color: var(--muted); }
+#saved .ex { background: var(--slate); }
+#saved .term-b { overflow-wrap: anywhere; }
 
-/* Privacy evidence */
-.proof { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 56px; }
-.proof article { min-width: 0; border-top: 1px solid #424245; padding-top: 18px; display: flex; flex-direction: column; gap: 8px; }
-.proof h3 { font-size: 19px; line-height: 1.25; }
-.proof p { color: var(--band-muted); font-size: 15px; flex: 1; }
-.src { font-family: var(--mono); font-size: 12px; color: var(--band-fg); opacity: 0.75; letter-spacing: 0; }
+/* The typing caret and the dictation mic, shared by the example windows */
+.caret { display: inline-block; width: 2px; height: 1.15em; margin-left: 1px; vertical-align: -0.2em; background: var(--accent); animation: caret 1s steps(1) infinite; }
+@keyframes caret { 50% { opacity: 0; } }
+.dx-mic { position: relative; width: 28px; height: 28px; display: grid; place-items: center; color: var(--red); flex-shrink: 0; }
+.dx-mic i { position: absolute; inset: 0; background: rgba(230, 57, 70, 0.22); transition: transform 0.08s steps(2); }
+.dx-mic svg { position: relative; width: 14px; height: 14px; }
+
+/* Privacy: Lenny's band */
+.band .host { margin-bottom: 30px; }
+.proof { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; margin-top: 56px; }
+.proof article { min-width: 0; border-top: 3px dashed var(--slate); padding-top: 18px; display: flex; flex-direction: column; gap: 10px; }
+.proof h3 { font-family: var(--pixel); font-size: 25px; line-height: 1.15; color: var(--yellow); font-weight: 700; }
+.proof p { color: var(--powder); font-size: 16px; flex: 1; }
+.src { font-family: var(--mono); font-size: 13px; color: var(--cream); }
 .src::before { content: "View "; font-family: var(--font); }
 .src::after { content: " ↗"; }
-.src:hover { opacity: 1; }
-.verify { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 40px; align-items: center; margin-top: 64px; padding: 36px; border-radius: 24px; background: #1d1d1f; }
+.verify { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 40px; align-items: center; margin-top: 64px; padding: 36px; background: var(--navy); border: 3px solid #000; box-shadow: 8px 8px 0 #000; }
 .verify > * { min-width: 0; }
-.verify h3 { font-size: 28px; }
-.verify ul { list-style: none; padding: 0; margin: 16px 0 0; display: grid; gap: 12px; }
-.verify li { color: var(--band-muted); font-size: 15px; }
-.verify li b { color: var(--band-fg); font-weight: 600; }
-.verify .term { background: #000; }
-.term pre em { font-style: normal; color: #ffd60a; }
-.term pre a:hover { text-decoration-color: #ffd60a; }
-.verify li b a { color: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.verify h3 { font-family: var(--pixel); font-size: 34px; line-height: 1.1; font-weight: 700; }
+.verify ul { list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 14px; }
+.verify li { color: var(--powder); font-size: 16px; }
+.verify li b { color: var(--cream); }
+.term { background: #000; color: #f5f5f7; overflow: hidden; border: 3px solid var(--ink); }
+.term .bar-t { background: #2c2c2e; color: #a1a1a6; border-bottom-color: #000; }
+.term pre { margin: 0; padding: 18px 20px; font-family: var(--mono); font-size: 13px; line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; }
+.term pre span { color: #8e8e93; user-select: none; }
+.term pre em { font-style: normal; color: var(--yellow); }
 @media (max-width: 960px) { .proof { grid-template-columns: 1fr 1fr; gap: 32px 20px; } .verify { grid-template-columns: 1fr; } }
 @media (max-width: 560px) { .proof { grid-template-columns: 1fr; } .verify { padding: 24px 18px; } }
 
-/* Kicker + FAQ + pre-launch */
-.kicker { font-size: 19px; font-weight: 600; color: var(--navy); letter-spacing: 0.005em; text-wrap: balance; }
-.hero .kicker + h1 { margin-top: 8px; }
-.soon { font-size: 17px; }
-.faq { max-width: 760px; margin: 48px auto 0; border-top: 1px solid var(--line); }
-.faq details { border-bottom: 1px solid var(--line); }
-.faq summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 2px; }
+/* The show */
+.show-grid { display: grid; grid-template-columns: 1.25fr 1fr; gap: 40px; align-items: center; margin-top: 56px; }
+.show-grid > * { min-width: 0; }
+.show-grid .tv video { width: 100%; aspect-ratio: 16 / 9; background: var(--ink); border: 3px solid var(--ink); }
+.show-copy p { color: var(--s-muted); font-size: 18px; }
+.show-copy p + p { margin-top: 14px; }
+.show-copy .cta { justify-content: flex-start; margin-top: 26px; }
+.cast { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; margin-top: 64px; padding: 0; list-style: none; }
+.cast li { min-width: 0; background: var(--slate); border: 3px solid var(--ink); box-shadow: 5px 5px 0 var(--ink); text-align: center; display: flex; flex-direction: column; }
+.cast .sprite { width: 96px; height: 128px; margin: 18px auto 0; }
+.cast b { display: block; margin-top: 8px; font-family: var(--pixel); font-weight: 700; font-size: 30px; color: var(--yellow); text-shadow: 2px 2px 0 var(--ink); }
+.cast .role { display: block; font-family: var(--pixel); font-size: 16px; line-height: 1.7; color: var(--cream); text-transform: uppercase; background: var(--ink); padding: 8px 6px; margin-top: 10px; font-weight: 600; letter-spacing: 0.06em; }
+.cast q { display: block; padding: 12px 12px 14px; font-size: 15px; line-height: 1.4; color: var(--pale); flex: 1; quotes: "“" "”"; }
+@media (max-width: 1040px) { .cast { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 860px) { .show-grid { grid-template-columns: 1fr; } }
+@media (max-width: 520px) { .cast { grid-template-columns: 1fr 1fr; gap: 14px; } .cast .sprite { width: 72px; height: 96px; } }
+
+/* Open source */
+.oss { display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; align-items: center; background: var(--cream); color: var(--ink); border: 3px solid var(--ink); box-shadow: 10px 10px 0 var(--ink); padding: clamp(28px, 5vw, 56px); }
+.oss > * { min-width: 0; }
+.oss h2 { font-family: var(--pixel); font-size: clamp(36px, 4.6vw, 52px); line-height: 1.05; margin-top: 12px; font-weight: 700; }
+.oss p { color: #45536a; font-size: 19px; margin-top: 16px; }
+.oss .cta { justify-content: flex-start; margin-top: 26px; }
+.stack { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; padding: 0; list-style: none; }
+.stack li { font-family: var(--ui); font-size: 18px; padding: 3px 10px; border: 2px solid var(--ink); background: #fff; }
+@media (max-width: 860px) { .oss { grid-template-columns: 1fr; } }
+.oss .term pre { overflow-wrap: normal; }
+
+/* FAQ: Gail's corner, under the DAYS board */
+.faq-top { display: flex; align-items: flex-end; justify-content: center; gap: 30px; flex-wrap: wrap; margin-top: 40px; }
+.days { background: #fff; color: var(--ink); border: 4px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); padding: 14px 18px; text-align: center; max-width: 300px; }
+.days small { display: block; font-family: var(--pixel); font-size: 16px; line-height: 1.3; text-transform: uppercase; font-weight: 600; }
+.days b { display: block; font-family: var(--logo); font-weight: 400; font-size: 44px; line-height: 1.2; color: var(--red); margin-top: 6px; }
+.faq { max-width: 820px; margin: 48px auto 0; display: grid; gap: 12px; }
+.faq details { background: #fff; border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--ink); }
+.faq summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 20px; }
 .faq summary::-webkit-details-marker { display: none; }
-.faq summary h3 { font-size: 19px; line-height: 1.3; font-weight: 600; }
-.faq summary::after { content: "+"; font-size: 26px; font-weight: 300; color: var(--muted); line-height: 1; transition: transform 0.2s; flex-shrink: 0; }
-.faq details[open] summary::after { transform: rotate(45deg); }
-.faq details p { color: var(--muted); font-size: 17px; max-width: 65ch; padding: 0 2px 22px; }
+.faq summary h3 { font-size: 19px; line-height: 1.35; font-weight: 700; }
+.faq summary::after { content: "+"; font-family: var(--pixel); font-size: 26px; color: var(--ink); background: var(--yellow); border: 2px solid var(--ink); width: 30px; height: 30px; display: grid; place-items: center; flex-shrink: 0; font-weight: 700; }
+.faq details[open] summary::after { content: "–"; }
+.faq details p { color: #33415a; font-size: 17px; max-width: 68ch; padding: 0 20px 22px; }
 
-/* Final */
-.final { text-align: center; padding-block: 120px; }
-.final img { width: 128px; height: 128px; margin: 0 auto 20px; }
-.final h2 { font-size: clamp(40px, 6vw, 64px); font-weight: 700; line-height: 1.06; }
-.final p { color: var(--muted); font-size: 21px; margin-top: 12px; }
-footer { border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; padding-block: 20px 36px; }
-footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+/* Final: the whole office, cheering on the pavement */
+.final { text-align: center; padding-bottom: 0; }
+.final h2 { font-family: var(--pixel); font-size: clamp(48px, 7.4vw, 90px); line-height: 1.0; color: var(--yellow); text-shadow: 4px 4px 0 var(--ink); font-weight: 700; }
+.final p { color: var(--powder); font-size: 20px; margin-top: 14px; }
+.lineup { display: flex; justify-content: center; align-items: flex-end; gap: clamp(6px, 2.4vw, 30px); margin-top: 56px; padding-inline: var(--gutter); }
+.lineup .sprite { width: clamp(48px, 9vw, 96px); aspect-ratio: 3 / 4; }
+.pavement { height: 46px; margin-top: -4px; background: #545b6e; border-top: 6px solid #383d4a; border-bottom: 6px solid var(--ink);
+  background-image: repeating-linear-gradient(90deg, transparent 0 126px, #383d4a 126px 130px); }
+footer { background: var(--ink); color: var(--powder); font-size: 15px; padding-block: 26px 40px; }
+footer .wrap { display: flex; justify-content: space-between; gap: 16px 28px; flex-wrap: wrap; max-width: 1280px; }
+footer a { color: var(--cream); }
 
-@media (prefers-reduced-motion: reduce) { .pill, [data-read] .w { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .pill, [data-read] .w { transition: none; } .sprite img + img { animation: none; } }
 </style>
+
 <!-- Site analytics: PostHog, cookieless (kept in memory only), proxied through yapyap.cc/e so it stays first-party. -->
 <script>
 !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset identify".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
@@ -552,114 +526,134 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
 
 <nav class="nav" aria-label="YapYap">
   <div class="wrap">
-    <a class="brand" href="#top"><img src="icon.png" alt="">YapYap</a>
+    <a class="brand" href="#top"><img class="px" src="mark.png" alt="" width="16" height="16">YAPYAP</a>
     <ul>
-      <li><a href="#dictate">Dictate</a></li>
-      <li><a href="#region">Read</a></li>
+      <li><a href="#show">The show</a></li>
+      <li><a href="#speak">Talk</a></li>
+      <li><a href="#examples">Listen</a></li>
+      <li><a href="#saved">Saved text</a></li>
       <li><a href="#privacy">Privacy</a></li>
-      <li><a href="https://github.com/WannaBeSolopreneur/YapYap">GitHub</a></li>
       <li><a href="#faq">FAQ</a></li>
+      <li><a href="https://github.com/WannaBeSolopreneur/YapYap">GitHub</a></li>
     </ul>
     <a class="btn sm" href="https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg" data-attr="download-nav">Download</a>
   </div>
 </nav>
 
 <main id="top">
-  <header class="hero wrap">
-    <p class="kicker">Free text to speech and dictation for Mac</p>
-    <h1><span class="read" data-read="hero">You talk. It types.<br>It talks. You listen.</span></h1>
-    <div class="duo">
-      <p><span class="duo-k"><kbd>⌥</kbd><kbd>S</kbd></span>Hold and talk to type into any app.</p>
-      <p><span class="duo-k"><kbd>⌥</kbd><kbd>A</kbd></span>Press, then draw a box around any text to hear it read aloud.</p>
+  <header class="hero">
+    <div class="wrap">
+      <div class="lockup"><img class="px" src="mark.png" alt="" width="16" height="16"><b>YAPYAP</b></div>
+      <p class="kicker">On-device AI productivity tools</p>
+      <h1>Stop renting your AI.</h1>
+      <p class="sub">Dictation, read-aloud and saved passwords: the tools other apps charge you for every month and run on their servers. YapYap runs them on your Mac. Free, no account, nothing uploaded, works offline.</p>
+      <div class="vs" aria-label="Subscription apps compared with YapYap">
+        <div class="vs-col them"><h2>Subscription apps</h2><ul>
+          <li>A monthly bill</li><li>An account to sign in to</li><li>Your voice and words go to their servers</li><li>Stop working when you’re offline</li><li>Your passwords sit in their cloud</li></ul></div>
+        <div class="vs-col us"><h2>YapYap</h2><ul>
+          <li>Free and open source</li><li>No account</li><li>Everything stays on your Mac</li><li>Works with Wi‑Fi off</li><li>Passwords stay in your Mac’s Keychain</li></ul></div>
+      </div>
+      <h2 class="acts-h">Three tools today. More on the way.</h2>
+      <div class="acts" aria-label="The tools">
+        <article class="act" data-act="dictate">
+          <header><h2>Dictation</h2><span class="k"><kbd>⌥</kbd><kbd>S</kbd></span></header>
+          <div class="scene" aria-hidden="true">
+            <div class="who"><span class="spr"><img class="px f-idle0" src="art/cast/zoe-idle0.png" alt="" width="24" height="32"><img class="px f-talk_open" src="art/cast/zoe-talk_open.png" alt="" width="24" height="32"></span><p class="say off"><small>ZOE</small><span class="said"></span></p></div>
+            <div class="mini"><div class="mbar"><i></i><i></i><i></i><b>Messages · Walt</b></div>
+              <div class="mbody"><span class="field"><span class="out"></span><i class="caret"></i></span></div><div class="mcap2"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="5.5" y="1.5" width="5" height="8.5" rx="2.5"/><path d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><span>Listening…</span><kbd>⌥</kbd><kbd>S</kbd></div></div>
+          </div>
+          <p class="what">Hold ⌥S and talk. It’s typed into any app, with the ums taken out.</p>
+          <a class="more" href="#speak">See it work →</a>
+        </article>
+        <article class="act" data-act="read">
+          <header><h2>Read aloud</h2><span class="k"><kbd>⌥</kbd><kbd>A</kbd></span></header>
+          <div class="scene" aria-hidden="true">
+            <div class="who"><span class="spr"><img class="px f-idle0" src="art/cast/bob-idle0.png" alt="" width="24" height="32"><img class="px f-talk_open" src="art/cast/bob-talk_open.png" alt="" width="24" height="32"><img class="px f-shock" src="art/cast/bob-shock.png" alt="" width="24" height="32"></span><p class="say"><small>BOB</small><span class="said">I don’t need to read it. I wrote it.</span></p></div>
+            <div class="mini"><div class="mbar"><i></i><i></i><i></i><b>Mail · Draft to Walt</b></div>
+              <div class="mbody"><span class="sel"><span class="rw">Hi</span> <span class="rw">Walt,</span> <span class="rw">the</span> <span class="rw">the</span> <span class="rw">deck</span> <span class="rw">is</span> <span class="rw">ready</span> <span class="rw">for</span> <span class="rw">Friday.</span></span></div><div class="spk">🔊 Reading aloud</div></div>
+          </div>
+          <p class="what">Press ⌥A and draw a box around any text. You hear it, word by word, and catch what your eyes skip.</p>
+          <a class="more" href="#examples">See it work →</a>
+        </article>
+        <article class="act" data-act="saved">
+          <header><h2>Saved text</h2><span class="k"><kbd>⌥</kbd><kbd>S</kbd></span></header>
+          <div class="scene" aria-hidden="true">
+            <div class="who"><span class="spr"><img class="px f-phone0" src="art/cast/jessy-phone0.png" alt="" width="24" height="32"><img class="px f-talk_open" src="art/cast/jessy-talk_open.png" alt="" width="24" height="32"></span><p class="say off"><small>JESSY</small><span class="said"></span></p></div>
+            <div class="mini"><div class="mbar"><i></i><i></i><i></i><b>shop.example · Checkout</b></div>
+              <div class="mbody"><small class="lbl">Email</small><span class="field box"><span class="out"></span><i class="caret"></i></span></div><div class="mcap2"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="5.5" y="1.5" width="5" height="8.5" rx="2.5"/><path d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><span>Listening…</span><kbd>⌥</kbd><kbd>S</kbd></div></div>
+          </div>
+          <p class="what">Save your email, address or API keys. Say the name, and it’s pasted.</p>
+          <a class="more" href="#saved">See it work →</a>
+        </article>
+      </div>
+      <div class="local">
+        <div class="who"><span class="spr"><img class="px f-idle0" src="art/cast/lenny-idle0.png" alt="" width="24" height="32"></span><p class="say"><small>LENNY · IT AND SECURITY</small><span>Before I say yes: does it run locally?</span></p></div>
+        <p class="yes"><b>Yes.</b> All three run on your Mac. Nothing you say or read is uploaded.</p>
+      </div>
+      <div class="cta">
+        <a class="btn lg" href="https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg" data-attr="download-hero">Download for Mac</a>
+        <a class="plain link-arrow" href="https://github.com/WannaBeSolopreneur/YapYap">View on GitHub</a>
+      </div>
+      <p class="req">Free · Open source · Runs on your Mac · macOS 15+ · Apple silicon</p>
     </div>
-    <div class="cta">
-      <a class="btn lg" href="https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg" data-attr="download-hero">Download for Mac</a>
-      <a class="plain link-arrow" href="https://github.com/WannaBeSolopreneur/YapYap">View on GitHub</a>
-    </div>
-    <p class="req">Free and open source · Your words stay on your Mac · macOS 15+ · Apple silicon</p>
   </header>
 
-  <!-- Film: site/demo.mp4 (+ demo-poster.jpg). Plays muted on a loop; "Play with sound" restarts it with narration. -->
-  <div class="stage">
-    <div class="frame" id="demo">
-      <video id="demo-video" autoplay muted loop playsinline preload="metadata" poster="demo-poster.jpg" aria-label="YapYap film: a chat message is read aloud with each word highlighted, then a reply is dictated by holding Option-S" hidden>
-        <source src="demo.mp4" type="video/mp4">
-      </video>
-      <div class="placeholder" id="demo-placeholder" aria-hidden="true">
-        <div class="mock" aria-hidden="true">
-          <div class="bar"></div>
-          <div class="bar" style="width:92%"></div>
-          <div class="bar hl"></div>
-          <div class="bar" style="width:86%"></div>
-          <div class="bar" style="width:64%"></div>
-        </div>
+  <section id="show" class="wall">
+    <div class="wrap wide">
+      <div class="head">
+        <p class="kicker">Now showing on TikTok</p>
+        <h2>Meet the YapYap office.</h2>
       </div>
-      <button class="sound" id="demo-sound" type="button" hidden>Play with sound</button>
-    </div>
-  </div>
-
-  <section class="wrap wide" aria-label="Try it">
-    <div class="demo-tabs" role="tablist" aria-label="Choose a demo">
-      <button type="button" role="tab" aria-selected="true" data-go="dictate">Talk</button>
-      <button type="button" role="tab" aria-selected="false" data-go="region">Listen</button>
-    </div>
-    <div class="demos" id="demos">
-    <div class="demo" id="dictate">
-      <h2 class="demo-h">Hold ⌥S. Talk.</h2>
-    <div class="dx" id="dx" aria-label="Animated example: holding Option-S and speaking types a reply into Mail">
-      <div class="tb"><span class="lights"><i></i><i></i><i></i></span><span class="sp"></span><span class="title dx-title"><b>Re: Thursday offsite</b></span><span class="sp"></span><svg><use href="#i-send"/></svg><span class="dx-gap"></span></div>
-      <button class="rs-listen dx-listen" id="dx-listen" type="button" aria-pressed="false"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 6h2.5L8 3v10L4.5 10H2z"/><path class="play" d="M10.5 5.2a4 4 0 0 1 0 5.6M12.4 3.4a6.5 6.5 0 0 1 0 9.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><rect class="stop" x="10" y="5.5" width="5" height="5" rx="1"/></svg><span>Listen</span></button>
-      <div class="dx-f"><span>To:</span><b class="chip">Priya Shah</b></div>
-      <div class="dx-f"><span>Subject:</span>Re: Thursday offsite</div>
-      <div class="dx-body"><span id="dx-text"></span><i class="caret"></i></div>
-      <blockquote class="dx-q"><span>On 13 Oct 2026, at 9:41 AM, Priya Shah wrote:</span>Hi all, the offsite has moved to the fourth floor. Bring a laptop and your third quarter numbers. Lunch is at noon, and we should wrap up by four.</blockquote>
-      <div class="dx-panel off" id="dx-panel" aria-hidden="true">
-        <span class="dx-mic" id="dx-mic"><i></i><svg viewBox="0 0 16 16" fill="currentColor"><rect x="5.5" y="1.5" width="5" height="8.5" rx="2.5"/><path d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span>
-        <span class="dx-cap" id="dx-cap">Listening… let go to type</span>
-        <span class="dx-keys" id="dx-keys"><kbd>⌥</kbd><kbd>S</kbd></span>
-      </div>
-    </div>
-    <div class="rs-steps">
-      <div><b>Hold <kbd>⌥</kbd> <kbd>S</kbd></b>In any app</div>
-      <div><b>Talk</b>Words appear as you speak</div>
-      <div><b>Let go</b>It’s typed where your cursor is</div>
-    </div>
-    </div>
-    <div class="demo" id="region">
-      <h2 class="demo-h">Press ⌥A. Listen.</h2>
-    <div class="rs" id="rs" aria-label="Animated example: a box is dragged around one paragraph of a news page, then only that paragraph is read">
-      <div class="bar-t"><i></i><i></i><i></i><span class="url">theweekly.example/culture/libraries</span></div>
-      <div class="np" aria-hidden="true">
-        <div class="np-top"><b>The Weekly</b><span>News</span><span>Culture</span><span>Opinion</span><span>Sport</span><span>Subscribe</span></div>
-        <div class="ad"><small>Advertisement</small>Autumn sale · 40% off everything</div>
-        <div class="np-body">
-          <div class="art">
-            <h4>The quiet return of the public library</h4>
-            <div class="by">By Dana Ortiz · 6 min read</div>
-            <p data-read="region">Visits are up for the third year in a row. People come for the free rooms, the fast internet and, more and more, the books. On weekday mornings the reading room fills before the coffee cart arrives.</p>
-            <p class="dim-p">Librarians say the change started with remote work. Many people wanted somewhere quiet to go that was not their kitchen table.</p>
+      <div class="show-grid">
+        <div class="tv"><video id="show-video" class="px" controls preload="none" playsinline poster="show-poster.jpg" aria-label="The YapYap office theme song: the office lights come on at night, then the cast is introduced one by one">
+          <source src="show-intro.mp4" type="video/mp4"></video></div>
+        <div class="show-copy">
+          <p>The YapYap office is a pixel-art mockumentary about the tiny company behind YapYap. Nobody there actually uses the app, so every week someone sends something terrible, and the camera catches it.</p>
+          <p>It’s also where we post what’s new in YapYap, so you can follow along as it grows.</p>
+          <div class="cta">
+            <a class="btn" style="font-size:12px;padding:14px 18px" href="" data-tiktok data-attr="tiktok-show" hidden>Follow on TikTok</a>
+            <a class="plain link-arrow" href="https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg" data-attr="download-show">Get the app they don’t use</a>
           </div>
-          <aside class="side"><b>Trending</b><ol><li>Ten soups for cold nights</li><li>The new bus routes, explained</li><li>Our favourite autumn walks</li></ol><div class="box">Advertisement</div></aside>
         </div>
-        <div class="cookie">We use cookies to improve your experience.<span>Accept all</span></div>
       </div>
-      <div class="rs-hint off" id="rs-hint"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="2.2 1.8"><rect x="1.5" y="2.5" width="13" height="11" rx="2"/></svg>Drag over the text to read <kbd>esc</kbd><span>to cancel</span></div>
-      <div class="rs-sel" id="rs-sel"><i></i><i></i><i></i><i></i><b class="rs-size" id="rs-size"></b></div>
-      <div class="rs-rule top" id="rs-rule-top"></div><div class="rs-rule bot" id="rs-rule-bot"></div>
-      <button class="rs-listen" id="rs-listen" type="button" aria-pressed="false"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 6h2.5L8 3v10L4.5 10H2z"/><path class="play" d="M10.5 5.2a4 4 0 0 1 0 5.6M12.4 3.4a6.5 6.5 0 0 1 0 9.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><rect class="stop" x="10" y="5.5" width="5" height="5" rx="1"/></svg><span>Listen</span></button>
-      <svg class="rs-cur off" id="rs-cur" viewBox="0 0 23 23" aria-hidden="true"><path d="M11.5 1v21M1 11.5h21" stroke="#000" stroke-width="3.5" stroke-linecap="round"/><path d="M11.5 1.8v19.4M1.8 11.5h19.4" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/></svg>
-    </div>
-    <div class="rs-steps">
-      <div><b>Press <kbd>⌥</kbd> <kbd>A</kbd></b>In any app</div>
-      <div><b>Drag</b>Over any text</div>
-      <div><b>Listen</b>Only that part is read</div>
-    </div>
-    </div>
+      <ul class="cast" aria-label="The cast">
+      <li><span class="sprite s1"><img class="px" src="art/cast/bob-idle0.png" alt="" width="24" height="32"><img class="px" src="art/cast/bob-blink.png" alt="" width="24" height="32"></span><b>Bob</b><span class="role">Support Lead</span><q>Typos are just the email being creative.</q></li>
+      <li><span class="sprite s2"><img class="px" src="art/cast/walt-idle0.png" alt="" width="24" height="32"><img class="px" src="art/cast/walt-blink.png" alt="" width="24" height="32"></span><b>Walt</b><span class="role">Founder and CEO</span><q>I’m not mad. I’m just printing this out so I can be mad on paper.</q></li>
+      <li><span class="sprite s3"><img class="px" src="art/cast/zoe-idle0.png" alt="" width="24" height="32"><img class="px" src="art/cast/zoe-blink.png" alt="" width="24" height="32"></span><b>Zoe</b><span class="role">Summer intern</span><q>Hold on, I’ll just say it to you. Um, like, the meeting is moved. Sent.</q></li>
+      <li><span class="sprite s4"><img class="px" src="art/cast/lenny-idle0.png" alt="" width="24" height="32"><img class="px" src="art/cast/lenny-blink.png" alt="" width="24" height="32"></span><b>Lenny</b><span class="role">IT and Security</span><q>I unplugged the printer. It knew too much.</q></li>
+      <li><span class="sprite s1"><img class="px" src="art/cast/gail-idle0.png" alt="" width="24" height="32"><img class="px" src="art/cast/gail-blink.png" alt="" width="24" height="32"></span><b>Gail</b><span class="role">Office Manager</span><q>We had a good run. Four minutes.</q></li>
+      <li><span class="sprite s2"><img class="px" src="art/cast/jessy-phone0.png" alt="" width="24" height="32"><img class="px" src="art/cast/jessy-phone1.png" alt="" width="24" height="32"></span><b>Jessy</b><span class="role">Head of Sales</span><q>Mute button? I don’t believe in it.</q></li>
+      </ul>
     </div>
   </section>
 
-  <section id="speak" class="wrap">
-    <div class="head"><h2>Speak anywhere.</h2><p>Every example is a real transcript from YapYap’s dictation.</p></div>
+
+  <section id="saved" class="night">
+    <div class="wrap">
+      <div class="head"><p class="kicker">Saved text</p><h2>Say the name. It’s pasted.</h2>
+        <p>Save the things you type over and over, like your email address, your home address or an API key. Then hold ⌥S and say its name, and YapYap pastes it wherever your cursor is.</p></div>
+      <div class="examples">
+        <figure class="ex sx" data-sx="email" data-paste="sam@example.com">
+          <div class="win app-mail"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><span class="sp"></span><span class="title"><b>New Message</b></span><span class="sp"></span><svg><use href="#i-send"/></svg></div>
+            <div class="wb form"><div class="fr"><span>To:</span><b><span data-out></span><i class="caret"></i></b></div><div class="fr"><span>Subject:</span>Saturday</div><p class="fb">Count me in. Send the details to the address above.</p><div class="mcap off" aria-hidden="true"><span class="dx-mic"><i></i><svg viewBox="0 0 16 16" fill="currentColor"><rect x="5.5" y="1.5" width="5" height="8.5" rx="2.5"/><path d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span><span class="mcap-t">Listening… let go to type</span><span class="mcap-k"><kbd>⌥</kbd><kbd>S</kbd></span></div></div></div>
+          <figcaption><h3>“Type email address”</h3><p>Fill in forms without spelling it out.</p></figcaption>
+        </figure>
+        <figure class="ex sx" data-sx="home" data-paste="1 Main Street, Springfield">
+          <div class="win app-safari"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><svg><use href="#i-back"/></svg><span class="addr"><svg><use href="#i-lock"/></svg>shop.example</span><svg><use href="#i-share"/></svg></div>
+            <div class="wb form"><div class="ship">Shipping address</div><div class="fld"><small>Full name</small>Sam Rivera</div><div class="fld on"><small>Street address</small><span data-out></span><i class="caret"></i></div><div class="mcap off" aria-hidden="true"><span class="dx-mic"><i></i><svg viewBox="0 0 16 16" fill="currentColor"><rect x="5.5" y="1.5" width="5" height="8.5" rx="2.5"/><path d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span><span class="mcap-t">Listening… let go to type</span><span class="mcap-k"><kbd>⌥</kbd><kbd>S</kbd></span></div></div></div>
+          <figcaption><h3>“Home address”</h3><p>Check out in seconds.</p></figcaption>
+        </figure>
+        <figure class="ex sx" data-sx="key" data-paste="sk_demo_4f9c2a7e1b80">
+          <div class="win app-term"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><span class="sp"></span><span class="title"><b>yapyap — zsh</b></span><span class="sp"></span></div>
+            <div class="wb term-b"><div><span class="pr">~/yapyap %</span> export ELEVENLABS_API_KEY="<span data-out></span><i class="caret"></i>"</div><div class="mcap off" aria-hidden="true"><span class="dx-mic"><i></i><svg viewBox="0 0 16 16" fill="currentColor"><rect x="5.5" y="1.5" width="5" height="8.5" rx="2.5"/><path d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span><span class="mcap-t">Listening… let go to type</span><span class="mcap-k"><kbd>⌥</kbd><kbd>S</kbd></span></div></div></div>
+          <figcaption><h3>“Paste my ElevenLabs key”</h3><p>Kept in your Keychain, never in history. Touch ID if you want it.</p></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="speak" class="paper"><div class="wrap">
+    <div class="head"><p class="kicker">Dictation</p><h2>Speak anywhere.</h2><p>Every example is a real transcript from YapYap’s dictation.</p></div>
     <div class="examples">
       <figure class="ex sx" data-sx="msg">
         <div class="win app-messages"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><span class="sp"></span><span class="who"><span class="av sm">S</span><b>Sam</b></span><span class="sp"></span><svg><use href="#i-video"/></svg><svg><use href="#i-info"/></svg></div>
@@ -694,10 +688,10 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
         <figcaption><h3>Terminal</h3><p>Even commit messages.</p></figcaption>
       </figure>
     </div>
-  </section>
+  </div></section>
 
-  <section id="examples" class="wrap">
-    <div class="head"><h2>Reads every app.</h2></div>
+  <section id="examples" class="wall"><div class="wrap">
+    <div class="head"><figure class="host center"><span class="sprite s2"><img class="px" src="art/cast/walt-idle0.png" alt="" width="24" height="32"><img class="px" src="art/cast/walt-blink.png" alt="" width="24" height="32"></span><blockquote class="bubble"><b>WALT · FOUNDER AND CEO</b>Let’s all take a moment to read this email together. Out loud. Slowly.</blockquote></figure><p class="kicker" style="margin-top:34px">Read aloud</p><h2>Reads every app.</h2></div>
     <div class="examples">
       <figure class="ex">
         <div class="win app-mail"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><svg><use href="#i-sidebar"/></svg><span class="sp"></span><svg><use href="#i-archive"/></svg><svg><use href="#i-trash"/></svg><svg><use href="#i-reply"/></svg><svg><use href="#i-compose"/></svg></div>
@@ -735,14 +729,15 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
         <figcaption><h3>Books</h3><p>Follow along at your own pace.</p></figcaption>
       </figure>
     </div>
-  </section>
+  </div></section>
 
-  <div class="band" id="privacy">
+  <section class="band ink" id="privacy">
     <div class="wrap">
       <div class="head">
-        <div class="eyebrow">Privacy</div>
-        <h2 style="margin-top:10px">What you read and say never leaves your Mac.</h2>
-        <p>You don’t have to take our word for it. Here is what the code does, and how to check.</p>
+        <figure class="host center"><span class="sprite s4"><img class="px" src="art/cast/lenny-idle0.png" alt="" width="24" height="32"><img class="px" src="art/cast/lenny-blink.png" alt="" width="24" height="32"></span><blockquote class="bubble"><b>LENNY · IT AND SECURITY</b>Before I say yes: does it run locally?</blockquote></figure>
+        <p class="kicker">Privacy</p>
+        <h2>What you read and say never leaves your Mac.</h2>
+        <p>Yes, Lenny, it runs locally. You don’t have to take our word for it, though. Here is what the code does, and how to check.</p>
       </div>
       <div class="proof">
         <article>
@@ -785,12 +780,13 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <section id="open-source" class="wrap">
+
+  <section id="open-source" class="wall"><div class="wrap">
     <div class="oss">
       <div>
-        <div class="eyebrow">Open source</div>
+        <p class="kicker">Open source</p>
         <h2>Free, and every line is on GitHub.</h2>
         <p class="soon">Read it, build it yourself, or help make it better. Licensed under the AGPL, so it stays free.</p>
         <div class="cta"><a class="btn lg" href="https://github.com/WannaBeSolopreneur/YapYap">View on GitHub</a></div>
@@ -803,10 +799,11 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
 <span>$ </span>scripts/build-app.sh --install</pre>
       </div>
     </div>
-  </section>
+  </div></section>
 
-  <section id="faq" class="wrap">
-    <div class="head"><h2>Questions and answers.</h2></div>
+  <section id="faq" class="paper"><div class="wrap">
+    <div class="head"><p class="kicker">FAQ</p><h2>Questions and answers.</h2></div>
+    <div class="faq-top"><figure class="host "><span class="sprite s2"><img class="px" src="art/cast/gail-idle0.png" alt="" width="24" height="32"><img class="px" src="art/cast/gail-blink.png" alt="" width="24" height="32"></span><blockquote class="bubble"><b>GAIL · OFFICE MANAGER</b>I put the sign up. Nobody reads signs. I should know, I work here.</blockquote></figure><div class="days" aria-hidden="true"><small>Days since someone sent something they didn’t read</small><b>0</b></div></div>
     <div class="faq">
       <details id="faq-what">
         <summary><h3>What is YapYap?</h3></summary>
@@ -845,24 +842,31 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
         <p><a href="https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg" data-attr="download-faq">Download YapYap</a>, open the file, and drag YapYap onto Applications. It’s signed and notarized by Apple, and it keeps itself up to date. You can also <a href="https://github.com/WannaBeSolopreneur/YapYap">build it from the source on GitHub</a>.</p>
       </details>
     </div>
-  </section>
+  </div></section>
 
-  <div class="final wrap">
-    <img src="icon.png" alt="YapYap app icon">
-    <h2>Start yapping.</h2>
-    <p>Free for Mac. macOS 15+, Apple silicon.</p>
-    <div class="cta"><a class="btn lg" href="https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg" data-attr="download-bottom">Download for Mac</a></div>
-  </div>
+  <section class="final night">
+    <div class="wrap">
+      <h2>Start yapping.</h2>
+      <p>Free for Mac. macOS 15+, Apple silicon.</p>
+      <div class="cta"><a class="btn lg" href="https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg" data-attr="download-bottom">Download for Mac</a></div>
+    </div>
+    <div class="lineup" aria-hidden="true"><span class="sprite "><img class="px" src="art/cast/bob-shock.png" alt="" width="24" height="32"></span><span class="sprite "><img class="px" src="art/cast/walt-happy.png" alt="" width="24" height="32"></span><span class="sprite "><img class="px" src="art/cast/gail-idle0.png" alt="" width="24" height="32"></span><span class="sprite "><img class="px" src="art/cast/jessy-phone0.png" alt="" width="24" height="32"></span><span class="sprite "><img class="px" src="art/cast/zoe-shock.png" alt="" width="24" height="32"></span><span class="sprite "><img class="px" src="art/cast/lenny-happy.png" alt="" width="24" height="32"></span></div>
+    <div class="pavement"></div>
+  </section>
 </main>
 
 <footer>
   <div class="wrap">
-    <span>© 2026 YapYap · <a href="https://github.com/WannaBeSolopreneur/YapYap">Source on GitHub</a></span>
-    <span>Mac and macOS are trademarks of Apple Inc. YapYap is not made by Apple.</span>
+    <span>© 2026 YapYap · <a href="https://github.com/WannaBeSolopreneur/YapYap">Source on GitHub</a><span data-tiktok hidden> · <a href="" data-tiktok data-attr="tiktok-footer">The YapYap office on TikTok</a></span></span>
+    <span>Mac and macOS are trademarks of Apple Inc. YapYap is not made by Apple. The YapYap office and its cast are original characters.</span>
   </div>
 </footer>
 
 <script>
+
+// The show's TikTok. Every "Follow on TikTok" link stays hidden until this is set, e.g. "https://www.tiktok.com/@handle".
+const TIKTOK = "";
+document.querySelectorAll("[data-tiktok]").forEach(el => { if (!TIKTOK) return; if (el.tagName === "A") el.href = TIKTOK; el.hidden = false; });
 
 // Site analytics (PostHog, set up in <head>): which downloads, links and demos people use.
 const track = (event, props) => window.posthog?.capture(event, props);
@@ -871,20 +875,10 @@ document.addEventListener("click", e => {
   if (!a) return;
   if (a.href.endsWith(".dmg")) track("download_clicked", { location: (a.dataset.attr || "").replace("download-", "") || "other" });
   else if (a.hostname === "github.com") track("github_clicked", { path: a.pathname });
+  else if (a.hostname.endsWith("tiktok.com")) track("tiktok_clicked", { location: (a.dataset.attr || "").replace("tiktok-", "") || "other" });
 });
+document.getElementById("show-video").addEventListener("play", () => track("show_video_played"), { once: true });
 document.querySelectorAll("details[id]").forEach(d => d.addEventListener("toggle", () => { if (d.open) track("faq_opened", { question: d.id }); }));
-
-// Hero demo: show the video only once it can actually play.
-(() => {
-  const v = document.getElementById("demo-video"), ph = document.getElementById("demo-placeholder"), snd = document.getElementById("demo-sound");
-  v.addEventListener("loadeddata", () => { v.hidden = false; ph.hidden = true; snd.hidden = false; });
-  snd.addEventListener("click", () => {
-    v.muted = !v.muted;
-    if (!v.muted) { v.currentTime = 0; v.play().catch(() => {}); track("demo_sound_played"); }
-    snd.textContent = v.muted ? "Play with sound" : "Mute";
-  });
-  v.load();
-})();
 
 // The read-along highlight: wrap each word, then slide one pill from word to word like the app does.
 // Anything inside .skip (links) is left unread, as the app does.
@@ -933,7 +927,6 @@ function reader(el) {
 
 document.querySelectorAll("[data-read]:not([data-read=region])").forEach((el, n) => {
   const r = reader(el);
-  if (el.dataset.read === "hero") { r.i = 1; r.place(); }
   if (reduce) return;
   const step = () => {
     if (!r.visible) return setTimeout(step, 500);
@@ -945,184 +938,12 @@ document.querySelectorAll("[data-read]:not([data-read=region])").forEach((el, n)
   setTimeout(step, 1200 + n * 170);
 });
 
-// Read Region demo: hint → crosshair drags a box around the paragraph → release → only that paragraph is read,
-// with the reading ruler on. "Listen" plays the same paragraph rendered by YapYap's Kokoro voice (Heart).
-(() => {
-  const $ = id => document.getElementById(id);
-  const stage = $("rs"), sel = $("rs-sel"), size = $("rs-size"), hint = $("rs-hint"), cur = $("rs-cur"),
-        top = $("rs-rule-top"), bot = $("rs-rule-bot"), listen = $("rs-listen");
-  const r = reader(stage.querySelector("[data-read=region]"));
-  // Word start times (s) from `YapYap --vo`, one per word of the paragraph.
-  const TIMES = [0.3, 0.675, 0.788, 0.975, 1.087, 1.225, 1.5, 1.725, 1.813, 1.875, 2.737, 3.1, 3.35, 3.463, 3.563, 3.8, 4.55, 4.688,
-    5.025, 5.525, 5.787, 6.037, 6.15, 6.438, 6.525, 7.7, 7.875, 8.25, 9, 9.15, 9.475, 9.725, 10.125, 10.412, 10.5, 10.875, 11.125];
-  const audio = new Audio("region.mp3");
-  audio.preload = "none";
-
-  const wait = ms => new Promise(f => setTimeout(f, ms));
-  const ease = k => k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
-  const tween = (ms, fn) => new Promise(done => {
-    const t0 = performance.now();
-    const f = t => { const k = Math.min(1, (t - t0) / ms); fn(ease(k)); k < 1 ? requestAnimationFrame(f) : done(); };
-    requestAnimationFrame(f);
-  });
-  // The paragraph's box in stage coordinates, with a little slack like a real drag.
-  const target = () => {
-    const s = stage.getBoundingClientRect(), p = r.el.getBoundingClientRect();
-    return { x: p.left - s.left - 12, y: p.top - s.top - 10, w: p.width + 24, h: p.height + 20 };
-  };
-  const box = (x, y, w, h) => {
-    Object.assign(sel.style, { left: x + "px", top: y + "px", width: w + "px", height: h + "px" });
-    sel.classList.toggle("small", w < 30 || h < 30);
-    size.textContent = Math.round(w * 2) + " × " + Math.round(h * 2); // Retina pixels, as the app shows them
-  };
-  const cursor = (x, y) => { cur.style.left = x + "px"; cur.style.top = y + "px"; };
-  // Ruler: dim everything above and below the line being read, 4px of slack, as Overlay.swift draws it.
-  const ruler = () => {
-    const s = stage.getBoundingClientRect(), w = r.words[r.i].getBoundingClientRect();
-    top.style.height = Math.max(0, w.top - s.top - 4) + "px";
-    bot.style.top = (w.bottom - s.top + 4) + "px";
-  };
-  const go = i => { r.i = i; r.place(); ruler(); };
-  const reading = on => { stage.classList.add("done"); stage.classList.toggle("reading", on); hint.classList.add("off"); cur.classList.add("off"); };
-
-  // At rest: the region is chosen and the first word is lit.
-  const t0 = target();
-  box(t0.x, t0.y, t0.w, t0.h);
-  r.show(true);
-  go(0);
-  addEventListener("resize", () => {
-    if (!stage.classList.contains("done")) { const t = target(); box(t.x, t.y, t.w, t.h); }
-    ruler();
-  });
-
-  let gen = 0; // bumps whenever a run starts, so an older run stops at its next step
-
-  async function loop() {
-    const g = ++gen;
-    await wait(1500);
-    while (g === gen) {
-      if (!r.visible) { await wait(500); continue; }
-      const t = target(), W = stage.clientWidth;
-      // 1. ⌥A: everything dims, the hint appears, the crosshair comes in.
-      r.show(false);
-      stage.classList.remove("done", "reading");
-      box(t.x, t.y, 0, 0);
-      hint.classList.remove("off");
-      cursor(W * 0.72, t.y + t.h + 70);
-      cur.classList.remove("off");
-      await wait(700); if (g !== gen) return;
-      await tween(800, k => cursor(W * 0.72 + (t.x - W * 0.72) * k, t.y + t.h + 70 - (t.h + 70) * k)); if (g !== gen) return;
-      // 2. Drag.
-      hint.classList.add("off");
-      await wait(150);
-      await tween(1300, k => { box(t.x, t.y, t.w * k, t.h * k); cursor(t.x + t.w * k, t.y + t.h * k); }); if (g !== gen) return;
-      await wait(350); if (g !== gen) return;
-      // 3. Let go: the selector closes and only the paragraph is read, at the real voice's pace.
-      go(0); r.show(true); reading(true);
-      const start = performance.now();
-      for (let i = 1; i < TIMES.length; i++) {
-        const due = TIMES[i] * 1000 - (performance.now() - start);
-        if (due > 0) await wait(due);
-        if (g !== gen) return;
-        go(i);
-      }
-      await wait(1800); if (g !== gen) return;
-    }
-  }
-
-  function play() {
-    const g = ++gen;
-    listen.setAttribute("aria-pressed", "true");
-    listen.lastChild.textContent = "Stop";
-    const t = target();
-    box(t.x, t.y, t.w, t.h);
-    go(0); r.show(true); reading(true);
-    track("read_demo_played");
-    audio.currentTime = 0;
-    audio.play().catch(() => stop());
-    const f = () => {
-      if (g !== gen) return;
-      let i = 0;
-      while (i + 1 < TIMES.length && TIMES[i + 1] <= audio.currentTime) i++;
-      if (i !== r.i) go(i);
-      if (!audio.ended) requestAnimationFrame(f);
-      else setTimeout(() => { if (g === gen) stop(); }, 1200);
-    };
-    requestAnimationFrame(f);
-  }
-
-  function stop() {
-    audio.pause();
-    listen.setAttribute("aria-pressed", "false");
-    listen.lastChild.textContent = "Listen";
-    if (!reduce) loop(); else gen++;
-  }
-
-  listen.addEventListener("click", () => listen.getAttribute("aria-pressed") === "true" ? stop() : play());
-  if (!reduce) loop();
-})();
-
-// Dictation demo. PARTS is what Apple's SpeechAnalyzer actually reported, and when, for dictate.mp3
-// (Kokoro "Bella"), via `YapYap --transcribe`. t = seconds since the shortcut went down.
-(() => {
-  const $ = id => document.getElementById(id);
-  const stage = $("dx"), out = $("dx-text"), panel = $("dx-panel"), cap = $("dx-cap"), keys = $("dx-keys"), halo = $("dx-mic").firstElementChild, btn = $("dx-listen");
-  const PARTS = [[1.21, "Sounds good"], [2.18, "Sounds good."], [2.19, "Sounds good. I'll bring my"], [3.16, "Sounds good. I'll bring my laptop and the numbers"],
-    [4.14, "Sounds good. I'll bring my laptop and the numbers."], [4.17, "Sounds good. I'll bring my laptop and the numbers. See you"],
-    [5.22, "Sounds good. I'll bring my laptop and the numbers. See you on the 4th floor"], [5.23, "Sounds good. I'll bring my laptop and the numbers. See you on the 4th floor at"],
-    [6.3, "Sounds good. I'll bring my laptop and the numbers. See you on the 4th floor at 9."]];
-  const RELEASE = 5.65, TYPED = 6.38, HOLD = 3.6, LEAD = 1.2;
-  const audio = new Audio("dictate.mp3");
-  audio.preload = "none";
-  let visible = true, mode = "loop", t0 = performance.now(), endedAt = 0, last = "";
-  new IntersectionObserver(([e]) => visible = e.isIntersecting).observe(stage);
-
-  const fit = text => {
-    const max = Math.max(12, Math.floor(cap.clientWidth / 7.4));
-    return text.length > max ? "…" + text.slice(-(max - 1)) : text;
-  };
-  const render = t => {
-    const holding = t >= 0 && t < RELEASE;
-    panel.classList.toggle("off", !(t >= 0 && t < TYPED));
-    keys.classList.toggle("off", !holding);
-    const heard = PARTS.filter(p => p[0] <= t).pop();
-    const caption = heard ? heard[1] : (t < RELEASE ? "Listening… let go to type" : "Finishing…");
-    if (caption !== last) { cap.textContent = fit(caption); cap.classList.toggle("empty", !heard); last = caption; }
-    halo.style.transform = `scale(${holding ? 0.75 + 0.6 * Math.abs(Math.sin(t * 7.3) * Math.sin(t * 2.9)) : 0.75})`;
-    const typed = t >= TYPED;
-    if (typed && !out.textContent) { out.textContent = PARTS[PARTS.length - 1][1] + " "; out.classList.add("flash"); requestAnimationFrame(() => requestAnimationFrame(() => out.classList.remove("flash"))); }
-    if (!typed && out.textContent) out.textContent = "";
-  };
-  const clock = () => {
-    if (mode === "sound") return audio.ended || audio.paused ? RELEASE - 0.1 + (performance.now() - endedAt) / 1000 : audio.currentTime;
-    return (performance.now() - t0) / 1000 - LEAD;
-  };
-  const setBtn = on => { btn.setAttribute("aria-pressed", on); btn.lastChild.textContent = on ? "Stop" : "Listen"; };
-  const toLoop = () => { mode = "loop"; audio.pause(); setBtn(false); t0 = performance.now(); };
-  audio.addEventListener("ended", () => { endedAt = performance.now(); });
-  btn.addEventListener("click", () => {
-    if (mode === "sound") return toLoop();
-    mode = "sound"; setBtn(true); endedAt = performance.now(); out.textContent = "";
-    track("dictate_demo_played");
-    audio.currentTime = 0;
-    audio.play().catch(toLoop);
-  });
-
-  if (reduce) { render(TYPED + 1); return; }
-  render(-1);
-  const frame = () => {
-    if (visible || mode === "sound") {
-      const t = clock();
-      render(t);
-      if (t > TYPED + HOLD) mode === "sound" ? toLoop() : (t0 = performance.now());
-    }
-    requestAnimationFrame(frame);
-  };
-  requestAnimationFrame(frame);
-})();
 // Speak anywhere: each card replays what SpeechAnalyzer reported for that phrase (`YapYap --transcribe`), on its real timing.
 (() => {
-  const PARTS = {"msg": [[1.89, "Running"], [2.86, "Running 10 minutes late"], [3.85, "Running 10 minutes late, save me a seat"], [4.49, "Running 10 minutes late, save me a seat."]], "note": [[1.19, "Ideas"], [2.16, "Ideas for the launch"], [3.19, "Ideas for the launch. A short dem"], [4.11, "Ideas for the launch. A short demo video, a priv"], [5.18, "Ideas for the launch. A short demo video, a privacy page, and a"], [6.16, "Ideas for the launch. A short demo video, a privacy page, and a student discount"], [6.69, "Ideas for the launch. A short demo video, a privacy page, and a student discount."]], "chat": [[1.5, "The lo"], [2.45, "The login bug is fixed"], [3.43, "The login bug is fixed."], [3.65, "The login bug is fixed. Can someone"], [4.42, "The login bug is fixed. Can someone check it on staging"], [5.2, "The login bug is fixed. Can someone check it on staging?"]], "doc": [[1.2, "Thank you"], [2.16, "Thank you for meeting with me on"], [3.14, "Thank you for meeting with me on Tuesday."], [4.12, "Thank you for meeting with me on Tuesday. I have attached the notes"], [5.18, "Thank you for meeting with me on Tuesday. I have attached the notes we discussed"], [5.8, "Thank you for meeting with me on Tuesday. I have attached the notes we discussed."]], "rem": [[1.18, "B"], [1.37, "Book the"], [2.14, "Book the dentist for next Thursday"], [3.27, "Book the dentist for next Thursday."]], "commit": [[1.18, "Fixed"], [2.16, "Fixed crash when the window"], [3.14, "Fixed crash when the window closes during a read"], [3.93, "Fixed crash when the window closes during a read."], [3.99, "Fix crash when the window closes during a read."]]};
+  const PARTS = {"msg": [[1.89, "Running"], [2.86, "Running 10 minutes late"], [3.85, "Running 10 minutes late, save me a seat"], [4.49, "Running 10 minutes late, save me a seat."]], "note": [[1.19, "Ideas"], [2.16, "Ideas for the launch"], [3.19, "Ideas for the launch. A short dem"], [4.11, "Ideas for the launch. A short demo video, a priv"], [5.18, "Ideas for the launch. A short demo video, a privacy page, and a"], [6.16, "Ideas for the launch. A short demo video, a privacy page, and a student discount"], [6.69, "Ideas for the launch. A short demo video, a privacy page, and a student discount."]], "chat": [[1.5, "The lo"], [2.45, "The login bug is fixed"], [3.43, "The login bug is fixed."], [3.65, "The login bug is fixed. Can someone"], [4.42, "The login bug is fixed. Can someone check it on staging"], [5.2, "The login bug is fixed. Can someone check it on staging?"]], "doc": [[1.2, "Thank you"], [2.16, "Thank you for meeting with me on"], [3.14, "Thank you for meeting with me on Tuesday."], [4.12, "Thank you for meeting with me on Tuesday. I have attached the notes"], [5.18, "Thank you for meeting with me on Tuesday. I have attached the notes we discussed"], [5.8, "Thank you for meeting with me on Tuesday. I have attached the notes we discussed."]], "rem": [[1.18, "B"], [1.37, "Book the"], [2.14, "Book the dentist for next Thursday"], [3.27, "Book the dentist for next Thursday."]], "commit": [[1.18, "Fixed"], [2.16, "Fixed crash when the window"], [3.14, "Fixed crash when the window closes during a read"], [3.93, "Fixed crash when the window closes during a read."], [3.99, "Fix crash when the window closes during a read."]],
+    // Saved text: the spoken name, then (data-paste) the saved value is what gets pasted.
+    "email": [[0.9, "Type"], [1.3, "Type email"], [1.8, "Type email address"]], "home": [[1.1, "Home"], [1.6, "Home address"]],
+    "key": [[1.1, "Paste my"], [1.9, "Paste my ElevenLabs"], [2.4, "Paste my ElevenLabs key"]]};
   const cards = [...document.querySelectorAll("[data-sx]")].map((el, n) => {
     const parts = PARTS[el.dataset.sx], end = parts[parts.length - 1][0];
     const c = { el, parts, out: el.querySelector("[data-out]"), cap: el.querySelector(".mcap"), text: el.querySelector(".mcap-t"),
@@ -1142,7 +963,7 @@ document.querySelectorAll("[data-read]:not([data-read=region])").forEach((el, n)
     if (caption !== c.last) { c.text.textContent = heard ? fit(c, caption) : caption; c.text.classList.toggle("empty", !heard); c.last = caption; }
     c.halo.style.transform = `scale(${holding ? 0.75 + 0.6 * Math.abs(Math.sin((t + c.offset) * 7.3) * Math.sin(t * 2.9)) : 0.75})`;
     const typed = t >= c.typed;
-    if (typed && !c.out.textContent) { c.out.textContent = c.parts[c.parts.length - 1][1]; c.out.classList.add("flash"); requestAnimationFrame(() => requestAnimationFrame(() => c.out.classList.remove("flash"))); }
+    if (typed && !c.out.textContent) { c.out.textContent = c.el.dataset.paste || c.parts[c.parts.length - 1][1]; c.out.classList.add("flash"); requestAnimationFrame(() => requestAnimationFrame(() => c.out.classList.remove("flash"))); }
     if (!typed && c.out.textContent) c.out.textContent = "";
   };
   if (reduce) { cards.forEach(c => render(c, c.typed + 1)); return; }
@@ -1153,18 +974,70 @@ document.querySelectorAll("[data-read]:not([data-read=region])").forEach((el, n)
   };
   requestAnimationFrame(frame);
 })();
-// Phone demo row: the Talk | Listen switch scrolls the row, and follows it when you swipe.
+
+
+// The tools, acted out in the hero. Each panel loops its own little scene while it's on screen.
 (() => {
-  const row = document.getElementById("demos"), tabs = [...document.querySelectorAll(".demo-tabs button")];
-  const panel = id => document.getElementById(id);
-  tabs.forEach(t => t.addEventListener("click", () => row.scrollTo({ left: panel(t.dataset.go).offsetLeft - row.offsetLeft - parseFloat(getComputedStyle(row).paddingLeft), behavior: reduce ? "auto" : "smooth" })));
-  const sync = () => {
-    const mid = row.scrollLeft + row.clientWidth / 2;
-    let best = tabs[0], dist = Infinity;
-    tabs.forEach(t => { const p = panel(t.dataset.go), c = p.offsetLeft - row.offsetLeft + p.offsetWidth / 2, d = Math.abs(c - mid); if (d < dist) { dist = d; best = t; } });
-    tabs.forEach(t => t.setAttribute("aria-selected", t === best));
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  const flash = el => { el.classList.add("flash"); requestAnimationFrame(() => requestAnimationFrame(() => el.classList.remove("flash"))); };
+  const acts = Object.fromEntries([...document.querySelectorAll("[data-act]")].map(el => {
+    const a = { el, visible: false, spr: el.querySelector(".spr"), say: el.querySelector(".say"), said: el.querySelector(".said"),
+      out: el.querySelector(".out"), cap: el.querySelector(".mcap2") };
+    new IntersectionObserver(([e]) => a.visible = e.isIntersecting).observe(el);
+    return [el.dataset.act, a];
+  }));
+  let flapping = null;
+  const talk = (a, on) => {
+    clearInterval(flapping); a.spr.classList.remove("talk");
+    if (on) { let n = 0; flapping = setInterval(() => a.spr.classList.toggle("talk", n++ % 2 === 0), 130); }
   };
-  row.addEventListener("scroll", () => requestAnimationFrame(sync), { passive: true });
+  const say = async (a, words, ms) => {
+    a.say.classList.remove("off"); a.said.textContent = ""; talk(a, true);
+    for (const w of words) { a.said.textContent += (a.said.textContent ? " " : "") + w; await sleep(ms + (/[,.]$/.test(w) ? 160 : 0)); }
+    talk(a, false);
+  };
+  const scenes = {
+    async dictate(a) {
+      a.out.textContent = ""; a.say.classList.add("off"); a.cap.classList.remove("on");
+      await sleep(800);
+      a.cap.classList.add("on");
+      await say(a, "Um, so, like, the meeting is, um, moved to three.".split(" "), 230);
+      await sleep(250); a.cap.classList.remove("on");
+      a.out.textContent = "The meeting is moved to 3."; flash(a.out);
+      await sleep(3200);
+    },
+    async read(a) {
+      const words = [...a.el.querySelectorAll(".rw")], sel = a.el.querySelector(".sel"), spk = a.el.querySelector(".spk");
+      words.forEach(w => w.classList.remove("on")); sel.classList.remove("box"); spk.classList.remove("on");
+      a.spr.classList.remove("shock"); a.said.textContent = "I don’t need to read it. I wrote it.";
+      await sleep(1900);
+      sel.classList.add("box"); await sleep(600); spk.classList.add("on");
+      for (let i = 0; i < words.length; i++) {
+        words.forEach(w => w.classList.toggle("on", w === words[i]));
+        if (i === 3) { a.spr.classList.add("shock"); a.said.textContent = "Wait. “The the”?"; }
+        await sleep(i === 3 ? 900 : 380);
+      }
+      words.forEach(w => w.classList.remove("on")); spk.classList.remove("on");
+      await sleep(2600);
+    },
+    async saved(a) {
+      a.out.textContent = ""; a.say.classList.add("off"); a.cap.classList.remove("on");
+      await sleep(1300);
+      a.cap.classList.add("on");
+      await say(a, ["Type", "email", "address."], 340);
+      await sleep(250); a.cap.classList.remove("on");
+      a.out.textContent = "sam@example.com"; flash(a.out);
+      await sleep(3400);
+    },
+  };
+  if (reduce) {
+    acts.dictate.say.classList.remove("off"); acts.dictate.said.textContent = "Um, so, like, the meeting is, um, moved to three."; acts.dictate.out.textContent = "The meeting is moved to 3.";
+    acts.saved.say.classList.remove("off"); acts.saved.said.textContent = "Type email address."; acts.saved.out.textContent = "sam@example.com";
+    return;
+  }
+  Object.entries(acts).forEach(async ([name, a]) => {
+    for (;;) { if (!a.visible) { await sleep(400); continue; } await scenes[name](a); }
+  });
 })();
 </script>
 </body>
