@@ -699,7 +699,6 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
           <p>Hi, I’m <a href="https://www.linkedin.com/in/asad-moulvi-aaa278175/" data-attr="linkedin-show">Asad</a>. I think the AI you use every day should run on the computer you own, not on someone else’s servers. YapYap is me finding out how far a Mac can go on its own: dictation and read-aloud first, then your files, then an assistant that gets real work done.</p>
           <p>To explore ideas, and because I’ve always wanted a TV show, I made a little TV show about this mission. It’s fun. We rarely talk about the product; we’re usually goofing around. Find us on our socials.</p>
           <div class="cta">
-            <a class="btn" style="font-size:12px;padding:14px 18px" href="" data-tiktok data-attr="tiktok-show" hidden>Follow on TikTok</a>
             <a class="plain link-arrow" href="https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg" data-attr="download-show">Get the app they don’t use</a>
           </div>
         </div>
@@ -841,7 +840,7 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
 
 <footer>
   <div class="wrap">
-    <span>© 2026 YapYap · <a href="https://github.com/WannaBeSolopreneur/YapYap">Source on GitHub</a><span data-tiktok hidden> · <a href="" data-tiktok data-attr="tiktok-footer">The YapYap office on TikTok</a></span></span>
+    <span>© 2026 YapYap · <a href="https://github.com/WannaBeSolopreneur/YapYap">Source on GitHub</a><span data-tiktok hidden> · <a href="" data-tiktok data-attr="tiktok-footer">TikTok</a></span> · <a href="" data-social="instagram" data-attr="instagram-footer">Instagram</a></span>
     <span>Mac and macOS are trademarks of Apple Inc. YapYap is not made by Apple. The YapYap office and its cast are original characters.</span>
   </div>
 </footer>
@@ -849,7 +848,7 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
 <script>
 
 // The show's TikTok. Every "Follow on TikTok" link stays hidden until this is set, e.g. "https://www.tiktok.com/@handle".
-const TIKTOK = "";
+const TIKTOK = "https://www.tiktok.com/@yapyap3730";
 // The show's Instagram, e.g. "https://www.instagram.com/handle". The icons always show; they link once these are set.
 const INSTAGRAM = "https://www.instagram.com/yapyap.cc/";
 document.querySelectorAll("[data-social]").forEach(el => { const url = el.dataset.social === "tiktok" ? TIKTOK : INSTAGRAM; if (url) el.href = url; });
