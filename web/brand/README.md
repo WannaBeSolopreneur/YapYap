@@ -27,6 +27,5 @@ Don't use the rainbow apple from the show's end card on the site or in the app: 
 
 ## Art from the show
 
-- `site/art/office-night.webp`: the office exterior, a frame of the theme song.
 - `site/art/cast/<name>-<pose>.png`: 24x32 cast sprites rendered from the show's `office_cast.py` in its palette
   (bob, walt, zoe, lenny, gail, jessy). Show them at whole-number scales with `image-rendering: pixelated`.

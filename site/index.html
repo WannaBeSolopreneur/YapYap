@@ -184,8 +184,8 @@ kbd { font-family: var(--ui); font-size: 19px; min-width: 34px; height: 34px; pa
 .nav ul a:hover { color: var(--yellow); }
 @media (max-width: 760px) { .nav ul { display: none; } .nav .btn { margin-left: auto; } }
 
-/* Hero: the office at night. The building art shares the sky colour, so the text sits in the same night. */
-.hero { text-align: center; padding-top: 44px; background: var(--night) var(--stars); }
+/* Hero: the night sky over the office: logo, tagline, and the three tools acted out by the cast. */
+.hero { text-align: center; padding-top: 44px; padding-bottom: 88px; background: var(--night) var(--stars); }
 .lockup { display: inline-flex; align-items: center; gap: clamp(14px, 2.4vw, 26px); }
 .lockup img { width: clamp(48px, 7.2vw, 80px); height: auto; }
 .lockup b { font-family: var(--logo); font-weight: 400; font-size: clamp(30px, 6vw, 60px); line-height: 1; color: var(--powder); text-shadow: 5px 5px 0 var(--ink); letter-spacing: 0.02em; }
@@ -194,8 +194,6 @@ kbd { font-family: var(--ui); font-size: 19px; min-width: 34px; height: 34px; pa
 .hero .sub { font-size: clamp(18px, 2.1vw, 22px); line-height: 1.45; color: var(--powder); max-width: 40ch; margin: 20px auto 0; }
 .cta { display: flex; justify-content: center; align-items: center; gap: 28px; flex-wrap: wrap; margin-top: 30px; }
 .req { font-size: 15px; color: var(--powder); margin-top: 18px; }
-.building { width: 100%; margin-top: 30px; display: block; aspect-ratio: 16 / 9; height: auto; object-fit: cover; object-position: 50% 100%; }
-@media (max-width: 640px) { .building { aspect-ratio: 4 / 3; } }
 
 
 
@@ -699,7 +697,6 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
       </div>
       <p class="req">Free · Open source · Runs on your Mac · macOS 15+ · Apple silicon</p>
     </div>
-    <img class="building px" src="art/office-night.webp" width="1920" height="1080" alt="The YapYap office at night, pixel art: a lit-up building with a YAPYAP sign on the roof and a parking space reserved for Walt">
   </header>
 
   <section id="show" class="night">
