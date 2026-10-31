@@ -851,7 +851,7 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
 // The show's TikTok. Every "Follow on TikTok" link stays hidden until this is set, e.g. "https://www.tiktok.com/@handle".
 const TIKTOK = "";
 // The show's Instagram, e.g. "https://www.instagram.com/handle". The icons always show; they link once these are set.
-const INSTAGRAM = "";
+const INSTAGRAM = "https://www.instagram.com/yapyap.cc/";
 document.querySelectorAll("[data-social]").forEach(el => { const url = el.dataset.social === "tiktok" ? TIKTOK : INSTAGRAM; if (url) el.href = url; });
 document.querySelectorAll("[data-tiktok]").forEach(el => { if (!TIKTOK) return; if (el.tagName === "A") el.href = TIKTOK; el.hidden = false; });
 
