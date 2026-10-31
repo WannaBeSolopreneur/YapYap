@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>YapYap – Free Text to Speech &amp; Dictation for Mac</title>
-<meta name="description" content="Free, private text to speech and dictation for Mac. Hear any text on screen read aloud with word-by-word highlighting, and type into any app by talking.">
+<title>YapYap – On-Device AI Productivity Tools for Mac: Dictation &amp; Text to Speech</title>
+<meta name="description" content="On-device AI productivity tools for Mac, free and open source: dictation into any app, text to speech with word-by-word highlighting, and saved text you paste by saying its name.">
 <link rel="canonical" href="https://yapyap.cc/">
 <meta name="robots" content="index, follow, max-image-preview:large, max-video-preview:-1">
 <meta name="theme-color" content="#0f1828">
@@ -12,15 +12,15 @@
 <meta property="og:site_name" content="YapYap">
 <meta property="og:locale" content="en_US">
 <meta property="og:url" content="https://yapyap.cc/">
-<meta property="og:title" content="YapYap – Free Text to Speech &amp; Dictation for Mac">
-<meta property="og:description" content="On-device AI productivity tools. You talk, it types; it talks, you listen. Free, open source, and your words stay on your Mac.">
+<meta property="og:title" content="YapYap – On-device AI productivity tools for Mac">
+<meta property="og:description" content="Dictation, read aloud and saved text: free AI tools that run on your Mac. Open source, and your words never leave it.">
 <meta property="og:image" content="https://yapyap.cc/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="The YapYap logo, a pixel speech bubble, above the line On-device AI productivity tools, with the six pixel-art characters from the YapYap office show and yapyap.cc">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="YapYap – Free Text to Speech &amp; Dictation for Mac">
-<meta name="twitter:description" content="On-device AI productivity tools. You talk, it types; it talks, you listen. Free, open source, and your words stay on your Mac.">
+<meta name="twitter:title" content="YapYap – On-device AI productivity tools for Mac">
+<meta name="twitter:description" content="Dictation, read aloud and saved text: free AI tools that run on your Mac. Open source, and your words never leave it.">
 <meta name="twitter:image" content="https://yapyap.cc/og.png">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
@@ -186,15 +186,22 @@ kbd { font-family: var(--ui); font-size: 16px; min-width: 34px; height: 34px; pa
 /* Hero: the office at night. The building art shares the sky colour, so the text sits in the same night. */
 .hero { text-align: center; padding-top: 64px; background: var(--night) var(--stars); }
 .lockup { display: inline-flex; align-items: center; gap: clamp(14px, 2.4vw, 26px); }
-.lockup img { width: clamp(56px, 9vw, 96px); height: auto; }
-.lockup b { font-family: var(--pixel); font-weight: 400; font-size: clamp(34px, 7.4vw, 76px); line-height: 1; color: var(--powder); text-shadow: 5px 5px 0 var(--ink); letter-spacing: 0.02em; }
+.lockup img { width: clamp(48px, 7.2vw, 80px); height: auto; }
+.lockup b { font-family: var(--pixel); font-weight: 400; font-size: clamp(30px, 6vw, 60px); line-height: 1; color: var(--powder); text-shadow: 5px 5px 0 var(--ink); letter-spacing: 0.02em; }
 .hero .kicker { margin-top: 26px; font-size: clamp(11px, 1.6vw, 16px); color: var(--cream); text-shadow: 2px 2px 0 var(--ink); }
-.hero h1 { font-family: var(--pixel); font-size: clamp(15px, 2.9vw, 30px); line-height: 1.75; margin-top: 34px; color: var(--yellow); text-shadow: 3px 3px 0 var(--ink); }
-.duo { display: grid; grid-template-columns: 1fr 1fr; max-width: 760px; margin: 30px auto 0; text-align: left; }
-.duo p { min-width: 0; display: flex; flex-direction: column; gap: 12px; padding: 4px 30px; color: var(--cream); font-size: 19px; line-height: 1.4; }
-.duo p + p { border-left: 3px dashed var(--slate); }
-.duo-k { display: flex; gap: 6px; }
-@media (max-width: 640px) { .duo { display: none; } }
+.hero h1 { font-family: var(--pixel); font-size: clamp(19px, 4vw, 42px); line-height: 1.6; margin-top: 34px; color: var(--yellow); text-shadow: 3px 3px 0 var(--ink); }
+.hero .sub { font-size: clamp(18px, 2.1vw, 22px); line-height: 1.45; color: var(--powder); max-width: 34ch; margin: 22px auto 0; }
+.tools { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; max-width: 980px; margin: 40px auto 0; padding: 0; list-style: none; text-align: left; }
+.tools li { min-width: 0; }
+.tools a { height: 100%; display: flex; flex-direction: column; gap: 10px; padding: 18px 18px 20px; background: var(--navy); color: var(--cream); text-decoration: none;
+  border: 3px solid var(--ink); box-shadow: 5px 5px 0 var(--ink); }
+.tools a:hover { background: #22344f; }
+.tools a:active { transform: translate(2px, 2px); box-shadow: 3px 3px 0 var(--ink); }
+.tools .tk { display: flex; align-items: center; gap: 6px; min-height: 34px; }
+.tools .tk i { font-style: normal; font-family: var(--ui); font-size: 16px; color: var(--yellow); margin-left: 4px; white-space: nowrap; }
+.tools b { font-family: var(--pixel); font-weight: 400; font-size: 13px; line-height: 1.5; color: var(--yellow); text-shadow: 2px 2px 0 var(--ink); }
+.tools a > span:last-child { font-size: 17px; line-height: 1.4; color: var(--pale); }
+@media (max-width: 760px) { .tools { grid-template-columns: 1fr; max-width: 440px; gap: 14px; } .tools a { padding: 14px 16px 16px; } }
 .cta { display: flex; justify-content: center; align-items: center; gap: 28px; flex-wrap: wrap; margin-top: 34px; }
 .req { font-size: 15px; color: var(--powder); margin-top: 18px; }
 .building { width: 100%; margin-top: 30px; display: block; aspect-ratio: 16 / 9; height: auto; object-fit: cover; object-position: 50% 100%; }
@@ -449,6 +456,19 @@ kbd { font-family: var(--ui); font-size: 16px; min-width: 34px; height: 34px; pa
 .term-b .pr { color: #30d158; }
 .term-b .caret { background: #f5f5f7; }
 
+/* Saved text: forms the saved value is pasted into */
+.form { padding: 0 0 54px; }
+.form .fr { display: flex; gap: 8px; padding: 9px 14px; border-bottom: 1px solid color-mix(in srgb, var(--win-ink) 10%, transparent); font-size: 12.5px; }
+.form .fr > span { color: var(--muted); }
+.form .fr b { font-weight: 700; color: var(--accent); }
+.form .fb { padding: 12px 14px; font-size: 12.5px; color: var(--muted); }
+.form .ship { padding: 14px 16px 6px; font-weight: 700; font-size: 14px; }
+.form .fld { margin: 8px 16px 0; padding: 6px 10px; border: 1px solid var(--line); font-size: 12.5px; min-height: 44px; }
+.form .fld.on { border: 2px solid var(--accent); }
+.form .fld small { display: block; font-size: 10px; color: var(--muted); }
+#saved .ex { background: var(--slate); }
+#saved .term-b { overflow-wrap: anywhere; }
+
 /* Dictation demo: a Mail reply and the dictation capsule */
 .dx { container-type: inline-size; position: relative; overflow: hidden; background: var(--win); color: var(--win-ink); padding-bottom: 92px; }
 .dx .tb { height: 38px; } .dx-gap { width: 92px; }
@@ -582,6 +602,7 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
     <ul>
       <li><a href="#dictate">Talk</a></li>
       <li><a href="#region">Listen</a></li>
+      <li><a href="#saved">Saved text</a></li>
       <li><a href="#privacy">Privacy</a></li>
       <li><a href="#show">The show</a></li>
       <li><a href="#faq">FAQ</a></li>
@@ -595,17 +616,18 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
   <header class="hero">
     <div class="wrap">
       <div class="lockup"><img class="px" src="mark.png" alt="" width="16" height="16"><b>YAPYAP</b></div>
-      <p class="kicker">On-device AI productivity tools</p>
-      <h1><span class="read" data-read="hero">You talk. It types.<br>It talks. You listen.</span></h1>
-      <div class="duo">
-        <p><span class="duo-k"><kbd>⌥</kbd><kbd>S</kbd></span>Hold and talk to type into any app.</p>
-        <p><span class="duo-k"><kbd>⌥</kbd><kbd>A</kbd></span>Press, then draw a box around any text to hear it read aloud.</p>
-      </div>
+      <h1><span class="read" data-read="hero">On-device AI<br>productivity tools.</span></h1>
+      <p class="sub">Free AI tools that run entirely on your Mac. You talk, it types. It talks, you listen.</p>
+      <ul class="tools" aria-label="The tools">
+        <li><a href="#dictate"><span class="tk"><kbd>⌥</kbd><kbd>S</kbd></span><b>Dictation</b><span>Hold and talk. Your words are typed into any app.</span></a></li>
+        <li><a href="#region"><span class="tk"><kbd>⌥</kbd><kbd>A</kbd></span><b>Read aloud</b><span>Draw a box around any text and hear it, word by word.</span></a></li>
+        <li><a href="#saved"><span class="tk"><kbd>⌥</kbd><kbd>S</kbd><i>“email address”</i></span><b>Saved text</b><span>Say a saved item’s name to paste it: your email, an address, an API key.</span></a></li>
+      </ul>
       <div class="cta">
         <a class="btn lg" href="https://github.com/WannaBeSolopreneur/YapYap/releases/latest/download/YapYap.dmg" data-attr="download-hero">Download for Mac</a>
         <a class="plain link-arrow" href="https://github.com/WannaBeSolopreneur/YapYap">View on GitHub</a>
       </div>
-      <p class="req">Free text to speech and dictation for Mac · Open source · macOS 15+ · Apple silicon</p>
+      <p class="req">Free · Open source · Runs on your Mac · macOS 15+ · Apple silicon</p>
     </div>
     <img class="building px" src="art/office-night.webp" width="1920" height="1080" alt="The YapYap office at night, pixel art: a lit-up building with a YAPYAP sign on the roof and a parking space reserved for Walt">
   </header>
@@ -692,6 +714,30 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
     </div>
     </div>
   </div>
+  </section>
+
+  <section id="saved" class="night">
+    <div class="wrap">
+      <div class="head"><p class="kicker">Saved text</p><h2>Say the name. It’s pasted.</h2>
+        <p>Save the things you type over and over, like your email address, your home address or an API key. Then hold ⌥S and say its name, and YapYap pastes it wherever your cursor is.</p></div>
+      <div class="examples">
+        <figure class="ex sx" data-sx="email" data-paste="sam@example.com">
+          <div class="win app-mail"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><span class="sp"></span><span class="title"><b>New Message</b></span><span class="sp"></span><svg><use href="#i-send"/></svg></div>
+            <div class="wb form"><div class="fr"><span>To:</span><b><span data-out></span><i class="caret"></i></b></div><div class="fr"><span>Subject:</span>Saturday</div><p class="fb">Count me in. Send the details to the address above.</p><div class="mcap off" aria-hidden="true"><span class="dx-mic"><i></i><svg viewBox="0 0 16 16" fill="currentColor"><rect x="5.5" y="1.5" width="5" height="8.5" rx="2.5"/><path d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span><span class="mcap-t">Listening… let go to type</span><span class="mcap-k"><kbd>⌥</kbd><kbd>S</kbd></span></div></div></div>
+          <figcaption><h3>“Email address”</h3><p>Fill in forms without spelling it out.</p></figcaption>
+        </figure>
+        <figure class="ex sx" data-sx="home" data-paste="1 Main Street, Springfield">
+          <div class="win app-safari"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><svg><use href="#i-back"/></svg><span class="addr"><svg><use href="#i-lock"/></svg>shop.example</span><svg><use href="#i-share"/></svg></div>
+            <div class="wb form"><div class="ship">Shipping address</div><div class="fld"><small>Full name</small>Sam Rivera</div><div class="fld on"><small>Street address</small><span data-out></span><i class="caret"></i></div><div class="mcap off" aria-hidden="true"><span class="dx-mic"><i></i><svg viewBox="0 0 16 16" fill="currentColor"><rect x="5.5" y="1.5" width="5" height="8.5" rx="2.5"/><path d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span><span class="mcap-t">Listening… let go to type</span><span class="mcap-k"><kbd>⌥</kbd><kbd>S</kbd></span></div></div></div>
+          <figcaption><h3>“Home address”</h3><p>Check out in seconds.</p></figcaption>
+        </figure>
+        <figure class="ex sx" data-sx="key" data-paste="sk_demo_4f9c2a7e1b80">
+          <div class="win app-term"><div class="tb"><span class="lights"><i></i><i></i><i></i></span><span class="sp"></span><span class="title"><b>yapyap — zsh</b></span><span class="sp"></span></div>
+            <div class="wb term-b"><div><span class="pr">~/yapyap %</span> export ELEVENLABS_API_KEY="<span data-out></span><i class="caret"></i>"</div><div class="mcap off" aria-hidden="true"><span class="dx-mic"><i></i><svg viewBox="0 0 16 16" fill="currentColor"><rect x="5.5" y="1.5" width="5" height="8.5" rx="2.5"/><path d="M3.5 7.5a4.5 4.5 0 0 0 9 0M8 12v2.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span><span class="mcap-t">Listening… let go to type</span><span class="mcap-k"><kbd>⌥</kbd><kbd>S</kbd></span></div></div></div>
+          <figcaption><h3>“Paste my ElevenLabs key”</h3><p>Kept in your Keychain, never in history. Touch ID if you want it.</p></figcaption>
+        </figure>
+      </div>
+    </div>
   </section>
 
   <section id="speak" class="paper"><div class="wrap">
@@ -1198,7 +1244,10 @@ document.querySelectorAll("[data-read]:not([data-read=region])").forEach((el, n)
 })();
 // Speak anywhere: each card replays what SpeechAnalyzer reported for that phrase (`YapYap --transcribe`), on its real timing.
 (() => {
-  const PARTS = {"msg": [[1.89, "Running"], [2.86, "Running 10 minutes late"], [3.85, "Running 10 minutes late, save me a seat"], [4.49, "Running 10 minutes late, save me a seat."]], "note": [[1.19, "Ideas"], [2.16, "Ideas for the launch"], [3.19, "Ideas for the launch. A short dem"], [4.11, "Ideas for the launch. A short demo video, a priv"], [5.18, "Ideas for the launch. A short demo video, a privacy page, and a"], [6.16, "Ideas for the launch. A short demo video, a privacy page, and a student discount"], [6.69, "Ideas for the launch. A short demo video, a privacy page, and a student discount."]], "chat": [[1.5, "The lo"], [2.45, "The login bug is fixed"], [3.43, "The login bug is fixed."], [3.65, "The login bug is fixed. Can someone"], [4.42, "The login bug is fixed. Can someone check it on staging"], [5.2, "The login bug is fixed. Can someone check it on staging?"]], "doc": [[1.2, "Thank you"], [2.16, "Thank you for meeting with me on"], [3.14, "Thank you for meeting with me on Tuesday."], [4.12, "Thank you for meeting with me on Tuesday. I have attached the notes"], [5.18, "Thank you for meeting with me on Tuesday. I have attached the notes we discussed"], [5.8, "Thank you for meeting with me on Tuesday. I have attached the notes we discussed."]], "rem": [[1.18, "B"], [1.37, "Book the"], [2.14, "Book the dentist for next Thursday"], [3.27, "Book the dentist for next Thursday."]], "commit": [[1.18, "Fixed"], [2.16, "Fixed crash when the window"], [3.14, "Fixed crash when the window closes during a read"], [3.93, "Fixed crash when the window closes during a read."], [3.99, "Fix crash when the window closes during a read."]]};
+  const PARTS = {"msg": [[1.89, "Running"], [2.86, "Running 10 minutes late"], [3.85, "Running 10 minutes late, save me a seat"], [4.49, "Running 10 minutes late, save me a seat."]], "note": [[1.19, "Ideas"], [2.16, "Ideas for the launch"], [3.19, "Ideas for the launch. A short dem"], [4.11, "Ideas for the launch. A short demo video, a priv"], [5.18, "Ideas for the launch. A short demo video, a privacy page, and a"], [6.16, "Ideas for the launch. A short demo video, a privacy page, and a student discount"], [6.69, "Ideas for the launch. A short demo video, a privacy page, and a student discount."]], "chat": [[1.5, "The lo"], [2.45, "The login bug is fixed"], [3.43, "The login bug is fixed."], [3.65, "The login bug is fixed. Can someone"], [4.42, "The login bug is fixed. Can someone check it on staging"], [5.2, "The login bug is fixed. Can someone check it on staging?"]], "doc": [[1.2, "Thank you"], [2.16, "Thank you for meeting with me on"], [3.14, "Thank you for meeting with me on Tuesday."], [4.12, "Thank you for meeting with me on Tuesday. I have attached the notes"], [5.18, "Thank you for meeting with me on Tuesday. I have attached the notes we discussed"], [5.8, "Thank you for meeting with me on Tuesday. I have attached the notes we discussed."]], "rem": [[1.18, "B"], [1.37, "Book the"], [2.14, "Book the dentist for next Thursday"], [3.27, "Book the dentist for next Thursday."]], "commit": [[1.18, "Fixed"], [2.16, "Fixed crash when the window"], [3.14, "Fixed crash when the window closes during a read"], [3.93, "Fixed crash when the window closes during a read."], [3.99, "Fix crash when the window closes during a read."]],
+    // Saved text: the spoken name, then (data-paste) the saved value is what gets pasted.
+    "email": [[1.1, "Email"], [1.6, "Email address"]], "home": [[1.1, "Home"], [1.6, "Home address"]],
+    "key": [[1.1, "Paste my"], [1.9, "Paste my ElevenLabs"], [2.4, "Paste my ElevenLabs key"]]};
   const cards = [...document.querySelectorAll("[data-sx]")].map((el, n) => {
     const parts = PARTS[el.dataset.sx], end = parts[parts.length - 1][0];
     const c = { el, parts, out: el.querySelector("[data-out]"), cap: el.querySelector(".mcap"), text: el.querySelector(".mcap-t"),
@@ -1218,7 +1267,7 @@ document.querySelectorAll("[data-read]:not([data-read=region])").forEach((el, n)
     if (caption !== c.last) { c.text.textContent = heard ? fit(c, caption) : caption; c.text.classList.toggle("empty", !heard); c.last = caption; }
     c.halo.style.transform = `scale(${holding ? 0.75 + 0.6 * Math.abs(Math.sin((t + c.offset) * 7.3) * Math.sin(t * 2.9)) : 0.75})`;
     const typed = t >= c.typed;
-    if (typed && !c.out.textContent) { c.out.textContent = c.parts[c.parts.length - 1][1]; c.out.classList.add("flash"); requestAnimationFrame(() => requestAnimationFrame(() => c.out.classList.remove("flash"))); }
+    if (typed && !c.out.textContent) { c.out.textContent = c.el.dataset.paste || c.parts[c.parts.length - 1][1]; c.out.classList.add("flash"); requestAnimationFrame(() => requestAnimationFrame(() => c.out.classList.remove("flash"))); }
     if (!typed && c.out.textContent) c.out.textContent = "";
   };
   if (reduce) { cards.forEach(c => render(c, c.typed + 1)); return; }
