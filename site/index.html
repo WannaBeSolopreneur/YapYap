@@ -235,7 +235,6 @@ kbd { font-family: var(--ui); font-size: 19px; min-width: 34px; height: 34px; pa
 [data-read] .w.on { color: var(--hl-ink); text-shadow: none; }
 .pill { position: absolute; z-index: 0; background: var(--hl); pointer-events: none;
   transition: left 0.22s steps(4), top 0.22s steps(4), width 0.22s steps(4), height 0.22s; }
-.hero .pill { box-shadow: 3px 3px 0 var(--ink); }
 
 /* Film: an old office TV on the wall */
 .stage { padding-block: 72px 0; }
@@ -638,7 +637,7 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
   <header class="hero">
     <div class="wrap">
       <div class="lockup"><img class="px" src="mark.png" alt="" width="16" height="16"><b>YAPYAP</b></div>
-      <h1><span class="read" data-read="hero">On-device AI<br>productivity tools.</span></h1>
+      <h1>On-device AI<br>productivity tools.</h1>
       <div class="crew" id="crew" aria-label="The YapYap office">
         <p class="crew-say off" id="crew-say" aria-live="polite"><b></b><span></span></p>
         <button class="mate px" type="button" data-who="bob" aria-label="Bob"><img class="px i" src="art/cast/bob-idle0.png" alt="" width="24" height="32"><img class="px b" src="art/cast/bob-blink.png" alt="" width="24" height="32"><img class="px t" src="art/cast/bob-talk_open.png" alt="" width="24" height="32"></button><button class="mate px" type="button" data-who="walt" aria-label="Walt"><img class="px i" src="art/cast/walt-idle0.png" alt="" width="24" height="32"><img class="px b" src="art/cast/walt-blink.png" alt="" width="24" height="32"><img class="px t" src="art/cast/walt-talk_open.png" alt="" width="24" height="32"></button><button class="mate px" type="button" data-who="zoe" aria-label="Zoe"><img class="px i" src="art/cast/zoe-idle0.png" alt="" width="24" height="32"><img class="px b" src="art/cast/zoe-blink.png" alt="" width="24" height="32"><img class="px t" src="art/cast/zoe-talk_open.png" alt="" width="24" height="32"></button><button class="mate px" type="button" data-who="jessy" aria-label="Jessy"><img class="px i" src="art/cast/jessy-idle0.png" alt="" width="24" height="32"><img class="px b" src="art/cast/jessy-blink.png" alt="" width="24" height="32"><img class="px t" src="art/cast/jessy-talk_open.png" alt="" width="24" height="32"></button><button class="mate px" type="button" data-who="gail" aria-label="Gail"><img class="px i" src="art/cast/gail-idle0.png" alt="" width="24" height="32"><img class="px b" src="art/cast/gail-blink.png" alt="" width="24" height="32"><img class="px t" src="art/cast/gail-talk_open.png" alt="" width="24" height="32"></button><button class="mate px" type="button" data-who="lenny" aria-label="Lenny"><img class="px i" src="art/cast/lenny-idle0.png" alt="" width="24" height="32"><img class="px b" src="art/cast/lenny-blink.png" alt="" width="24" height="32"><img class="px t" src="art/cast/lenny-talk_open.png" alt="" width="24" height="32"></button>
@@ -1081,7 +1080,6 @@ function reader(el) {
 
 document.querySelectorAll("[data-read]:not([data-read=region])").forEach((el, n) => {
   const r = reader(el);
-  if (el.dataset.read === "hero") { r.i = 1; r.place(); }
   if (reduce) return;
   const step = () => {
     if (!r.visible) return setTimeout(step, 500);
