@@ -4,7 +4,7 @@ set -euo pipefail
 cd "$(dirname "$0")"
 rm -rf dist && mkdir dist
 for f in index.html 404.html _headers robots.txt sitemap.xml llms.txt appcast.xml \
-         icon.png mark.png favicon.svg favicon-32.png apple-touch-icon.png og.png demo-poster.jpg demo.mp4 region.mp3 dictate.mp3 \
+         icon.png mark.png favicon.svg favicon-32.png apple-touch-icon.png og.png region.mp3 dictate.mp3 \
          show-intro.mp4 show-poster.jpg; do
   cp "../site/$f" dist/
 done

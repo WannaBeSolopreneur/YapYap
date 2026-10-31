@@ -49,7 +49,6 @@
   "priceCurrency": "USD"
  },
  "image": "https://yapyap.cc/icon.png",
- "screenshot": "https://yapyap.cc/demo-poster.jpg",
  "featureList": [
   "Read any text on screen aloud: press Option-A and draw a box",
   "Word-by-word highlight and optional reading ruler on the original app",
@@ -68,18 +67,6 @@
  "@type": "WebSite",
  "name": "YapYap",
  "url": "https://yapyap.cc/"
-}
-</script>
-<script type="application/ld+json">
-{
- "@context": "https://schema.org",
- "@type": "VideoObject",
- "name": "YapYap: you talk, it types; it talks, you listen",
- "description": "YapYap reads a chat message aloud with each word highlighted, then a reply is dictated by holding Option-S and typed into the app.",
- "thumbnailUrl": "https://yapyap.cc/demo-poster.jpg",
- "contentUrl": "https://yapyap.cc/demo.mp4",
- "uploadDate": "2026-10-14",
- "duration": "PT38S"
 }
 </script>
 <link rel="preload" href="fonts/Jersey15.woff2" as="font" type="font/woff2" crossorigin>
@@ -252,18 +239,9 @@ kbd { font-family: var(--ui); font-size: 19px; min-width: 34px; height: 34px; pa
 .pill { position: absolute; z-index: 0; background: var(--hl); pointer-events: none;
   transition: left 0.22s steps(4), top 0.22s steps(4), width 0.22s steps(4), height 0.22s; }
 
-/* Film: an old office TV on the wall */
-.stage { padding-block: 72px 0; }
+/* The TV frame the theme song plays in */
 .tv { position: relative; max-width: 1100px; margin-inline: auto; padding: clamp(8px, 1.4vw, 16px); background: var(--slate); border: 4px solid var(--ink); box-shadow: 10px 10px 0 var(--ink); }
 .tv::after { content: ""; position: absolute; right: clamp(14px, 2vw, 26px); bottom: -14px; width: 60px; height: 10px; background: var(--ink); }
-.frame { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: var(--ink); border: 3px solid var(--ink); }
-.frame video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.placeholder { position: absolute; inset: 0; display: grid; place-items: center; background: var(--navy) var(--stars); }
-.placeholder .mock { width: min(62%, 560px); display: grid; gap: clamp(8px, 1.6vw, 16px); }
-.placeholder .bar { height: clamp(8px, 1.3vw, 14px); background: var(--slate); }
-.placeholder .bar.hl { height: clamp(22px, 3.4vw, 40px); background: var(--yellow); width: 108%; margin-left: -4%; border: 3px solid var(--ink); }
-.sound { position: absolute; right: 14px; bottom: 14px; z-index: 2; font-family: var(--pixel); font-size: 19px; text-transform: uppercase; padding: 9px 12px;
-  border: 3px solid var(--ink); background: var(--cream); color: var(--ink); box-shadow: 3px 3px 0 var(--ink); cursor: pointer; font-weight: 700; }
 
 /* Cast hosts: a sprite and a speech bubble, in the show's voice */
 .host { display: flex; align-items: flex-end; gap: 16px; margin: 0; }
@@ -729,27 +707,8 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
   </section>
 
 
-  <!-- Film: site/demo.mp4 (+ demo-poster.jpg). Plays muted on a loop; "Play with sound" restarts it with narration. -->
-  <section class="paper stage" aria-label="Film">
-    <div class="wrap wide"><div class="tv">
-    <div class="frame" id="demo">
-      <video id="demo-video" autoplay muted loop playsinline preload="metadata" poster="demo-poster.jpg" aria-label="YapYap film: a chat message is read aloud with each word highlighted, then a reply is dictated by holding Option-S" hidden>
-        <source src="demo.mp4" type="video/mp4">
-      </video>
-      <div class="placeholder" id="demo-placeholder" aria-hidden="true">
-        <div class="mock" aria-hidden="true">
-          <div class="bar"></div>
-          <div class="bar" style="width:92%"></div>
-          <div class="bar hl"></div>
-          <div class="bar" style="width:86%"></div>
-          <div class="bar" style="width:64%"></div>
-        </div>
-      </div>
-      <button class="sound" id="demo-sound" type="button" hidden>Play with sound</button>
-    </div>
-    </div></div>
-
-  <div class="wrap wide" aria-label="Try it" style="margin-top:96px">
+  <section class="paper" aria-label="Try it">
+  <div class="wrap wide">
     <div class="demo-tabs" role="tablist" aria-label="Choose a demo">
       <button type="button" role="tab" aria-selected="true" data-go="dictate">Talk</button>
       <button type="button" role="tab" aria-selected="false" data-go="region">Listen</button>
@@ -1063,18 +1022,6 @@ document.addEventListener("click", e => {
 });
 document.getElementById("show-video").addEventListener("play", () => track("show_video_played"), { once: true });
 document.querySelectorAll("details[id]").forEach(d => d.addEventListener("toggle", () => { if (d.open) track("faq_opened", { question: d.id }); }));
-
-// Hero demo: show the video only once it can actually play.
-(() => {
-  const v = document.getElementById("demo-video"), ph = document.getElementById("demo-placeholder"), snd = document.getElementById("demo-sound");
-  v.addEventListener("loadeddata", () => { v.hidden = false; ph.hidden = true; snd.hidden = false; });
-  snd.addEventListener("click", () => {
-    v.muted = !v.muted;
-    if (!v.muted) { v.currentTime = 0; v.play().catch(() => {}); track("demo_sound_played"); }
-    snd.textContent = v.muted ? "Play with sound" : "Mute";
-  });
-  v.load();
-})();
 
 // The read-along highlight: wrap each word, then slide one pill from word to word like the app does.
 // Anything inside .skip (links) is left unread, as the app does.
