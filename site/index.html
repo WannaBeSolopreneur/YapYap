@@ -561,7 +561,7 @@ kbd { font-family: var(--ui); font-size: 19px; min-width: 34px; height: 34px; pa
 .show-grid { display: grid; grid-template-columns: 1.25fr 1fr; gap: 40px; align-items: center; margin-top: 56px; }
 .show-grid > * { min-width: 0; }
 .show-grid .tv video { width: 100%; aspect-ratio: 16 / 9; background: var(--ink); border: 3px solid var(--ink); }
-.show-copy p { color: var(--powder); font-size: 18px; }
+.show-copy p { color: var(--s-muted); font-size: 18px; }
 .show-copy p + p { margin-top: 14px; }
 .show-copy .cta { justify-content: flex-start; margin-top: 26px; }
 .cast { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; margin-top: 64px; padding: 0; list-style: none; }
@@ -699,7 +699,7 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
     </div>
   </header>
 
-  <section id="show" class="night">
+  <section id="show" class="wall">
     <div class="wrap wide">
       <div class="head">
         <p class="kicker">Now showing on TikTok</p>
@@ -730,7 +730,7 @@ posthog.init("phc_mWnb2DzgAodxaoGJ2cyAgesFnppn3CKtDLju7SZs8kES", {
 
 
   <!-- Film: site/demo.mp4 (+ demo-poster.jpg). Plays muted on a loop; "Play with sound" restarts it with narration. -->
-  <section class="wall stage" aria-label="Film">
+  <section class="paper stage" aria-label="Film">
     <div class="wrap wide"><div class="tv">
     <div class="frame" id="demo">
       <video id="demo-video" autoplay muted loop playsinline preload="metadata" poster="demo-poster.jpg" aria-label="YapYap film: a chat message is read aloud with each word highlighted, then a reply is dictated by holding Option-S" hidden>
